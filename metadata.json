@@ -1,0 +1,6 @@
+{
+  "name": "AgriTwin AI",
+  "description": "A Digital Twin for Every Farm, powered by AI and designed for every farmer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
