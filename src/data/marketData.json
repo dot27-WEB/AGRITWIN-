@@ -1,0 +1,122 @@
+{
+  "lastUpdated": "2026-07-05T09:00:00Z",
+  "nationalIndexTrend": "upward",
+  "nationalIndexValue": 142.8,
+  "cropMarkets": [
+    {
+      "cropId": "rice",
+      "cropName": "Paddy (Rice)",
+      "currentPrice": 2350,
+      "priceUnit": "Quintal (100 kg)",
+      "changePercentage": 2.4,
+      "trend": "bullish",
+      "mandiPrices": [
+        { "mandi": "Guntur Mandi", "price": 2390, "distanceKm": 12 },
+        { "mandi": "Nellore Mandi", "price": 2360, "distanceKm": 45 },
+        { "mandi": "Vijayawada Mandi", "price": 2320, "distanceKm": 80 }
+      ],
+      "aiRecommendation": "HOLD",
+      "aiRecommendationReason": "Favorable supply tightening in major states expected to drive prices up by 4-6% in the next 3 weeks. Recommended storage strategy: Maintain moisture level below 14% to prevent mold.",
+      "historicalData": [
+        {"month": "Feb", "price": 2100},
+        {"month": "Mar", "price": 2150},
+        {"month": "Apr", "price": 2200},
+        {"month": "May", "price": 2260},
+        {"month": "Jun", "price": 2310},
+        {"month": "Jul", "price": 2350}
+      ]
+    },
+    {
+      "cropId": "wheat",
+      "cropName": "Wheat",
+      "currentPrice": 2450,
+      "priceUnit": "Quintal (100 kg)",
+      "changePercentage": -0.8,
+      "trend": "stable",
+      "mandiPrices": [
+        { "mandi": "Indore Mandi", "price": 2470, "distanceKm": 22 },
+        { "mandi": "Bhopal Mandi", "price": 2440, "distanceKm": 50 },
+        { "mandi": "Khandwa Mandi", "price": 2420, "distanceKm": 110 }
+      ],
+      "aiRecommendation": "SELL_PARTIAL",
+      "aiRecommendationReason": "Wheat prices are highly stable due to government procurement cushions. Liquidate 50% of stock to meet immediate liquidity requirements and lock in returns; store the remainder.",
+      "historicalData": [
+        {"month": "Feb", "price": 2380},
+        {"month": "Mar", "price": 2420},
+        {"month": "Apr", "price": 2460},
+        {"month": "May", "price": 2465},
+        {"month": "Jun", "price": 2460},
+        {"month": "Jul", "price": 2450}
+      ]
+    },
+    {
+      "cropId": "cotton",
+      "cropName": "Cotton",
+      "currentPrice": 7200,
+      "priceUnit": "Quintal (100 kg)",
+      "changePercentage": 5.8,
+      "trend": "bullish",
+      "mandiPrices": [
+        { "mandi": "Yavatmal Mandi", "price": 7350, "distanceKm": 15 },
+        { "mandi": "Adilabad Mandi", "price": 7250, "distanceKm": 38 },
+        { "mandi": "Warangal Mandi", "price": 7100, "distanceKm": 95 }
+      ],
+      "aiRecommendation": "SELL",
+      "aiRecommendationReason": "International textile demand spikes have pushed local cotton to a 6-month high of ₹7,200/quintal. Sell immediately before the arrival of new-season crops cool down the market.",
+      "historicalData": [
+        {"month": "Feb", "price": 6500},
+        {"month": "Mar", "price": 6700},
+        {"month": "Apr", "price": 6800},
+        {"month": "May", "price": 6920},
+        {"month": "Jun", "price": 7050},
+        {"month": "Jul", "price": 7200}
+      ]
+    },
+    {
+      "cropId": "chilli",
+      "cropName": "Chilli (Red)",
+      "currentPrice": 18500,
+      "priceUnit": "Quintal (100 kg)",
+      "changePercentage": -4.2,
+      "trend": "bearish",
+      "mandiPrices": [
+        { "mandi": "Guntur Mirchi Yard", "price": 19100, "distanceKm": 8 },
+        { "mandi": "Khammam Mandi", "price": 18400, "distanceKm": 72 },
+        { "mandi": "Warangal Mandi", "price": 18100, "distanceKm": 115 }
+      ],
+      "aiRecommendation": "HOLD",
+      "aiRecommendationReason": "Prices dipped due to transient over-supply in southern markets. Guntur cold storage stocks are filling, but export demand from China and Bangladesh remains strong. Hold for 45 days for an expected ₹20,000+ level.",
+      "historicalData": [
+        {"month": "Feb", "price": 21000},
+        {"month": "Mar", "price": 20200},
+        {"month": "Apr", "price": 19500},
+        {"month": "May", "price": 19100},
+        {"month": "Jun", "price": 18900},
+        {"month": "Jul", "price": 18500}
+      ]
+    },
+    {
+      "cropId": "groundnut",
+      "cropName": "Groundnut",
+      "currentPrice": 6400,
+      "priceUnit": "Quintal (100 kg)",
+      "changePercentage": 1.2,
+      "trend": "bullish",
+      "mandiPrices": [
+        { "mandi": "Rajkot Mandi", "price": 6480, "distanceKm": 30 },
+        { "mandi": "Kurnool Mandi", "price": 6420, "distanceKm": 52 },
+        { "mandi": "Anantapur Mandi", "price": 6350, "distanceKm": 85 }
+      ],
+      "aiRecommendation": "SELL",
+      "aiRecommendationReason": "Groundnut oil mills are operating at high capacities. Favorable seed prices are peaking now. Crop rotation supply from other regions is starting next month, which will trigger market correction.",
+      "historicalData": [
+        {"month": "Feb", "price": 6100},
+        {"month": "Mar", "price": 6220},
+        {"month": "Apr", "price": 6250},
+        {"month": "May", "price": 6300},
+        {"month": "Jun", "price": 6350},
+        {"month": "Jul", "price": 6400}
+      ]
+    }
+  ]
+}

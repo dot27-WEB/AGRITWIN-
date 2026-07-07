@@ -1,0 +1,76 @@
+[
+  {
+    "id": "pm-kisan",
+    "name": "PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)",
+    "description": "An initiative by the Government of India that provides an assured income support of ₹6,000 per year to all landholding farmer families across the country.",
+    "benefits": [
+      "Financial assistance of ₹6,000 per year paid in three equal installments of ₹2,000 every four months.",
+      "Direct Benefit Transfer (DBT) straight into the farmer's linked Aadhaar-enabled bank account.",
+      "100% funding support from the Central Government of India."
+    ],
+    "eligibility": [
+      "All landholding farmer families holding cultivable agricultural land in their name.",
+      "Must not belong to institutional ownership or high-income/taxpayer categories.",
+      "Must have a valid Aadhaar card and linked active bank account."
+    ],
+    "category": "Direct Income Support",
+    "subsidyPercentage": null,
+    "applyUrl": "https://pmkisan.gov.in/",
+    "icon": "Wallet"
+  },
+  {
+    "id": "crop-insurance",
+    "name": "PMFBY (Pradhan Mantri Fasal Bima Yojana)",
+    "description": "A comprehensive crop insurance scheme to provide financial support to farmers experiencing crop loss or damage arising out of natural calamities, pests, & diseases.",
+    "benefits": [
+      "Comprehensive risk insurance covers yield losses from pre-sowing to post-harvest.",
+      "Very low premium rates for farmers: 2% for Kharif crops, 1.5% for Rabi crops, and 5% for annual commercial/horticultural crops.",
+      "Fast online claim settlement based on satellite remote sensing data and drone crop cutting."
+    ],
+    "eligibility": [
+      "All farmers including sharecroppers and tenant farmers growing notified crops in notified areas are eligible.",
+      "Highly recommended for farmers taking crop loans (KCC) from formal banking channels."
+    ],
+    "category": "Crop Protection & Risk",
+    "subsidyPercentage": 90,
+    "applyUrl": "https://pmfby.gov.in/",
+    "icon": "ShieldCheck"
+  },
+  {
+    "id": "solar-pump",
+    "name": "PM-KUSUM (Solar Pump Scheme)",
+    "description": "Pradhan Mantri Kisan Urja Suraksha evam Utthaan Mahabhiyan ensures clean energy for farming by installing standalone solar agriculture pumps and solarizing grid-connected pumps.",
+    "benefits": [
+      "Provides off-grid solar agricultural pumps up to 7.5 HP capacity.",
+      "Saves high electricity bills and guarantees stable power during the daytime for irrigation.",
+      "Allows selling surplus solar power back to the government grid for additional income."
+    ],
+    "eligibility": [
+      "Individual farmers, water user associations, co-operatives, and community clusters.",
+      "Must have a water source and cultivable land requiring irrigation pump upgrade."
+    ],
+    "category": "Energy & Infrastructure",
+    "subsidyPercentage": 60,
+    "applyUrl": "https://pmkusum.mnre.gov.in/",
+    "icon": "Sun"
+  },
+  {
+    "id": "drip-irrigation",
+    "name": "PMKSY (Per Drop More Crop - Drip Irrigation Subsidy)",
+    "description": "Promotes micro-irrigation systems (drip and sprinkler) to maximize water use efficiency, reduce fertilizer runoff, and increase overall crop productivity.",
+    "benefits": [
+      "Subsidy covering a major portion of micro-irrigation system installation costs.",
+      "Water saving up to 40% to 50% compared to traditional flood irrigation methods.",
+      "Substantially reduces weed growth, soil erosion, and labor costs for watering."
+    ],
+    "eligibility": [
+      "Small and marginal farmers receive up to 55% subsidy assistance.",
+      "Other category farmers receive up to 45% subsidy assistance.",
+      "Minimum land requirement of 0.2 hectares with access to borewell or water storage tank."
+    ],
+    "category": "Water & Irrigation",
+    "subsidyPercentage": 55,
+    "applyUrl": "https://pmksy.gov.in/",
+    "icon": "Droplet"
+  }
+]

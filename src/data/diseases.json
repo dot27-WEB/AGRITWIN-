@@ -1,0 +1,106 @@
+[
+  {
+    "id": "rice-blast",
+    "cropName": "Paddy (Rice)",
+    "diseaseName": "Rice Blast (Pyricularia oryzae)",
+    "symptoms": [
+      "Diamond-shaped (spindle-shaped) lesions on leaves with grey/white centers and brown borders.",
+      "Lesions on nodes causing the stem to rot and break easily (neck rot).",
+      "Infected panicles turn white and remain erect without developing grains."
+    ],
+    "treatment": {
+      "organic": "Spray Pseudomonas fluorescens liquid formulation @ 10 ml/liter of water or apply Neem seed kernel extract (NSKE 5%). Avoid excessive Nitrogen fertilizers.",
+      "chemical": "Spray Tricyclazole 75% WP @ 0.6 g/liter or Isoprothiolane 40% EC @ 1.5 ml/liter of water upon observing early lesions."
+    },
+    "prevention": [
+      "Use certified disease-resistant crop seeds (e.g., Swarna-sub1 or local resistant cultivars).",
+      "Ensure recommended spacing to allow airflow and reduce humidity around the crop canopy.",
+      "Avoid excess nitrogen fertilizer dosage; split nitrogen application into three distinct stages.",
+      "Practice clean cultivation by removing plant debris and burning infected stubble after harvest."
+    ],
+    "sampleImageUrl": "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "id": "cotton-leaf-curl",
+    "cropName": "Cotton",
+    "diseaseName": "Cotton Leaf Curl Virus (CLCuV)",
+    "symptoms": [
+      "Upward or downward curling of leaf margins, making the leaves look cup-shaped.",
+      "Thickening of veins on the lower surface of leaves (Enation).",
+      "Stunted crop growth and extreme reduction in boll size and boll count."
+    ],
+    "treatment": {
+      "organic": "Spray Neem Oil @ 5ml/liter with soap solution to manage Whitefly vectors. Install yellow sticky traps (15 traps per acre).",
+      "chemical": "Apply systemic insecticides like Acetamiprid 20% SP @ 0.4g/liter or Diafenthiuron 50% WP @ 1.2g/liter to suppress Whitefly populations."
+    },
+    "prevention": [
+      "Eradicate weed hosts (such as Sida acuta and Abutilon) near the farm boundaries.",
+      "Grow virus-resistant hybrids developed by state agricultural universities.",
+      "Do not cultivate highly susceptible companion crops like bhindi (Okra) near cotton fields.",
+      "Enforce seed treatment with Imidacloprid before sowing."
+    ],
+    "sampleImageUrl": "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "id": "wheat-rust",
+    "cropName": "Wheat",
+    "diseaseName": "Yellow (Stripe) Rust of Wheat (Puccinia striiformis)",
+    "symptoms": [
+      "Bright yellow, pustule-like stripes running parallel to the leaf veins.",
+      "Yellow powder (spores) easily rubs off onto clothing or fingers upon contact.",
+      "Leaves dry out rapidly and shrivel under heavy infection, causing severe grain shriveling."
+    ],
+    "treatment": {
+      "organic": "Aqueous extract of garlic or neem leaf spray can slow down early infection. Ensure immediate potassium fertilization to boost plant immunity.",
+      "chemical": "Spray Propiconazole 25% EC (e.g., Tilt) @ 1 ml/liter of water. Under high disease pressure, repeat the spray after 15 days."
+    },
+    "prevention": [
+      "Sow wheat early (before Nov 15) to escape the peak rust spore load coming from hilly tracts.",
+      "Cultivate high-yield, rust-resistant varieties such as HD 2967, HD 3086, or DBW 187.",
+      "Eradicate alternative grass hosts like Phalaris minor from the field area.",
+      "Maintain crop monitoring during cold, foggy, and humid winter mornings."
+    ],
+    "sampleImageUrl": "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "id": "chilli-dieback",
+    "cropName": "Chilli",
+    "diseaseName": "Chilli Dieback and Fruit Rot (Colletotrichum capsici)",
+    "symptoms": [
+      "Necrosis and progressive drying of branches starting from the branch tips downwards.",
+      "Circular, sunken, dark spots on ripe red chillies (Anthracnose).",
+      "Infected leaves drop off prematurely and branches turn greyish-white."
+    ],
+    "treatment": {
+      "organic": "Spray copper oxychloride @ 2.5 g/liter of water or apply Trichoderma viride bio-fungicide to the root zone.",
+      "chemical": "Spray Carbendazim 12% + Mancozeb 63% WP (Saaf) @ 2 g/liter or Azoxystrobin 23% SC @ 1 ml/liter when flower buds emerge."
+    },
+    "prevention": [
+      "Use certified disease-free seeds and treat them with Thiram or Captan @ 3g/kg seed before planting.",
+      "Promptly prune and burn infected branches to prevent secondary spore propagation.",
+      "Maintain excellent drainage to prevent high moisture pockets in the soil.",
+      "Avoid sprinkler irrigation; adopt drip irrigation to keep foliage dry."
+    ],
+    "sampleImageUrl": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=600&auto=format&fit=crop"
+  },
+  {
+    "id": "healthy-leaf",
+    "cropName": "Any",
+    "diseaseName": "No Disease Detected (Healthy Crop)",
+    "symptoms": [
+      "Vibrant green leaf pigment with uniform cellular thickness.",
+      "Excellent turgor pressure; no fungal lesions, necrotic tissues, or vein clearing.",
+      "Clean margins with active photosynthesis."
+    ],
+    "treatment": {
+      "organic": "Maintain current organic nutrition. Apply well-composted farmyard manure (FYM) to maintain soil organic carbon.",
+      "chemical": "No chemical fungicide or insecticide intervention is required. Save on chemical costs."
+    },
+    "prevention": [
+      "Continue regular crop health scouting once every three days.",
+      "Ensure proper balanced N:P:K nutrition according to the Digital Twin soil test values.",
+      "Perform scheduled weeding and light hoeing to aerate the root zones."
+    ],
+    "sampleImageUrl": "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?q=80&w=600&auto=format&fit=crop"
+  }
+]

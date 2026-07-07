@@ -1,0 +1,178 @@
+{
+  "rice": [
+    {
+      "id": "rice-p1",
+      "month": "Month 1 (June/July)",
+      "phase": "Nursery Preparation & Sowing",
+      "task": "Prepare nursery bed, treat seeds with bio-pesticides, sow seeds, and manage water level to 2 cm.",
+      "criticalAlert": "Ensure land is leveled perfectly to avoid water logging in patches."
+    },
+    {
+      "id": "rice-p2",
+      "month": "Month 1.5 (July)",
+      "phase": "Main Field Preparation & Transplanting",
+      "task": "Puddle the main field twice, apply basal fertilizer (MOP, SSP, Urea), and transplant 25-day-old seedlings (2-3 per hill).",
+      "criticalAlert": "Maintain a standing water level of 2-3 cm for the first week post-transplanting."
+    },
+    {
+      "id": "rice-p3",
+      "month": "Month 2 (August)",
+      "phase": "Tillering Stage & Weeding",
+      "task": "Perform first weeding using a cono-weeder, apply second split of Nitrogen (Urea), and monitor for Stem Borer.",
+      "criticalAlert": "Keep water level low (1-2 cm) during active tillering to encourage dense root-crown development."
+    },
+    {
+      "id": "rice-p4",
+      "month": "Month 3 (September)",
+      "phase": "Panicle Initiation & Flowering",
+      "task": "Apply final Nitrogen top-dress, keep constant water level (5 cm), and monitor for Blast disease and Brown Planthopper.",
+      "criticalAlert": "Do not let the soil dry out during flowering; moisture stress here reduces yield by 40%."
+    },
+    {
+      "id": "rice-p5",
+      "month": "Month 4 (October)",
+      "phase": "Grain Filling & Dough Stage",
+      "task": "Monitor grain milk stage. Guard against lodging from high winds. Keep soil moist but not flooded.",
+      "criticalAlert": "Drain all standing water 10-15 days before the expected harvest date to harden the soil."
+    },
+    {
+      "id": "rice-p6",
+      "month": "Month 4.5 (November)",
+      "phase": "Harvesting & Threshing",
+      "task": "Harvest when 85-90% of panicles turn golden yellow. Dry grains on a clean canvas to 12% moisture level.",
+      "criticalAlert": "High moisture during storage leads to grain yellowing, seed rot, and severe market price cuts."
+    }
+  ],
+  "wheat": [
+    {
+      "id": "wheat-p1",
+      "month": "Month 1 (November)",
+      "phase": "Field Preparation & Sowing",
+      "task": "Till the field to a fine tilth. Treat seeds with Carboxin. Sow in rows spaced 22 cm apart at a depth of 5 cm.",
+      "criticalAlert": "Sowing depth exceeding 6 cm severely delays seedling emergence and weakens the crop."
+    },
+    {
+      "id": "wheat-p2",
+      "month": "Month 1.5 (December)",
+      "phase": "Crown Root Initiation (CRI)",
+      "task": "Apply first irrigation (critical CRI stage - 21 days post sowing). Apply the first top-dress of Nitrogen (Urea).",
+      "criticalAlert": "Missing irrigation at CRI stage reduces potential tillering spikes by up to 30%."
+    },
+    {
+      "id": "wheat-p3",
+      "month": "Month 2 (January)",
+      "phase": "Jointing & Active Tillering",
+      "task": "Perform manual weeding or apply post-emergence herbicide. Apply second split of Nitrogen. Monitor for Yellow Rust.",
+      "criticalAlert": "Keep alert for yellow stripes on leaves during foggy mornings; spray propiconazole immediately if spotted."
+    },
+    {
+      "id": "wheat-p4",
+      "month": "Month 3 (February)",
+      "phase": "Booting & Flowering",
+      "task": "Provide third irrigation. Flowering begins. Guard against sudden high-temperature stress by maintaining soil moisture.",
+      "criticalAlert": "Dry soil coupled with hot dry winds during anthesis leads to pollen sterility and empty spikes."
+    },
+    {
+      "id": "wheat-p5",
+      "month": "Month 4 (March)",
+      "phase": "Milking & Dough Stage",
+      "task": "Provide final light irrigation. Grains are soft and milky. Keep field aerated.",
+      "criticalAlert": "Avoid flood irrigation during high-speed winds in March to prevent crop lodging (falling over)."
+    },
+    {
+      "id": "wheat-p6",
+      "month": "Month 4.5 (April)",
+      "phase": "Harvesting & Storage",
+      "task": "Harvest using a reaper or combine when leaves turn dry and straw becomes brittle. Sun-dry grains to 11% moisture.",
+      "criticalAlert": "Store only in clean, shade-dried gunny bags. Use neem leaves or dry ginger to deter storage weevils."
+    }
+  ],
+  "cotton": [
+    {
+      "id": "cotton-p1",
+      "month": "Month 1 (May/June)",
+      "phase": "Sowing & Seedling Stage",
+      "task": "Incorporate compost. Dibble seeds at 90 x 60 cm spacing. Apply pre-emergence herbicide to control early weeds.",
+      "criticalAlert": "Maintain a firm, moist seedbed to facilitate quick seed germination."
+    },
+    {
+      "id": "cotton-p2",
+      "month": "Month 2 (July)",
+      "phase": "Vegetative Growth & Squaring",
+      "task": "Earthing up soil around plants. Apply first split of Nitrogen & Potassium. Set up pheromone traps for Bollworms.",
+      "criticalAlert": "Monitor square-formation closely. Square shedding indicates nitrogen deficiency or early pest attack."
+    },
+    {
+      "id": "cotton-p3",
+      "month": "Month 3 (August)",
+      "phase": "Flowering & Early Bolling",
+      "task": "Perform second weeding. Spray micro-nutrients (Boron and Magnesium). Maintain uniform soil moisture.",
+      "criticalAlert": "Water-logging during flowering causes massive flower and young boll drop. Clear all drainage channels."
+    },
+    {
+      "id": "cotton-p4",
+      "month": "Month 4 (September)",
+      "phase": "Boll Development Stage",
+      "task": "Monitor for Pink Bollworm. Apply final split of Nitrogen. Spray neem-based insecticides if sucking pest counts cross ETL.",
+      "criticalAlert": "Sucking pests like Jassids and Whiteflies cause leaf curling and transmit viral leaf roll disease."
+    },
+    {
+      "id": "cotton-p5",
+      "month": "Month 5 (October)",
+      "phase": "Boll Bursting & Picking",
+      "task": "Bolls start splitting open. Pick clean cotton from well-opened bolls in dry morning hours. Avoid picking damp bolls.",
+      "criticalAlert": "Do not mix stained, infested, or dry-leaf-mixed cotton with clean picking; it drops the cotton grade."
+    },
+    {
+      "id": "cotton-p6",
+      "month": "Month 6 (November)",
+      "phase": "Final Picking & Field Cleanup",
+      "task": "Complete 2nd and 3rd pickings. Terminate the crop by grazing cattle or using stalk shredders to break the pest cycle.",
+      "criticalAlert": "Do not keep the cotton crop standing into the winter. It encourages Pink Bollworm to carry over to next season."
+    }
+  ],
+  "default": [
+    {
+      "id": "def-p1",
+      "month": "Month 1",
+      "phase": "Soil Preparation & Testing",
+      "task": "Deep plow the field, incorporate organic manures, and submit soil samples to the local lab for testing.",
+      "criticalAlert": "Allow the plowed soil to bake in the hot sun for 10-15 days to eradicate soil-borne pathogens."
+    },
+    {
+      "id": "def-p2",
+      "month": "Month 1.5",
+      "phase": "Sowing or Transplanting",
+      "task": "Sow healthy certified seeds or transplant vigorous nursery saplings at proper recommended depths and spacing.",
+      "criticalAlert": "Treat seeds with fungicides or bio-agents to protect against damping-off diseases."
+    },
+    {
+      "id": "def-p3",
+      "month": "Month 2",
+      "phase": "Nutrition & Crop Care",
+      "task": "Apply basal fertilizers based on soil twin values. Conduct manual weeding or apply selective herbicides.",
+      "criticalAlert": "Always apply nitrogenous fertilizers when soil is moist to prevent nitrogen volatilization."
+    },
+    {
+      "id": "def-p4",
+      "month": "Month 3",
+      "phase": "Critical Growth & Watering",
+      "task": "Irrigate at critical stages (e.g., flowering/fruiting). Monitor pest traps. Apply pest-suppression sprays if needed.",
+      "criticalAlert": "Moisture stress at flowering irreversibly reduces seed/grain count and overall crop productivity."
+    },
+    {
+      "id": "def-p5",
+      "month": "Month 4",
+      "phase": "Maturation & Pre-harvest",
+      "task": "Gradually reduce watering. Monitor crop maturity indicators (color change, hardness). Set up clean drying yards.",
+      "criticalAlert": "Excessive irrigation during ripening stages delays maturity and reduces quality of final produce."
+    },
+    {
+      "id": "def-p6",
+      "month": "Month 5",
+      "phase": "Harvesting & Safe Storage",
+      "task": "Harvest during dry weather. Dry produce to safe moisture storage levels. Bag in clean, sterilized storage units.",
+      "criticalAlert": "Storing grains/produce at high relative humidity causes aflatoxin contamination and grain heating."
+    }
+  ]
+}
