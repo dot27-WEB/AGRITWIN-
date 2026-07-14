@@ -15,6 +15,16 @@ export interface FarmProfile {
   prevPrevCrop: string;
   irrigationMethod: string;
   fertilizersUsed: string;
+  
+  // Geolocation fields
+  latitude?: number | null;
+  longitude?: number | null;
+  mandal?: string;
+  district?: string;
+  state?: string;
+  country?: string;
+  postalCode?: string;
+  locationSource?: 'GPS' | 'Manual' | '';
 }
 
 interface FarmContextType {
