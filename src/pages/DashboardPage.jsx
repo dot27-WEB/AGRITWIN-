@@ -539,7 +539,7 @@ export const DashboardPage = () => {
               </div>
             </div>
             
-            <Link to="/irrigation">
+            <Link to="/irrigation?tab=weather">
               <Button variant="secondary" size="sm" icon={ChevronRight}>
                 {t('viewCompleteWeather') || 'View Complete Weather'}
               </Button>

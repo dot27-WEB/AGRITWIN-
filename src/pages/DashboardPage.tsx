@@ -509,7 +509,7 @@ export const DashboardPage: React.FC = () => {
               </div>
             </div>
 
-            <Button variant="secondary" size="sm" onClick={() => navigateTo("irrigation")}>
+            <Button variant="secondary" size="sm" onClick={() => navigateTo("irrigation?tab=weather")}>
               <ChevronRight className="mr-2 w-4 h-4" />
               {t('viewCompleteWeather') || 'View Complete Weather'}
             </Button>

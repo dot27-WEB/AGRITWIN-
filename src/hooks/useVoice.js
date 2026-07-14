@@ -9,6 +9,19 @@ export const useVoice = (language) => {
   const recognitionRef = useRef(null);
   const navigate = useNavigate();
 
+  const localeMap = {
+    en: 'en-IN',
+    te: 'te-IN',
+    hi: 'hi-IN',
+    ta: 'ta-IN',
+    kn: 'kn-IN',
+    ml: 'ml-IN',
+    mr: 'mr-IN',
+    bn: 'bn-IN',
+    gu: 'gu-IN',
+    pa: 'pa-IN'
+  };
+
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -20,10 +33,9 @@ export const useVoice = (language) => {
     rec.continuous = false;
     rec.interimResults = false;
     
-    // Adjust speech language based on app settings
-    if (language === 'te') rec.lang = 'te-IN';
-    else if (language === 'hi') rec.lang = 'hi-IN';
-    else rec.lang = 'en-IN';
+    // Set appropriate STT recognition locale
+    const activeLang = language === 'auto' ? 'en' : language;
+    rec.lang = localeMap[activeLang] || 'en-IN';
 
     rec.onstart = () => {
       setIsListening(true);
@@ -49,21 +61,15 @@ export const useVoice = (language) => {
     recognitionRef.current = rec;
   }, [language]);
 
-  const speak = (text) => {
+  const speak = (text, customLang = null) => {
     if (!window.speechSynthesis) return;
     // Cancel any active speech
     window.speechSynthesis.cancel();
     
     const utterance = new SpeechSynthesisUtterance(text);
     
-    // Choose appropriate voice/pitch for Indian locales
-    if (language === 'te') {
-      utterance.lang = 'te-IN';
-    } else if (language === 'hi') {
-      utterance.lang = 'hi-IN';
-    } else {
-      utterance.lang = 'en-IN';
-    }
+    const activeLang = customLang || (language === 'auto' ? 'en' : language);
+    utterance.lang = localeMap[activeLang] || 'en-IN';
     
     utterance.rate = 1.0;
     utterance.pitch = 1.0;
@@ -72,62 +78,58 @@ export const useVoice = (language) => {
     setVoiceResponse(text);
   };
 
+  const stopSpeaking = () => {
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+  };
+
   const processCommand = (commandText) => {
     const text = commandText.toLowerCase();
 
-    // 1. Dashboard Page triggers
-    const dashboardKeywords = ['dashboard', 'virtual twin', 'twin', 'clone', 'overview', 'health score', 'डैशबोर्ड', 'డ్యాష్‌బోర్డ్', 'పొలం ఆరోగ్యం', 'मुख्य पृष्ठ'];
-    // 2. Crop Recommendations triggers
-    const cropKeywords = ['crop', 'advisor', 'recommend', 'suggest', 'what to grow', 'planting', 'rotation', 'फसल', 'పంట', 'సూచన', 'సలహా', 'బోధన'];
-    // 3. Disease diagnostics triggers
-    const diseaseKeywords = ['disease', 'blight', 'sick', 'infection', 'pathogen', 'diagnose', 'leaf', 'scan', 'pests', 'rust', 'spot', 'रोग', 'बीमारी', 'ఆకు', 'రోగం', 'తెగులు', 'ఇన్ఫెక్షన్'];
-    // 4. Irrigation schedule triggers
-    const irrigationKeywords = ['irrigation', 'water', 'watering', 'moisture', 'humidity', 'drip', 'sprinkler', 'flood', 'सिंचाई', 'నీరు', 'తడి', 'నీటి పారుదల', 'पानी'];
-    // 5. Market pricing triggers
-    const marketKeywords = ['market', 'price', 'rates', 'rate', 'mandi', 'cost', 'sell', 'revenue', 'profit', 'msp', 'दर', 'भाव', 'मार्केट', 'మార్కెట్', 'ధర', 'ధరలు', 'మండి', 'లాభం', 'విక్రయం'];
-    // 6. Govt scheme matching triggers
-    const schemeKeywords = ['scheme', 'schemes', 'government', 'pm-kisan', 'kusum', 'subsidy', 'subsidies', 'grants', 'insurance', 'pmfby', 'योजना', 'సబ్సిడీ', 'పథకాలు', 'పథకం', 'బీమా'];
-    // 7. Farming calendar triggers
-    const calendarKeywords = ['calendar', 'milestone', 'timeline', 'schedule', 'dates', 'operations', 'tasks', 'months', 'క్యాలెండర్', 'కార్యకలాపాలు', 'समय सारणी', 'कैलेंडर'];
-    // 8. Settings & Profile triggers
-    const profileKeywords = ['profile', 'setting', 'settings', 'account', 'farmer details', 'my info', 'switch farm', 'change farm', 'ప్రొఫైల్', 'खाता', 'प्रोफ़ाइल'];
+    // Navigation triggers in common Indian languages
+    const dashboardKeywords = ['dashboard', 'overview', 'डैशबोर्ड', 'డ్యాష్‌బోర్డ్', 'मुख्य पृष्ठ', 'வரலாறு'];
+    const cropKeywords = ['crop', 'advisor', 'recommend', 'ਫਸਲ', 'పంట', 'फसल', 'பயிர்', 'ಬೆಳೆ', 'വിള'];
+    const diseaseKeywords = ['disease', 'sick', 'diagnose', 'रोग', 'ఆకు', 'తెగులు', 'நோய்', 'ರೋಗ', 'രോഗം'];
+    const irrigationKeywords = ['irrigation', 'water', 'సిंचाई', 'నీరు', 'சிंचाई', 'பாசனம்', 'ನೀರಾವರಿ', 'നന'];
+    const marketKeywords = ['market', 'price', 'rates', 'mandi', 'दर', 'ధర', 'சந்தை', 'ಮಾರುಕಟ್ಟೆ', 'വിപണി'];
+    const schemeKeywords = ['scheme', 'government', 'योजना', 'పథకాలు', 'திட்டம்', 'ಯೋಜನೆ', 'പദ്ധതി'];
+    const calendarKeywords = ['calendar', 'timeline', 'క్యాలెండర్', 'कैलेंडर', 'காலண்டர்', 'ಕ್ಯಾಲೆಂಡರ್'];
+    const profileKeywords = ['profile', 'account', 'ప్రొఫైల్', 'प्रोफ़ाइल', 'சுயவிவரம்', 'ಪ್ರೊಫೈಲ್'];
 
     const matches = (keywords) => keywords.some(k => text.includes(k));
 
     if (matches(dashboardKeywords)) {
-      speak("Opening your farm twin dashboard.");
-      setTimeout(() => navigate('/dashboard'), 1500);
+      speak("Opening dashboard.", language);
+      setTimeout(() => navigate('/dashboard'), 1200);
     } 
     else if (matches(cropKeywords)) {
-      speak("Navigating to crop recommendations.");
-      setTimeout(() => navigate('/crops'), 1500);
+      speak("Opening crop advisor.", language);
+      setTimeout(() => navigate('/crops'), 1200);
     } 
     else if (matches(diseaseKeywords)) {
-      speak("Opening disease diagnostics clinic.");
-      setTimeout(() => navigate('/disease'), 1500);
+      speak("Opening disease clinic.", language);
+      setTimeout(() => navigate('/disease'), 1200);
     } 
     else if (matches(irrigationKeywords)) {
-      speak("Checking smart irrigation schedule.");
-      setTimeout(() => navigate('/irrigation'), 1500);
+      speak("Checking irrigation schedules.", language);
+      setTimeout(() => navigate('/irrigation'), 1200);
     } 
     else if (matches(marketKeywords)) {
-      speak("Opening market intelligence reports.");
-      setTimeout(() => navigate('/market'), 1500);
+      speak("Opening market prices.", language);
+      setTimeout(() => navigate('/market'), 1200);
     } 
     else if (matches(schemeKeywords)) {
-      speak("Loading eligible government schemes.");
-      setTimeout(() => navigate('/schemes'), 1500);
+      speak("Loading government schemes.", language);
+      setTimeout(() => navigate('/schemes'), 1200);
     } 
     else if (matches(calendarKeywords)) {
-      speak("Opening farming activity calendar.");
-      setTimeout(() => navigate('/calendar'), 1500);
+      speak("Opening farming calendar.", language);
+      setTimeout(() => navigate('/calendar'), 1200);
     } 
     else if (matches(profileKeywords)) {
-      speak("Viewing profile and active farm twins.");
-      setTimeout(() => navigate('/profile'), 1500);
-    }
-    else {
-      speak("Command not recognized. Try saying: go to dashboard, what to grow, scan leaf, or mandi rates.");
+      speak("Opening settings profile.", language);
+      setTimeout(() => navigate('/profile'), 1200);
     }
   };
 
@@ -147,7 +149,6 @@ export const useVoice = (language) => {
     }
   };
 
-  // Allow simulated command inputs for demo testing on unsupported devices/sandboxes
   const simulateCommand = (cmdText) => {
     setTranscript(cmdText);
     processCommand(cmdText);
@@ -161,6 +162,7 @@ export const useVoice = (language) => {
     startListening,
     stopListening,
     simulateCommand,
-    speak
+    speak,
+    stopSpeaking
   };
 };
