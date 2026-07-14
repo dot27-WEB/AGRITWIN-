@@ -1,106 +1,182 @@
 [
   {
-    "id": "rice-blast",
-    "cropName": "Paddy (Rice)",
-    "diseaseName": "Rice Blast (Pyricularia oryzae)",
-    "symptoms": [
-      "Diamond-shaped (spindle-shaped) lesions on leaves with grey/white centers and brown borders.",
-      "Lesions on nodes causing the stem to rot and break easily (neck rot).",
-      "Infected panicles turn white and remain erect without developing grains."
-    ],
-    "treatment": {
-      "organic": "Spray Pseudomonas fluorescens liquid formulation @ 10 ml/liter of water or apply Neem seed kernel extract (NSKE 5%). Avoid excessive Nitrogen fertilizers.",
-      "chemical": "Spray Tricyclazole 75% WP @ 0.6 g/liter or Isoprothiolane 40% EC @ 1.5 ml/liter of water upon observing early lesions."
+    "id": "rice_blast",
+    "name": {
+      "en": "Rice Blast (Magnaporthe oryzae)",
+      "te": "వరి అగ్గితెగులు (Rice Blast)",
+      "hi": "धान का झोंका रोग (Rice Blast)"
     },
-    "prevention": [
-      "Use certified disease-resistant crop seeds (e.g., Swarna-sub1 or local resistant cultivars).",
-      "Ensure recommended spacing to allow airflow and reduce humidity around the crop canopy.",
-      "Avoid excess nitrogen fertilizer dosage; split nitrogen application into three distinct stages.",
-      "Practice clean cultivation by removing plant debris and burning infected stubble after harvest."
-    ],
-    "sampleImageUrl": "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?q=80&w=600&auto=format&fit=crop"
+    "crop": "Rice (Paddy)",
+    "confidenceRange": "88% - 96%",
+    "description": {
+      "en": "One of the most destructive diseases of rice, causing diamond-shaped spots on leaves with grey centers. It attacks leaves, nodes, and panicles, leading to high yield losses.",
+      "te": "వరిలో ఆకులపై వజ్రపు ఆకారపు మచ్చలు ఏర్పడి ఎండిపోయేలా చేస్తుంది. ఇది నోడ్స్ మరియు గింజలను కూడా ప్రభావితం చేస్తుంది.",
+      "hi": "धान की सबसे विनाशकारी बीमारियों में से एक, जिससे पत्तियों पर भूरे रंग के केंद्र वाले हीरे के आकार के धब्बे बन जाते हैं। यह उपज को भारी नुकसान पहुंचाती है।"
+    },
+    "organicTreatment": {
+      "en": "Spray Neem Oil (3%) or apply Pseudomonas fluorescens formulation (0.5%) directly to foliage at early stages. Ensure balanced nitrogen usage.",
+      "te": "వేప నూనె (3%) లేదా సూడోమోనాస్ ఫ్లోరసెంట్స్ (0.5%) ద్రావణాన్ని పిచికారీ చేయండి. నత్రజని అధికంగా వాడొద్దు.",
+      "hi": "शुरुआती चरणों में पत्तियों पर सीधे नीम का तेल (3%) छिड़कें या स्यूडोमोनास फ्लोरेसेंस फॉर्मूलेशन (0.5%) लगाएं। संतुलित नाइट्रोजन का उपयोग सुनिश्चित करें।"
+    },
+    "chemicalTreatment": {
+      "en": "Spray Tricyclazole 75 WP at 0.6 grams per liter of water, or Carbendazim 50 WP at 1 gram per liter at the first appearance of leaf spots.",
+      "te": "ట్రైసైక్లాజోల్ 75 WP (లీటరు నీటికి 0.6 గ్రాములు) లేదా కార్బెండజిమ్ 50 WP పిచికారీ చేయండి.",
+      "hi": "पत्तियों पर धब्बे दिखने पर ट्राइसाइक्लाजोल 75 डब्ल्यूपी 0.6 ग्राम प्रति लीटर पानी में या कार्बेन्डाजिम 50 डब्ल्यूपी 1 ग्राम प्रति लीटर की दर से छिड़कें।"
+    },
+    "preventionTips": {
+      "en": [
+        "Use disease-resistant seeds during sowing.",
+        "Avoid excessive use of Nitrogen-based fertilizers.",
+        "Maintain proper field spacing to reduce leaf humidity.",
+        "Burn and destroy infected stubbles after harvest."
+      ],
+      "te": [
+        "వ్యాధి నిరోధక విత్తనాలను వాడండి.",
+        "నత్రజని ఎరువుల అధిక వినియోగాన్ని నివారించండి.",
+        "ఆకులపై తేమ తగ్గించడానికి తగిన దూరం పాటించండి.",
+        "కోత తర్వాత వ్యాధి సోకిన అవశేషాలను కాల్చివేయండి."
+      ],
+      "hi": [
+        "बुआई के दौरान रोग-प्रतिरोधी बीजों का प्रयोग करें।",
+        "नाइट्रोजन आधारित उर्वरकों के अत्यधिक प्रयोग से बचें।",
+        "पत्तियों की आर्द्रता कम करने के लिए पौधों के बीच उचित दूरी रखें।",
+        "कटाई के बाद संक्रमित ठूंठों को जलाकर नष्ट कर दें।"
+      ]
+    }
   },
   {
-    "id": "cotton-leaf-curl",
-    "cropName": "Cotton",
-    "diseaseName": "Cotton Leaf Curl Virus (CLCuV)",
-    "symptoms": [
-      "Upward or downward curling of leaf margins, making the leaves look cup-shaped.",
-      "Thickening of veins on the lower surface of leaves (Enation).",
-      "Stunted crop growth and extreme reduction in boll size and boll count."
-    ],
-    "treatment": {
-      "organic": "Spray Neem Oil @ 5ml/liter with soap solution to manage Whitefly vectors. Install yellow sticky traps (15 traps per acre).",
-      "chemical": "Apply systemic insecticides like Acetamiprid 20% SP @ 0.4g/liter or Diafenthiuron 50% WP @ 1.2g/liter to suppress Whitefly populations."
+    "id": "tomato_late_blight",
+    "name": {
+      "en": "Late Blight of Tomato (Phytophthora infestans)",
+      "te": "టమోటా లేట్ బ్లైట్ తెగులు (Late Blight)",
+      "hi": "टमाटर का पछेती अंगमारी रोग (Late Blight)"
     },
-    "prevention": [
-      "Eradicate weed hosts (such as Sida acuta and Abutilon) near the farm boundaries.",
-      "Grow virus-resistant hybrids developed by state agricultural universities.",
-      "Do not cultivate highly susceptible companion crops like bhindi (Okra) near cotton fields.",
-      "Enforce seed treatment with Imidacloprid before sowing."
-    ],
-    "sampleImageUrl": "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=600&auto=format&fit=crop"
+    "crop": "Tomato",
+    "confidenceRange": "91% - 98%",
+    "description": {
+      "en": "A rapidly spreading fungal disease that causes water-soaked spots on leaves which turn dark brown to black. In humid conditions, white mold grows on leaf undersides, destroying crops within days.",
+      "te": "ఆకులపై నీరు నిండిన నల్లటి మచ్చలు ఏర్పడి త్వరగా వ్యాపిస్తాయి. తేమతో కూడిన వాతావరణంలో తెల్లటి బూజు ఆకుల కింద ఏర్పడుతుంది.",
+      "hi": "तेजी से फैलने वाला फंगल रोग जो पत्तियों पर पानी से लथपथ धब्बे बनाता है जो गहरे भूरे से काले रंग के हो जाते हैं। नमी में सफेद फफूंद पत्तियों के नीचे उगती है।"
+    },
+    "organicTreatment": {
+      "en": "Apply Copper Hydroxide sprays or organic compost tea to improve foliage resistance. Cut and destroy infected stems immediately.",
+      "te": "కాపర్ హైడ్రాక్సైడ్ లేదా సేంద్రీయ కంపోస్ట్ టీ పిచికారీ చేయండి. వ్యాధి సోకిన ఆకులను కత్తిరించి నాశనం చేయండి.",
+      "hi": "पत्तियों की प्रतिरोधक क्षमता बढ़ाने के लिए कॉपर हाइड्रॉक्साइड स्प्रे या जैविक खाद की चाय का उपयोग करें। संक्रमित तनों को तुरंत काटकर नष्ट करें।"
+    },
+    "chemicalTreatment": {
+      "en": "Spray Metalaxyl 8% + Mancozeb 64% WP (Ridomil Gold) at 2 grams per liter of water, or Mancozeb 75 WP at 2.5 grams per liter.",
+      "te": "మెటాలాక్సిల్ + మాంకోజెబ్ (రిడోమిల్ గోల్డ్) లీటరు నీటికి 2 గ్రాముల చొప్పున కలిపి పిచికారీ చేయండి.",
+      "hi": "मेटालैक्सिल 8% + मैनकोजेब 64% डब्ल्यूपी (रिडोमिल गोल्ड) 2 ग्राम प्रति लीटर पानी में, या मैनकोजेब 75 डब्ल्यूपी 2.5 ग्राम प्रति लीटर की दर से छिड़कें।"
+    },
+    "preventionTips": {
+      "en": [
+        "Avoid overhead sprinkler irrigation to keep leaves dry.",
+        "Practice crop rotation (do not plant tomatoes after potatoes or eggplants).",
+        "Keep proper distance between plant stakes for ventilation.",
+        "Apply mulch to prevent soil spores from splashing onto leaves."
+      ],
+      "te": [
+        "ఆకులు తడవకుండా ఉండటానికి డ్రిప్ నీటి పారుదల ఉపయోగించండి.",
+        "పంట మార్పిడి పాటించండి (బంగాళాదుంప, వంగ తర్వాత టమోటా వేయవద్దు).",
+        "గాలి వెలుతురు కోసం మొక్కల మధ్య తగిన దూరం పాటించండి.",
+        "నేల నుండి శిలీంధ్రాలు ఆకులకు చేరకుండా మల్చింగ్ వాడండి."
+      ],
+      "hi": [
+        "पत्तियों को सूखा रखने के लिए ओवरहेड स्प्रिंकलर सिंचाई से बचें।",
+        "फसल चक्र अपनाएं (आलू या बैंगन के बाद टमाटर न लगाएं)।",
+        "हवा के संचार के लिए पौधों के बीच उचित दूरी रखें।",
+        "मिट्टी के बीजाणुओं को पत्तियों पर उछलने से रोकने के लिए मल्चिंग लगाएं।"
+      ]
+    }
   },
   {
-    "id": "wheat-rust",
-    "cropName": "Wheat",
-    "diseaseName": "Yellow (Stripe) Rust of Wheat (Puccinia striiformis)",
-    "symptoms": [
-      "Bright yellow, pustule-like stripes running parallel to the leaf veins.",
-      "Yellow powder (spores) easily rubs off onto clothing or fingers upon contact.",
-      "Leaves dry out rapidly and shrivel under heavy infection, causing severe grain shriveling."
-    ],
-    "treatment": {
-      "organic": "Aqueous extract of garlic or neem leaf spray can slow down early infection. Ensure immediate potassium fertilization to boost plant immunity.",
-      "chemical": "Spray Propiconazole 25% EC (e.g., Tilt) @ 1 ml/liter of water. Under high disease pressure, repeat the spray after 15 days."
+    "id": "cotton_leaf_curl",
+    "name": {
+      "en": "Cotton Leaf Curl Virus (CLCuV)",
+      "te": "పత్తి ఆకు ముడత తెగులు (Leaf Curl)",
+      "hi": "कपास का लीफ कर्ल वायरस (Leaf Curl)"
     },
-    "prevention": [
-      "Sow wheat early (before Nov 15) to escape the peak rust spore load coming from hilly tracts.",
-      "Cultivate high-yield, rust-resistant varieties such as HD 2967, HD 3086, or DBW 187.",
-      "Eradicate alternative grass hosts like Phalaris minor from the field area.",
-      "Maintain crop monitoring during cold, foggy, and humid winter mornings."
-    ],
-    "sampleImageUrl": "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=600&auto=format&fit=crop"
+    "crop": "Cotton",
+    "confidenceRange": "85% - 94%",
+    "description": {
+      "en": "A viral disease transmitted by whiteflies. It causes upward or downward curling of leaf margins, thickening of veins, and formation of leaf-like growths (enations) under the leaves.",
+      "te": "తెల్లదోమల ద్వారా వ్యాపించే వైరస్ తెగులు. ఆకుల అంచులు పైకి లేదా కిందికి ముడుచుకుని, ఈనెలు మందంగా మారుతాయి.",
+      "hi": "सफेद मक्खियों द्वारा फैलने वाला एक वायरस रोग। इसके कारण पत्तियों के किनारे ऊपर या नीचे की ओर मुड़ जाते हैं, नसें मोटी हो जाती हैं और पत्तियों के नीचे छोटी पत्तीनुमा संरचनाएं बन जाती हैं।"
+    },
+    "organicTreatment": {
+      "en": "Spray Neem seed kernel extract (5%) or apply yellow sticky traps (10 traps per acre) to trap vector whiteflies. Keep fields weed-free.",
+      "te": "వేప గింజల కషాయం (5%) పిచికారీ చేయండి లేదా తెల్లదోమలను ఆకర్షించడానికి పసుపు రంగు జిగురు కార్డులు (ఎకరానికి 10) పెట్టండి.",
+      "hi": "नीम के बीज के अर्क (5%) का छिड़कें या सफेद मक्खियों को पकड़ने के लिए पीले चिपचिपे जाल (10 प्रति एकड़) लगाएं। खेतों को खरपतवार मुक्त रखें।"
+    },
+    "chemicalTreatment": {
+      "en": "Control whitefly vector using systemic insecticides like Imidacloprid 17.8 SL at 0.5 ml per liter, or Acetamiprid 20 SP at 0.2 grams per liter.",
+      "te": "తెల్లదోమల నియంత్రణకు ఇమిడాక్లోప్రిడ్ 17.8 SL (లీటరు నీటికి 0.5 మి.లీ.) లేదా ఎసిటామిప్రిడ్ 20 SP పిచికారీ చేయండి.",
+      "hi": "सफेद मक्खी को नियंत्रित करने के लिए प्रणालीगत कीटनाशक जैसे इमिडाक्लोप्रिड 17.8 एसएल 0.5 मिली प्रति लीटर या एसिटामिप्रिड 20 एसपी 0.2 ग्राम प्रति लीटर की दर से छिड़कें।"
+    },
+    "preventionTips": {
+      "en": [
+        "Plant CLCuV resistant cotton hybrids.",
+        "Install yellow sticky traps early in the season.",
+        "Remove host weeds like Abutilon and Solanum species nearby.",
+        "Avoid sowing adjacent to early tomato or chili nurseries."
+      ],
+      "te": [
+        "వైరస్ తట్టుకునే పత్తి హైబ్రిడ్ రకాలను నాటండి.",
+        "సీజన్ ప్రారంభంలో పసుపు రంగు జిగురు కార్డులను అమర్చండి.",
+        "పొలం చుట్టుపక్కల ఉండే కలుపు మొక్కలను తొలగించండి.",
+        "టమోటా లేదా మిరప నారు మడుల పక్కన పత్తి వేయవద్దు."
+      ],
+      "hi": [
+        "संक्रमण प्रतिरोधी हाइब्रिड कपास की किस्में लगाएं।",
+        "सीजन की शुरुआत में पीले चिपचिपे जाल लगाएं।",
+        "आसपास के मेजबान खरपतवारों को नष्ट कर दें।",
+        "टमाटर या मिर्च की नर्सरी के ठीक बगल में कपास बोने से बचें।"
+      ]
+    }
   },
   {
-    "id": "chilli-dieback",
-    "cropName": "Chilli",
-    "diseaseName": "Chilli Dieback and Fruit Rot (Colletotrichum capsici)",
-    "symptoms": [
-      "Necrosis and progressive drying of branches starting from the branch tips downwards.",
-      "Circular, sunken, dark spots on ripe red chillies (Anthracnose).",
-      "Infected leaves drop off prematurely and branches turn greyish-white."
-    ],
-    "treatment": {
-      "organic": "Spray copper oxychloride @ 2.5 g/liter of water or apply Trichoderma viride bio-fungicide to the root zone.",
-      "chemical": "Spray Carbendazim 12% + Mancozeb 63% WP (Saaf) @ 2 g/liter or Azoxystrobin 23% SC @ 1 ml/liter when flower buds emerge."
+    "id": "wheat_rust",
+    "name": {
+      "en": "Wheat Rust / Stripe Rust (Puccinia striiformis)",
+      "te": "గోధుమ కుంకుమ తెగులు (Wheat Rust)",
+      "hi": "गेहूं का गेरुआ/रस्ट रोग (Wheat Rust)"
     },
-    "prevention": [
-      "Use certified disease-free seeds and treat them with Thiram or Captan @ 3g/kg seed before planting.",
-      "Promptly prune and burn infected branches to prevent secondary spore propagation.",
-      "Maintain excellent drainage to prevent high moisture pockets in the soil.",
-      "Avoid sprinkler irrigation; adopt drip irrigation to keep foliage dry."
-    ],
-    "sampleImageUrl": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=600&auto=format&fit=crop"
-  },
-  {
-    "id": "healthy-leaf",
-    "cropName": "Any",
-    "diseaseName": "No Disease Detected (Healthy Crop)",
-    "symptoms": [
-      "Vibrant green leaf pigment with uniform cellular thickness.",
-      "Excellent turgor pressure; no fungal lesions, necrotic tissues, or vein clearing.",
-      "Clean margins with active photosynthesis."
-    ],
-    "treatment": {
-      "organic": "Maintain current organic nutrition. Apply well-composted farmyard manure (FYM) to maintain soil organic carbon.",
-      "chemical": "No chemical fungicide or insecticide intervention is required. Save on chemical costs."
+    "crop": "Wheat",
+    "confidenceRange": "89% - 97%",
+    "description": {
+      "en": "Fungal infection displaying yellow to orange stripes of pustules on leaves. It restricts plant growth, dries leaves, reduces grain weight, and can severely decimate entire harvests.",
+      "te": "గోధుమ ఆకులపై పసుపు లేదా నారింజ రంగు పొక్కుల గీతలు ఏర్పడతాయి. ఇది పంట ఎదుగుదలను దెబ్బతీసి గింజ బరువును తగ్గిస్తుంది.",
+      "hi": "पत्तियों पर पीले से नारंगी रंग की धारियां दिखाने वाला फंगल संक्रमण। यह पौधे के विकास को रोकता है, पत्तियों को सुखाता है और अनाज का वजन कम करता है।"
     },
-    "prevention": [
-      "Continue regular crop health scouting once every three days.",
-      "Ensure proper balanced N:P:K nutrition according to the Digital Twin soil test values.",
-      "Perform scheduled weeding and light hoeing to aerate the root zones."
-    ],
-    "sampleImageUrl": "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?q=80&w=600&auto=format&fit=crop"
+    "organicTreatment": {
+      "en": "Apply wood ash or spray sour butter-milk formulation (diluted 1:10) during early mornings. Avoid planting in overly damp shade zones.",
+      "te": "మారిన మజ్జిగ ద్రావణాన్ని (1:10 నిష్పత్తిలో నీటితో కలిపి) పిచికారీ చేయండి. నీడ ఎక్కువగా ఉండే ప్రదేశాలలో సాగు చేయొద్దు.",
+      "hi": "सुबह के समय लकड़ी की राख छिड़कें या खट्टी छाछ के घोल (1:10 पतला) का छिड़काव करें। अत्यधिक नम छायादार क्षेत्रों में रोपण से बचें।"
+    },
+    "chemicalTreatment": {
+      "en": "Spray Propiconazole 25 EC (Tilt) at 1 ml per liter of water, or Tebuconazole 250 EC at 1 ml per liter upon first visibility of pustules.",
+      "te": "ప్రొపికోనజోల్ 25 EC (టిల్ట్) లీటరు నీటికి 1 మి.లీ. చొప్పున కలిపి పిచికారీ చేయండి.",
+      "hi": "लक्षण दिखाई देने पर प्रोपिकोनाज़ोल 25 ईसी (टिल्ट) 1 मिली प्रति लीटर पानी में, या टेबुकोनाज़ोल 250 ईसी 1 मिली प्रति लीटर छिड़कें।"
+    },
+    "preventionTips": {
+      "en": [
+        "Sow certified rust-resistant wheat varieties (e.g., HD 2967, HD 3086).",
+        "Practice early sowing to avoid peak late-winter heat which favors rust.",
+        "Ensure balanced soil potassium fertilization to enhance stem strength.",
+        "Monitor fields frequently in cold, foggy weather."
+      ],
+      "te": [
+        "కుంకుమ తెగులును తట్టుకునే రకాల విత్తనాలను వాడండి.",
+        "సీజన్ ప్రారంభంలోనే విత్తనాలు నాటడం మంచిది.",
+        "కాండం బలంగా ఉండటానికి పొటాషియం ఎరువులను సరిగ్గా అందించండి.",
+        "చల్లని, పొగమంచు వాతావరణంలో పొలాన్ని నిరంతరం పరిశీలించండి."
+      ],
+      "hi": [
+        "प्रमाणित गेरुआ-प्रतिरोधी गेहूं की किस्में बोएं।",
+        "ठंड के अंत की गर्मी से बचने के लिए जल्दी बुआई करें जो रस्ट के अनुकूल है।",
+        "तने की मजबूती बढ़ाने के लिए संतुलित मिट्टी पोटेशियम उर्वरक सुनिश्चित करें।",
+        "ठंडे, कोहरे वाले मौसम में खेतों की बार-बार निगरानी करें।"
+      ]
+    }
   }
 ]

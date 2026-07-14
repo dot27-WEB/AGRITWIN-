@@ -1,178 +1,397 @@
-{
-  "rice": [
-    {
-      "id": "rice-p1",
-      "month": "Month 1 (June/July)",
-      "phase": "Nursery Preparation & Sowing",
-      "task": "Prepare nursery bed, treat seeds with bio-pesticides, sow seeds, and manage water level to 2 cm.",
-      "criticalAlert": "Ensure land is leveled perfectly to avoid water logging in patches."
-    },
-    {
-      "id": "rice-p2",
-      "month": "Month 1.5 (July)",
-      "phase": "Main Field Preparation & Transplanting",
-      "task": "Puddle the main field twice, apply basal fertilizer (MOP, SSP, Urea), and transplant 25-day-old seedlings (2-3 per hill).",
-      "criticalAlert": "Maintain a standing water level of 2-3 cm for the first week post-transplanting."
-    },
-    {
-      "id": "rice-p3",
-      "month": "Month 2 (August)",
-      "phase": "Tillering Stage & Weeding",
-      "task": "Perform first weeding using a cono-weeder, apply second split of Nitrogen (Urea), and monitor for Stem Borer.",
-      "criticalAlert": "Keep water level low (1-2 cm) during active tillering to encourage dense root-crown development."
-    },
-    {
-      "id": "rice-p4",
-      "month": "Month 3 (September)",
-      "phase": "Panicle Initiation & Flowering",
-      "task": "Apply final Nitrogen top-dress, keep constant water level (5 cm), and monitor for Blast disease and Brown Planthopper.",
-      "criticalAlert": "Do not let the soil dry out during flowering; moisture stress here reduces yield by 40%."
-    },
-    {
-      "id": "rice-p5",
-      "month": "Month 4 (October)",
-      "phase": "Grain Filling & Dough Stage",
-      "task": "Monitor grain milk stage. Guard against lodging from high winds. Keep soil moist but not flooded.",
-      "criticalAlert": "Drain all standing water 10-15 days before the expected harvest date to harden the soil."
-    },
-    {
-      "id": "rice-p6",
-      "month": "Month 4.5 (November)",
-      "phase": "Harvesting & Threshing",
-      "task": "Harvest when 85-90% of panicles turn golden yellow. Dry grains on a clean canvas to 12% moisture level.",
-      "criticalAlert": "High moisture during storage leads to grain yellowing, seed rot, and severe market price cuts."
-    }
-  ],
-  "wheat": [
-    {
-      "id": "wheat-p1",
-      "month": "Month 1 (November)",
-      "phase": "Field Preparation & Sowing",
-      "task": "Till the field to a fine tilth. Treat seeds with Carboxin. Sow in rows spaced 22 cm apart at a depth of 5 cm.",
-      "criticalAlert": "Sowing depth exceeding 6 cm severely delays seedling emergence and weakens the crop."
-    },
-    {
-      "id": "wheat-p2",
-      "month": "Month 1.5 (December)",
-      "phase": "Crown Root Initiation (CRI)",
-      "task": "Apply first irrigation (critical CRI stage - 21 days post sowing). Apply the first top-dress of Nitrogen (Urea).",
-      "criticalAlert": "Missing irrigation at CRI stage reduces potential tillering spikes by up to 30%."
-    },
-    {
-      "id": "wheat-p3",
-      "month": "Month 2 (January)",
-      "phase": "Jointing & Active Tillering",
-      "task": "Perform manual weeding or apply post-emergence herbicide. Apply second split of Nitrogen. Monitor for Yellow Rust.",
-      "criticalAlert": "Keep alert for yellow stripes on leaves during foggy mornings; spray propiconazole immediately if spotted."
-    },
-    {
-      "id": "wheat-p4",
-      "month": "Month 3 (February)",
-      "phase": "Booting & Flowering",
-      "task": "Provide third irrigation. Flowering begins. Guard against sudden high-temperature stress by maintaining soil moisture.",
-      "criticalAlert": "Dry soil coupled with hot dry winds during anthesis leads to pollen sterility and empty spikes."
-    },
-    {
-      "id": "wheat-p5",
-      "month": "Month 4 (March)",
-      "phase": "Milking & Dough Stage",
-      "task": "Provide final light irrigation. Grains are soft and milky. Keep field aerated.",
-      "criticalAlert": "Avoid flood irrigation during high-speed winds in March to prevent crop lodging (falling over)."
-    },
-    {
-      "id": "wheat-p6",
-      "month": "Month 4.5 (April)",
-      "phase": "Harvesting & Storage",
-      "task": "Harvest using a reaper or combine when leaves turn dry and straw becomes brittle. Sun-dry grains to 11% moisture.",
-      "criticalAlert": "Store only in clean, shade-dried gunny bags. Use neem leaves or dry ginger to deter storage weevils."
-    }
-  ],
-  "cotton": [
-    {
-      "id": "cotton-p1",
-      "month": "Month 1 (May/June)",
-      "phase": "Sowing & Seedling Stage",
-      "task": "Incorporate compost. Dibble seeds at 90 x 60 cm spacing. Apply pre-emergence herbicide to control early weeds.",
-      "criticalAlert": "Maintain a firm, moist seedbed to facilitate quick seed germination."
-    },
-    {
-      "id": "cotton-p2",
-      "month": "Month 2 (July)",
-      "phase": "Vegetative Growth & Squaring",
-      "task": "Earthing up soil around plants. Apply first split of Nitrogen & Potassium. Set up pheromone traps for Bollworms.",
-      "criticalAlert": "Monitor square-formation closely. Square shedding indicates nitrogen deficiency or early pest attack."
-    },
-    {
-      "id": "cotton-p3",
-      "month": "Month 3 (August)",
-      "phase": "Flowering & Early Bolling",
-      "task": "Perform second weeding. Spray micro-nutrients (Boron and Magnesium). Maintain uniform soil moisture.",
-      "criticalAlert": "Water-logging during flowering causes massive flower and young boll drop. Clear all drainage channels."
-    },
-    {
-      "id": "cotton-p4",
-      "month": "Month 4 (September)",
-      "phase": "Boll Development Stage",
-      "task": "Monitor for Pink Bollworm. Apply final split of Nitrogen. Spray neem-based insecticides if sucking pest counts cross ETL.",
-      "criticalAlert": "Sucking pests like Jassids and Whiteflies cause leaf curling and transmit viral leaf roll disease."
-    },
-    {
-      "id": "cotton-p5",
-      "month": "Month 5 (October)",
-      "phase": "Boll Bursting & Picking",
-      "task": "Bolls start splitting open. Pick clean cotton from well-opened bolls in dry morning hours. Avoid picking damp bolls.",
-      "criticalAlert": "Do not mix stained, infested, or dry-leaf-mixed cotton with clean picking; it drops the cotton grade."
-    },
-    {
-      "id": "cotton-p6",
-      "month": "Month 6 (November)",
-      "phase": "Final Picking & Field Cleanup",
-      "task": "Complete 2nd and 3rd pickings. Terminate the crop by grazing cattle or using stalk shredders to break the pest cycle.",
-      "criticalAlert": "Do not keep the cotton crop standing into the winter. It encourages Pink Bollworm to carry over to next season."
-    }
-  ],
-  "default": [
-    {
-      "id": "def-p1",
-      "month": "Month 1",
-      "phase": "Soil Preparation & Testing",
-      "task": "Deep plow the field, incorporate organic manures, and submit soil samples to the local lab for testing.",
-      "criticalAlert": "Allow the plowed soil to bake in the hot sun for 10-15 days to eradicate soil-borne pathogens."
-    },
-    {
-      "id": "def-p2",
-      "month": "Month 1.5",
-      "phase": "Sowing or Transplanting",
-      "task": "Sow healthy certified seeds or transplant vigorous nursery saplings at proper recommended depths and spacing.",
-      "criticalAlert": "Treat seeds with fungicides or bio-agents to protect against damping-off diseases."
-    },
-    {
-      "id": "def-p3",
-      "month": "Month 2",
-      "phase": "Nutrition & Crop Care",
-      "task": "Apply basal fertilizers based on soil twin values. Conduct manual weeding or apply selective herbicides.",
-      "criticalAlert": "Always apply nitrogenous fertilizers when soil is moist to prevent nitrogen volatilization."
-    },
-    {
-      "id": "def-p4",
-      "month": "Month 3",
-      "phase": "Critical Growth & Watering",
-      "task": "Irrigate at critical stages (e.g., flowering/fruiting). Monitor pest traps. Apply pest-suppression sprays if needed.",
-      "criticalAlert": "Moisture stress at flowering irreversibly reduces seed/grain count and overall crop productivity."
-    },
-    {
-      "id": "def-p5",
-      "month": "Month 4",
-      "phase": "Maturation & Pre-harvest",
-      "task": "Gradually reduce watering. Monitor crop maturity indicators (color change, hardness). Set up clean drying yards.",
-      "criticalAlert": "Excessive irrigation during ripening stages delays maturity and reduces quality of final produce."
-    },
-    {
-      "id": "def-p6",
-      "month": "Month 5",
-      "phase": "Harvesting & Safe Storage",
-      "task": "Harvest during dry weather. Dry produce to safe moisture storage levels. Bag in clean, sterilized storage units.",
-      "criticalAlert": "Storing grains/produce at high relative humidity causes aflatoxin contamination and grain heating."
-    }
-  ]
-}
+[
+  {
+    "cropId": "rice",
+    "timeline": [
+      {
+        "id": "rice_soil_prep",
+        "phase": {
+          "en": "Soil Preparation",
+          "te": "నేల తయారీ",
+          "hi": "मिट्टी की तैयारी"
+        },
+        "timeframe": {
+          "en": "Weeks 1-2 (Pre-planting)",
+          "te": "1-2 వారాలు (నాటడానికి ముందు)",
+          "hi": "सप्ताह 1-2 (रोपाई से पहले)"
+        },
+        "activity": {
+          "en": "Deep ploughing, puddling, and application of well-decomposed Farm Yard Manure (FYM) to hold water.",
+          "te": "లోతుగా దున్నడం, బురద చేయడం మరియు తగినంత పశువుల ఎరువును వేయడం ద్వారా నీరు నిలువ ఉండేలా చేయడం.",
+          "hi": "गहरी जुताई, कद्दू करना (पडलिंग), और पानी रोकने के लिए अच्छी तरह से सड़े हुए गोबर की खाद डालना।"
+        },
+        "icon": "Tractor"
+      },
+      {
+        "id": "rice_sowing",
+        "phase": {
+          "en": "Seed Sowing & Nursery",
+          "te": "నారు పోయడం",
+          "hi": "बीज बुवाई और नर्सरी"
+        },
+        "timeframe": {
+          "en": "Weeks 3-4",
+          "te": "3-4 వారాలు",
+          "hi": "सप्ताह 3-4"
+        },
+        "activity": {
+          "en": "Prepare nursery beds, treat seeds with bio-fungicides, and sow seeds to raise healthy seedlings.",
+          "te": "నారు మడులు సిద్ధం చేయడం, విత్తన శుద్ధి మరియు ఆరోగ్యకరమైన నారు పెంచడానికి విత్తనాలు చల్లడం.",
+          "hi": "नर्सरी बेड तैयार करें, जैव-कवकनाशी से बीज का उपचार करें और स्वस्थ पौधे उगाने के लिए बीज बोएं।"
+        },
+        "icon": "Sprout"
+      },
+      {
+        "id": "rice_transplanting",
+        "phase": {
+          "en": "Transplanting",
+          "te": "నాట్లు వేయడం",
+          "hi": "रोपाई (ट्रांसप्लांटिंग)"
+        },
+        "timeframe": {
+          "en": "Week 5 (Day 25-30)",
+          "te": "5వ వారం (25-30 రోజులు)",
+          "hi": "सप्ताह 5 (दिन 25-30)"
+        },
+        "activity": {
+          "en": "Transplant 25-day-old seedlings into the puddled main field with 2-3 seedlings per hill at 15x20 cm spacing.",
+          "te": "25 రోజుల నారును సిద్ధం చేసిన ప్రధాన పొలంలో 15x20 సెం.మీ దూరం ఉండేలా నాట్లు వేయడం.",
+          "hi": "कद्दू किए गए मुख्य खेत में 25 दिन पुराने पौधों की 15x20 सेमी की दूरी पर रोपाई करें।"
+        },
+        "icon": "Layers"
+      },
+      {
+        "id": "rice_fertilizer_1",
+        "phase": {
+          "en": "First Fertilizer Application",
+          "te": "మొదటి ఎరువుల విడత",
+          "hi": "प्रथम उर्वरक अनुप्रयोग"
+        },
+        "timeframe": {
+          "en": "Week 7 (15 days post transplant)",
+          "te": "7వ వారం (నాటిన 15 రోజులకు)",
+          "hi": "सप्ताह 7 (रोपाई के 15 दिन बाद)"
+        },
+        "activity": {
+          "en": "Apply first dose of Nitrogen (Urea) and Zinc Sulphate to encourage healthy tillering.",
+          "te": "మొక్కల ఎదుగుదలకు మొదటి విడతగా నత్రజని (యూరియా) మరియు జింక్ సల్ఫేట్ వేయడం.",
+          "hi": "स्वस्थ कल्ले निकलने को बढ़ावा देने के लिए नाइट्रोजन (यूरिया) और जिंक सल्फेट की पहली खुराक डालें।"
+        },
+        "icon": "Activity"
+      },
+      {
+        "id": "rice_weed_control",
+        "phase": {
+          "en": "Weeding & Pest Monitoring",
+          "te": "కలుపు నివారణ & తెగుళ్ల పరిశీలన",
+          "hi": "निराई और कीट निगरानी"
+        },
+        "timeframe": {
+          "en": "Weeks 9-11",
+          "te": "9-11 వారాలు",
+          "hi": "सप्ताह 9-11"
+        },
+        "activity": {
+          "en": "Perform hand weeding or apply pre-emergence herbicide. Monitor for stem borer and leaf folder insects.",
+          "te": "కలుపు తీయడం లేదా కలుపు నివారణ మందులు వాడడం. కాండం తొలుచు పురుగు మరియు ఆకు ముడత తెగుళ్ల పరిశీలన.",
+          "hi": "हाथ से निराई करें या शाकनाशी का प्रयोग करें। तना छेदक और पत्ती लपेटक कीड़ों की निगरानी करें।"
+        },
+        "icon": "Shield"
+      },
+      {
+        "id": "rice_fertilizer_2",
+        "phase": {
+          "en": "Top Dressing (Panicle Initiation)",
+          "te": "రెండవ ఎరువుల విడత (పొట్ట దశ)",
+          "hi": "टॉप ड्रेसिंग (बालियां निकलने की शुरुआत)"
+        },
+        "timeframe": {
+          "en": "Week 12",
+          "te": "12వ వారం",
+          "hi": "सप्ताह 12"
+        },
+        "activity": {
+          "en": "Apply final top dressing of Nitrogen (Urea) and Muriate of Potash to enhance grain filling.",
+          "te": "గింజ గట్టిపడటానికి చివరి విడతగా యూరియా మరియు పొటాష్ ఎరువులు చల్లడం.",
+          "hi": "अनाज भरने की क्रिया को बढ़ाने के लिए नाइट्रोजन (यूरिया) और मयूरिएट ऑफ पोटाश की अंतिम टॉप ड्रेसिंग करें।"
+        },
+        "icon": "Sparkles"
+      },
+      {
+        "id": "rice_harvest",
+        "phase": {
+          "en": "Harvesting & Drying",
+          "te": "పంట కోత మరియు ఆరబెట్టడం",
+          "hi": "कटाई और सुखाना"
+        },
+        "timeframe": {
+          "en": "Weeks 16-17",
+          "te": "16-17 వారాలు",
+          "hi": "सप्ताह 16-17"
+        },
+        "activity": {
+          "en": "Harvest when 80-85% grains turn golden yellow. Dry grains to 14% moisture before selling/storing.",
+          "te": "80-85% గింజలు బంగారు రంగుకు మారినప్పుడు కోయాలి. విక్రయించే ముందు ధాన్యాన్ని 14% తేమ వచ్చేలా ఎండబెట్టాలి.",
+          "hi": "जब 80-85% दाने सुनहरे पीले हो जाएं तो कटाई करें। बेचने/भंडारण से पहले दानों को 14% नमी तक सुखाएं।"
+        },
+        "icon": "TrendingUp"
+      }
+    ]
+  },
+  {
+    "cropId": "wheat",
+    "timeline": [
+      {
+        "id": "wheat_soil_prep",
+        "phase": {
+          "en": "Soil Bed Preparation",
+          "te": "నేల సిద్ధం చేయడం",
+          "hi": "मिट्टी की क्यारी तैयार करना"
+        },
+        "timeframe": {
+          "en": "Weeks 1-2 (Pre-sowing)",
+          "te": "1-2 వారాలు (విత్తడానికి ముందు)",
+          "hi": "सप्ताह 1-2 (बुवाई से पहले)"
+        },
+        "activity": {
+          "en": "Plough field to a fine tilth. Apply compost and basal fertilizer doses of NPK.",
+          "te": "నేలను మెత్తగా దున్నడం. బేసల్ ఎరువులుగా NPK మరియు పశువుల ఎరువును కలపడం.",
+          "hi": "खेत की बारीक जुताई करें। खाद और एनपीके की शुरुआती खुराक डालें।"
+        },
+        "icon": "Tractor"
+      },
+      {
+        "id": "wheat_sowing",
+        "phase": {
+          "en": "Sowing",
+          "te": "విత్తనాలు వేయడం",
+          "hi": "बुवाई (सॉइंग)"
+        },
+        "timeframe": {
+          "en": "Weeks 3",
+          "te": "3వ వారం",
+          "hi": "सप्ताह 3"
+        },
+        "activity": {
+          "en": "Sow seeds at 3-5 cm depth using a seed drill with row-to-row distance of 20-22 cm.",
+          "te": "సీడ్ డ్రిల్ యంత్రం ద్వారా విత్తనాలను 3-5 సెం.మీ లోతులో, వరుసల మధ్య 20-22 సెం.మీ దూరం ఉండేలా విత్తడం.",
+          "hi": "सीड ड्रिल का उपयोग करके 3-5 सेमी की गहराई पर 20-22 सेमी की दूरी पर बीज बोएं।"
+        },
+        "icon": "Sprout"
+      },
+      {
+        "id": "wheat_irrigation_1",
+        "phase": {
+          "en": "First Irrigation (CRI Stage)",
+          "te": "మొదటి తడి (వేరు వ్యవస్థ ఏర్పడే దశ)",
+          "hi": "प्रथम सिंचाई (क्राउन रूट चरण)"
+        },
+        "timeframe": {
+          "en": "Week 6 (Day 21-25)",
+          "te": "6వ వారం (21-25 రోజులకు)",
+          "hi": "सप्ताह 6 (दिन 21-25)"
+        },
+        "activity": {
+          "en": "Apply the most critical first irrigation at Crown Root Initiation (CRI) stage. Top-dress with Urea.",
+          "te": "మొక్క వేర్లు బలంగా నాటుకునే అత్యంత కీలకమైన సమయంలో మొదటి తడి అందించడం మరియు యూరియా చల్లడం.",
+          "hi": "क्राउन रूट इनिशिएशन (CRI) चरण में सबसे महत्वपूर्ण पहली सिंचाई करें। यूरिया की टॉप-ड्रेसिंग करें।"
+        },
+        "icon": "Droplets"
+      },
+      {
+        "id": "wheat_tillering_weed",
+        "phase": {
+          "en": "Tillering & Hand Weeding",
+          "te": "పిలకలు తొడిగే దశ & కలుపు నివారణ",
+          "hi": "कल्ले निकलना और निराई"
+        },
+        "timeframe": {
+          "en": "Weeks 8-10",
+          "te": "8-10 వారాలు",
+          "hi": "सप्ताह 8-10"
+        },
+        "activity": {
+          "en": "Monitor for broad-leaved weeds. Hand-weed or spray selective herbicide. Ensure secondary irrigation.",
+          "te": "వెడల్పాటి ఆకు కలుపును గమనించడం. రెండవ తడి అందించడం.",
+          "hi": "चौड़ी पत्ती वाले खरपतवारों की निगरानी करें। हाथ से निराई करें और दूसरी सिंचाई सुनिश्चित करें।"
+        },
+        "icon": "Shield"
+      },
+      {
+        "id": "wheat_flowering",
+        "phase": {
+          "en": "Flowering & Grain Filling",
+          "te": "పూత మరియు గింజ పాలు పోసుకునే దశ",
+          "hi": "फूल आना और दाने भरना"
+        },
+        "timeframe": {
+          "en": "Weeks 13-15",
+          "te": "13-15 వారాలు",
+          "hi": "सप्ताह 13-15"
+        },
+        "activity": {
+          "en": "Ensure moisture remains optimal in soil during flowering. Prevent aphid attacks with organic sprays.",
+          "te": "పూత దశలో భూమిలో తగినంత తేమ ఉండేలా చూడడం. తెగుళ్లు సోకకుండా కాపాడడం.",
+          "hi": "फूल आने के दौरान मिट्टी में पर्याप्त नमी सुनिश्चित करें। जैविक स्प्रे से एफिड्स के हमलों को रोकें।"
+        },
+        "icon": "Sparkles"
+      },
+      {
+        "id": "wheat_harvest",
+        "phase": {
+          "en": "Harvesting",
+          "te": "కోతలు",
+          "hi": "कटाई (हार्वेस्टिंग)"
+        },
+        "timeframe": {
+          "en": "Weeks 19-20",
+          "te": "19-20 వారాలు",
+          "hi": "सप्ताह 19-20"
+        },
+        "activity": {
+          "en": "Harvest when the crop matures, straw turns dry and golden-yellow, and grains crackle when bitten.",
+          "te": "మొక్కలు పూర్తిగా ఎండిపోయి బంగారు పసుపు రంగులోకి వచ్చినప్పుడు కోయడం.",
+          "hi": "फसल के पकने पर कटाई करें, जब तिनके सूखे और सुनहरे-पीले हो जाएं और दाने चबाने पर कटकट बोलें।"
+        },
+        "icon": "TrendingUp"
+      }
+    ]
+  },
+  {
+    "cropId": "cotton",
+    "timeline": [
+      {
+        "id": "cotton_soil",
+        "phase": {
+          "en": "Land Preparation",
+          "te": "భూమి దున్నడం",
+          "hi": "भूमि की तैयारी"
+        },
+        "timeframe": {
+          "en": "Weeks 1-2",
+          "te": "1-2 వారాలు",
+          "hi": "सप्ताह 1-2"
+        },
+        "activity": {
+          "en": "Deep summer ploughing to destroy hibernating pests. Mix compost and prepare ridges and furrows.",
+          "te": "సుప్త తెగుళ్లను నివారించడానికి వేసవి దుక్కి దున్నడం. కంపోస్ట్ వేసి సాల్లు చేయుట.",
+          "hi": "सुप्त कीटों को नष्ट करने के लिए गहरी जुताई। खाद मिलाएं और मेड़ तथा नालियां तैयार करें।"
+        },
+        "icon": "Tractor"
+      },
+      {
+        "id": "cotton_sowing",
+        "phase": {
+          "en": "Dibbling Seeds",
+          "te": "విత్తనాలు నాటుట",
+          "hi": "बीज बोना (डिबलिंग)"
+        },
+        "timeframe": {
+          "en": "Week 3",
+          "te": "3వ వారం",
+          "hi": "सप्ताह 3"
+        },
+        "activity": {
+          "en": "Dibble treated seeds at 4-5 cm depth with 90x60 cm spacing for hybrid BT cotton.",
+          "te": "శుద్ధి చేసిన విత్తనాలను 4-5 సెం.మీ లోతులో, వరుసల మధ్య 90x60 సెం.మీ దూరం ఉండేలా నాటడం.",
+          "hi": "हाइब्रिड बीटी कपास के लिए 90x60 सेमी की दूरी पर 4-5 सेमी गहराई पर उपचारित बीज बोएं।"
+        },
+        "icon": "Sprout"
+      },
+      {
+        "id": "cotton_thinning",
+        "phase": {
+          "en": "Thinning & Gap Filling",
+          "te": "మొక్కలను సర్దుబాటు చేయుట",
+          "hi": "थिनिंग और गैप भरना"
+        },
+        "timeframe": {
+          "en": "Weeks 5-6",
+          "te": "5-6 వారాలు",
+          "hi": "सप्ताह 5-6"
+        },
+        "activity": {
+          "en": "Remove weak seedlings, fill gaps where seeds failed to sprout. Perform first light hoeing.",
+          "te": "బలహీనంగా ఉన్న మొక్కలను తొలగించడం, మొలకెత్తని చోట కొత్త విత్తనాలు నాటడం.",
+          "hi": "कमजोर पौधों को निकालें, जहां बीज अंकुरित नहीं हुए वहां नए बीज लगाएं। पहली हल्की निराई करें।"
+        },
+        "icon": "Layers"
+      },
+      {
+        "id": "cotton_fertilizer",
+        "phase": {
+          "en": "Nitrogen Top Dressing",
+          "te": "ఎరువుల యాజమాన్యం",
+          "hi": "नाइट्रोजन टॉप ड्रेसिंग"
+        },
+        "timeframe": {
+          "en": "Week 8",
+          "te": "8వ వారం",
+          "hi": "सप्ताह 8"
+        },
+        "activity": {
+          "en": "Apply first split dose of Nitrogen. Keep soil loose around roots by inter-cultivation.",
+          "te": "మొదటి విడతగా నత్రజని వేయుట. వేర్ల వద్ద నేల వదులుగా ఉండేలా గుంటక తోలడం.",
+          "hi": "नाइट्रोजन की पहली विभाजित खुराक डालें। जुताई द्वारा जड़ों के पास मिट्टी को ढीला रखें।"
+        },
+        "icon": "Activity"
+      },
+      {
+        "id": "cotton_square",
+        "phase": {
+          "en": "Square Formation & Pest Patrol",
+          "te": "కాయలు ఏర్పడే దశ & తెగుళ్ల నివారణ",
+          "hi": "कलियां (स्क्वायर) बनना और कीट नियंत्रण"
+        },
+        "timeframe": {
+          "en": "Weeks 10-12",
+          "te": "10-12 వారాలు",
+          "hi": "सप्ताह 10-12"
+        },
+        "activity": {
+          "en": "Monitor closely for Bollworm and Sucking Pests. Spray botanical extract or neem oil.",
+          "te": "పత్తి కాయ తొలుచు పురుగును మరియు రసం పీల్చే పురుగులను గమనించడం. వేప నూనె పిచికారీ చేయడం.",
+          "hi": "डोका छेदक (बॉलवर्म) और रस चूसने वाले कीटों की निगरानी करें। नीम का तेल छिड़कें।"
+        },
+        "icon": "Shield"
+      },
+      {
+        "id": "cotton_boll_burst",
+        "phase": {
+          "en": "Boll Burst & Irrigation",
+          "te": "కాయ పగిలే దశ & తడులు",
+          "hi": "कपास का फटना और सिंचाई"
+        },
+        "timeframe": {
+          "en": "Weeks 16-18",
+          "te": "16-18 వారాలు",
+          "hi": "सप्ताह 16-18"
+        },
+        "activity": {
+          "en": "Manage soil moisture carefully during boll bursting. High moisture causes boll rot.",
+          "te": "కాయలు పగిలే దశలో నీటి తడులను జాగ్రత్తగా ఇవ్వాలి. ఎక్కువ తడి వల్ల కాయలు కుళ్ళిపోతాయి.",
+          "hi": "कपास के फल फटने के दौरान मिट्टी की नमी का ध्यान रखें। अधिक नमी से फल सड़ सकते हैं।"
+        },
+        "icon": "Droplets"
+      },
+      {
+        "id": "cotton_picking",
+        "phase": {
+          "en": "First Picking",
+          "te": "మొదటి విడత ఏరుట",
+          "hi": "पहली चुनाई"
+        },
+        "timeframe": {
+          "en": "Weeks 22-24",
+          "te": "22-24 వారాలు",
+          "hi": "सप्ताह 22-24"
+        },
+        "activity": {
+          "en": "Pick clean, fully opened bolls during dry morning hours. Avoid picking half-opened bolls.",
+          "te": "పూర్తిగా విచ్చుకున్న పత్తిని ఉదయం పూట ఏరడం. పచ్చి పత్తిని ఏరవద్దు.",
+          "hi": "शुष्क सुबह के समय साफ, पूरी तरह से खुली कपास चुनें। आधी खुली कपास चुनने से बचें।"
+        },
+        "icon": "TrendingUp"
+      }
+    ]
+  }
+]

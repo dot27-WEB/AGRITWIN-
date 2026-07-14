@@ -1,0 +1,112 @@
+[
+  {
+    "type": "Clayey",
+    "name": {
+      "en": "Clayey Soil",
+      "te": "బంకమట్టి నేల (Clayey)",
+      "hi": "चिकनी मिट्टी (Clayey)"
+    },
+    "defaultNutrients": {
+      "nitrogen": "Medium",
+      "phosphorus": "High",
+      "potassium": "High"
+    },
+    "phRange": "6.5 - 7.8",
+    "waterRetention": "Very High",
+    "drainage": "Poor",
+    "suitableCrops": ["rice", "maize"],
+    "description": {
+      "en": "Fine-grained soil with high water retention capacity. Becomes sticky when wet and cracks when dry. Ideal for water-loving crops like paddy.",
+      "te": "సన్నని రేణువులు కలిగి ఉండి ఎక్కువ నీటిని నిల్వ ఉంచుతుంది. తడిగా ఉన్నప్పుడు జిగటగా మారుతుంది. వరి సాగుకు అత్యంత అనువైనది.",
+      "hi": "महीन कणों वाली मिट्टी जिसमें उच्च जल धारण क्षमता होती है। गीली होने पर चिपचिपी और सूखने पर दरारें पड़ जाती हैं। धान जैसी फसलों के लिए आदर्श।"
+    }
+  },
+  {
+    "type": "Loamy",
+    "name": {
+      "en": "Loamy Soil",
+      "te": "దుబ్బ/లోమీ నేల (Loamy)",
+      "hi": "दोमट मिट्टी (Loamy)"
+    },
+    "defaultNutrients": {
+      "nitrogen": "Medium",
+      "phosphorus": "Medium",
+      "potassium": "Medium"
+    },
+    "phRange": "6.0 - 7.0",
+    "waterRetention": "Medium",
+    "drainage": "Good",
+    "suitableCrops": ["wheat", "tomato", "maize", "groundnut", "cotton", "soybean"],
+    "description": {
+      "en": "The ideal agricultural soil. Balanced mixture of sand, silt, and clay. Retains moisture and nutrients well while allowing excess water to drain.",
+      "te": "వ్యవసాయానికి అత్యంత అనువైన నేల. ఇసుక, మట్టి రేణువులు సమానంగా ఉంటాయి. తేమను మరియు పోషకాలను చక్కగా గ్రహిస్తుంది.",
+      "hi": "कृषि के लिए सर्वोत्तम मिट्टी। रेत, गाद और मिट्टी का संतुलित मिश्रण। जल निकासी के साथ नमी और पोषक तत्वों को अच्छी तरह से रोकती है।"
+    }
+  },
+  {
+    "type": "Sandy",
+    "name": {
+      "en": "Sandy Soil",
+      "te": "ఇసుక నేల (Sandy)",
+      "hi": "रेतीली मिट्टी (Sandy)"
+    },
+    "defaultNutrients": {
+      "nitrogen": "Low",
+      "phosphorus": "Low",
+      "potassium": "Low"
+    },
+    "phRange": "5.5 - 6.5",
+    "waterRetention": "Low",
+    "drainage": "Excellent",
+    "suitableCrops": ["groundnut", "tomato"],
+    "description": {
+      "en": "Large sand particles with high drainage but poor nutrient retention. Tends to dry out quickly. Requires organic matter addition and frequent light watering.",
+      "te": "ఇసుక రేణువులు ఎక్కువగా ఉండడం వల్ల నీరు నిల్వ ఉండదు. పోషకాలు త్వరగా కొట్టుకుపోతాయి. తరచూ తక్కువ నీటి తడులు ఇవ్వాలి.",
+      "hi": "बड़े कणों वाली मिट्टी जिसमें जल निकासी अधिक लेकिन पोषक तत्व धारण क्षमता कम होती है। यह जल्दी सूख जाती है। जैविक खाद की आवश्यकता होती है।"
+    }
+  },
+  {
+    "type": "Black",
+    "name": {
+      "en": "Black Cotton Soil",
+      "te": "నల్లరేగడి నేల (Black)",
+      "hi": "काली मिट्टी (Black)"
+    },
+    "defaultNutrients": {
+      "nitrogen": "Low",
+      "phosphorus": "Low",
+      "potassium": "High"
+    },
+    "phRange": "7.2 - 8.5",
+    "waterRetention": "High",
+    "drainage": "Medium",
+    "suitableCrops": ["cotton", "soybean", "wheat", "rice"],
+    "description": {
+      "en": "Rich in calcium, carbonate, potash, and magnesium. Extremely fertile soil with high moisture capacity. Widely known for cotton and oilseeds cultivation.",
+      "te": "కాల్షియం, కార్బోనేట్, పొటాష్ మరియు మెగ్నీషియం సమృద్ధిగా ఉంటాయి. నల్లరేగడి నేల పత్తి పంటకు మరియు నూనెగింజల సాగుకు ప్రసిద్ధి.",
+      "hi": "कैल्शियम, कार्बोनेट, पोटाश और मैग्नीशियम से भरपूर। उच्च नमी क्षमता वाली अत्यंत उपजाऊ मिट्टी। कपास और तिलहन की खेती के लिए प्रसिद्ध।"
+    }
+  },
+  {
+    "type": "Red",
+    "name": {
+      "en": "Red Soil",
+      "te": "ఎర్ర నేల (Red)",
+      "hi": "लाल मिट्टी (Red)"
+    },
+    "defaultNutrients": {
+      "nitrogen": "Low",
+      "phosphorus": "Medium",
+      "potassium": "Medium"
+    },
+    "phRange": "6.0 - 6.8",
+    "waterRetention": "Medium-Low",
+    "drainage": "Good",
+    "suitableCrops": ["groundnut", "maize", "tomato"],
+    "description": {
+      "en": "Gets its reddish color from high iron oxide content. Found in warm dry regions. Generally responsive to fertilizers, suitable for groundnuts and pulses.",
+      "te": "ఇనుము శాతం ఎక్కువగా ఉండడం వల్ల ఎరుపు రంగులో ఉంటుంది. వేరుశనగ మరియు పప్పుధాన్యాల సాగుకు తగినది.",
+      "hi": "आयरन ऑक्साइड की उच्च मात्रा के कारण इसका रंग लाल होता है। गर्म शुष्क क्षेत्रों में पाई जाती है। मूंगफली और दालों के लिए उपयुक्त।"
+    }
+  }
+]

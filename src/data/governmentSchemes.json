@@ -1,76 +1,102 @@
 [
   {
-    "id": "pm-kisan",
-    "name": "PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)",
-    "description": "An initiative by the Government of India that provides an assured income support of ₹6,000 per year to all landholding farmer families across the country.",
-    "benefits": [
-      "Financial assistance of ₹6,000 per year paid in three equal installments of ₹2,000 every four months.",
-      "Direct Benefit Transfer (DBT) straight into the farmer's linked Aadhaar-enabled bank account.",
-      "100% funding support from the Central Government of India."
-    ],
-    "eligibility": [
-      "All landholding farmer families holding cultivable agricultural land in their name.",
-      "Must not belong to institutional ownership or high-income/taxpayer categories.",
-      "Must have a valid Aadhaar card and linked active bank account."
-    ],
-    "category": "Direct Income Support",
-    "subsidyPercentage": null,
-    "applyUrl": "https://pmkisan.gov.in/",
-    "icon": "Wallet"
+    "id": "pm_kisan",
+    "name": {
+      "en": "PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)",
+      "te": "పీఎం-కిసాన్ సమ్మాన్ నిధి (PM-KISAN)",
+      "hi": "पीएम-किसान (प्रधानमंत्री किसान सम्मान निधि)"
+    },
+    "description": {
+      "en": "An initiative by the Government of India that provides up to ₹6,000 per year in three equal installments as minimum income support to all small and marginal landholding farmer families.",
+      "te": "చిన్న మరియు సన్నకారు రైతు కుటుంబాలకు కనీస ఆదాయ సహాయంగా సంవత్సరానికి ₹6,000 మూడు విడతలలో అందించే పథకం.",
+      "hi": "भारत सरकार की एक पहल जो सभी छोटे और सीमांत भूमिधारक किसान परिवारों को न्यूनतम आय सहायता के रूप में तीन समान किश्तों में प्रति वर्ष ₹6,000 तक प्रदान करती है।"
+    },
+    "benefits": {
+      "en": "Direct bank transfer of ₹6,000 per annum (₹2,000 every 4 months) directly to the bank account linked with Aadhaar.",
+      "te": "ఏడాదికి ₹6,000 నేరుగా రైతు ఆధార్ అనుసంధాన బ్యాంక్ ఖాతాలో జమ చేయబడుతుంది (ప్రతి 4 నెలలకు ₹2,000).",
+      "hi": "प्रति वर्ष ₹6,000 का प्रत्यक्ष बैंक हस्तांतरण (हर 4 महीने में ₹2,000) सीधे आधार से जुड़े बैंक खाते में।"
+    },
+    "eligibility": {
+      "en": "Small and marginal farmers holding cultivable land up to 5 acres (2 hectares). Excludes institutional landholders and tax-paying professionals.",
+      "te": "ఐదు ఎకరాల లోపు సాగు భూమి గల చిన్న మరియు సన్నకారు రైతులు అర్హులు.",
+      "hi": "5 एकड़ (2 हेक्टेयर) तक कृषि योग्य भूमि वाले छोटे और सीमांत किसान। संस्थागत भूमिधारकों को छोड़कर।"
+    },
+    "maxLandSizeAcres": 5,
+    "category": "Income Support"
   },
   {
-    "id": "crop-insurance",
-    "name": "PMFBY (Pradhan Mantri Fasal Bima Yojana)",
-    "description": "A comprehensive crop insurance scheme to provide financial support to farmers experiencing crop loss or damage arising out of natural calamities, pests, & diseases.",
-    "benefits": [
-      "Comprehensive risk insurance covers yield losses from pre-sowing to post-harvest.",
-      "Very low premium rates for farmers: 2% for Kharif crops, 1.5% for Rabi crops, and 5% for annual commercial/horticultural crops.",
-      "Fast online claim settlement based on satellite remote sensing data and drone crop cutting."
-    ],
-    "eligibility": [
-      "All farmers including sharecroppers and tenant farmers growing notified crops in notified areas are eligible.",
-      "Highly recommended for farmers taking crop loans (KCC) from formal banking channels."
-    ],
-    "category": "Crop Protection & Risk",
-    "subsidyPercentage": 90,
-    "applyUrl": "https://pmfby.gov.in/",
-    "icon": "ShieldCheck"
+    "id": "pm_fasal_bima",
+    "name": {
+      "en": "PMFBY (Pradhan Mantri Fasal Bima Yojana)",
+      "te": "పీఎం ఫసల్ బీమా యోజన (PMFBY)",
+      "hi": "प्रधानमंत्री फसल बीमा योजना (PMFBY)"
+    },
+    "description": {
+      "en": "Crop insurance scheme to protect farmers against crop losses from natural calamities, pests, and diseases. It aims to stabilize income and encourage modern practices.",
+      "te": "ప్రకృతి వైపరీత్యాలు, తెగుళ్లు మరియు వ్యాధుల వల్ల కలిగే పంట నష్టాలకు రక్షణ కల్పించే బీమా పథకం.",
+      "hi": "प्राकृतिक आपदाओं, कीटों और बीमारियों से फसल नुकसान के खिलाफ किसानों की रक्षा के लिए फसल बीमा योजना।"
+    },
+    "benefits": {
+      "en": "Comprehensive risk insurance with lowest premium: 2% for Kharif, 1.5% for Rabi, and 5% for commercial/horticultural crops. Complete coverage for yield loss.",
+      "te": "తక్కువ ప్రీమియంతో బీమా: ఖరీఫ్‌కు 2%, రబీకి 1.5%, మరియు ఉద్యానవన పంటలకు 5% ప్రీమియం చెల్లించాలి.",
+      "hi": "न्यूनतम प्रीमियम के साथ व्यापक जोखिम बीमा: खरीफ के लिए 2%, रबी के लिए 1.5%, और वाणिज्यिक फसलों के लिए 5%। पैदावार के नुकसान के लिए पूर्ण कवरेज।"
+    },
+    "eligibility": {
+      "en": "All farmers growing notified crops in notified areas, including sharecroppers and tenant farmers holding registered cultivation agreements.",
+      "te": "నమోదిత ప్రాంతాలలో ప్రభుత్వం ప్రకటించిన పంటలను పండించే రైతులందరూ అర్హులు.",
+      "hi": "अधिसूचित क्षेत्रों में अधिसूचित फसलें उगाने वाले सभी किसान, जिनमें बटाईदार और किरायेदार किसान शामिल हैं।"
+    },
+    "maxLandSizeAcres": 999,
+    "category": "Insurance"
   },
   {
-    "id": "solar-pump",
-    "name": "PM-KUSUM (Solar Pump Scheme)",
-    "description": "Pradhan Mantri Kisan Urja Suraksha evam Utthaan Mahabhiyan ensures clean energy for farming by installing standalone solar agriculture pumps and solarizing grid-connected pumps.",
-    "benefits": [
-      "Provides off-grid solar agricultural pumps up to 7.5 HP capacity.",
-      "Saves high electricity bills and guarantees stable power during the daytime for irrigation.",
-      "Allows selling surplus solar power back to the government grid for additional income."
-    ],
-    "eligibility": [
-      "Individual farmers, water user associations, co-operatives, and community clusters.",
-      "Must have a water source and cultivable land requiring irrigation pump upgrade."
-    ],
-    "category": "Energy & Infrastructure",
-    "subsidyPercentage": 60,
-    "applyUrl": "https://pmkusum.mnre.gov.in/",
-    "icon": "Sun"
+    "id": "pm_kusum",
+    "name": {
+      "en": "PM-KUSUM (Solar Pump Subsidy Scheme)",
+      "te": "పీఎం-కుసుమ్ సోలార్ పంప్ పథకం (PM-KUSUM)",
+      "hi": "पीएम-कुसुम (सौर पंप सब्सिडी योजना)"
+    },
+    "description": {
+      "en": "Promotes the installation of solar-powered agriculture pumps. It aims to ensure water security for farmers while encouraging green clean energy grids.",
+      "te": "వ్యవసాయ రంగానికి సౌర విద్యుత్ పంపులను ఏర్పాటు చేయడం ద్వారా నిరంతర నీటి సరఫరా మరియు పర్యావరణ పరిరక్షణను ప్రోత్సహిస్తుంది.",
+      "hi": "सौर ऊर्जा से चलने वाले कृषि पंपों की स्थापना को बढ़ावा देना। इसका उद्देश्य हरित ऊर्जा को बढ़ावा देते हुए किसानों के लिए जल सुरक्षा सुनिश्चित करना है।"
+    },
+    "benefits": {
+      "en": "Up to 60% financial subsidy on installing solar water pumps (3HP to 10HP). Central Government pays 30% and State Government pays 30%. Easy bank loans for 30%.",
+      "te": "సోలార్ పంపుల ఏర్పాటుపై 60% వరకు సబ్సిడీ (కేంద్ర మరియు రాష్ట్ర ప్రభుత్వాలు తలా 30% భరిస్తాయి).",
+      "hi": "सौर जल पंपों (3HP से 10HP) को स्थापित करने पर 60% तक की वित्तीय सब्सिडी। केंद्र सरकार 30% और राज्य सरकार 30% भुगतान करती है।"
+    },
+    "eligibility": {
+      "en": "Farmers, groups of farmers, water user associations, and cooperatives with cultivable land and valid borewell configurations.",
+      "te": "సాగు భూమి మరియు బోరుబావి సౌకర్యం ఉన్న రైతులు మరియు సహకార సంఘాలు అర్హులు.",
+      "hi": "कृषि योग्य भूमि और वैध बोरवेल विन्यास वाले किसान, किसानों के समूह और सहकारी समितियां।"
+    },
+    "maxLandSizeAcres": 999,
+    "category": "Subsidy"
   },
   {
-    "id": "drip-irrigation",
-    "name": "PMKSY (Per Drop More Crop - Drip Irrigation Subsidy)",
-    "description": "Promotes micro-irrigation systems (drip and sprinkler) to maximize water use efficiency, reduce fertilizer runoff, and increase overall crop productivity.",
-    "benefits": [
-      "Subsidy covering a major portion of micro-irrigation system installation costs.",
-      "Water saving up to 40% to 50% compared to traditional flood irrigation methods.",
-      "Substantially reduces weed growth, soil erosion, and labor costs for watering."
-    ],
-    "eligibility": [
-      "Small and marginal farmers receive up to 55% subsidy assistance.",
-      "Other category farmers receive up to 45% subsidy assistance.",
-      "Minimum land requirement of 0.2 hectares with access to borewell or water storage tank."
-    ],
-    "category": "Water & Irrigation",
-    "subsidyPercentage": 55,
-    "applyUrl": "https://pmksy.gov.in/",
-    "icon": "Droplet"
+    "id": "drip_irrigation_subsidy",
+    "name": {
+      "en": "Micro-Irrigation Scheme (Drip/Sprinkler Subsidy)",
+      "te": "సూక్ష్మ నీటి పారుదల పథకం (Drip Subsidy)",
+      "hi": "सूक्ष्म सिंचाई योजना (ड्रिप/स्प्रिंकलर सब्सिडी)"
+    },
+    "description": {
+      "en": "Encourages water conservation under 'Per Drop More Crop'. Provides financial assistance to set up drip and sprinkler systems in fields to reduce waste.",
+      "te": "'ప్రతి చుక్కకు ఎక్కువ పంట' కింద నీటి పొదుపును ప్రోత్సహించడానికి డ్రిప్ మరియు స్ప్రింక్లర్ పరికరాలపై సబ్సిడీ పథకం.",
+      "hi": "'हर बूंद अधिक फसल' के तहत जल संरक्षण को बढ़ावा देना। बर्बादी को कम करने के लिए खेतों में ड्रिप और स्प्रिंकलर सिस्टम लगाने के लिए वित्तीय सहायता देना।"
+    },
+    "benefits": {
+      "en": "Financial assistance ranging from 75% up to 90% of total setup cost for small and marginal farmers, and 50% for big farmers.",
+      "te": "చిన్న మరియు సన్నకారు రైతులకు 75% నుండి 90% వరకు, పెద్ద రైతులకు 50% వరకు సబ్సిడీ లభిస్తుంది.",
+      "hi": "छोटे और सीमांत किसानों के लिए कुल सेटअप लागत का 75% से 90% तक वित्तीय सहायता, और बड़े किसानों के लिए 50% सहायता।"
+    },
+    "eligibility": {
+      "en": "Must have an active irrigation source (well/canal/borewell) and cultivable land. Priority given to water-stressed regions.",
+      "te": "నీటి పారుదల వనరు (బావి/బోరు) కలిగి ఉండాలి. నీటి ఎద్దడి గల ప్రాంతాలకు ప్రాధాన్యత ఇస్తారు.",
+      "hi": "एक सक्रिय सिंचाई स्रोत (कुआं/नहर/बोरवेल) और कृषि योग्य भूमि होनी चाहिए। जल संकट वाले क्षेत्रों को प्राथमिकता।"
+    },
+    "maxLandSizeAcres": 12,
+    "category": "Subsidy"
   }
 ]

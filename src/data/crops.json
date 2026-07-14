@@ -1,98 +1,191 @@
 [
   {
     "id": "rice",
-    "name": "Paddy (Rice)",
-    "scientificName": "Oryza sativa",
-    "type": "Kharif",
-    "soilType": "Clayey / Clayey-loam",
-    "waterRequirement": "Very High",
-    "waterRequirementMm": 1200,
-    "marketDemand": "High",
-    "expectedProfitPerAcre": 35000,
-    "diseaseRisks": ["Blast", "Bacterial Leaf Blight", "Stem Borer"],
-    "rotationAdvice": "Excellent rotation after Legumes (like Green Gram) to restore Nitrogen levels.",
-    "durationDays": 135,
-    "idealTemp": "22°C - 32°C",
-    "fertilizerGuide": "N:P:K ratio 120:60:60 kg/ha in 3 split doses."
+    "name": {
+      "en": "Rice (Paddy)",
+      "te": "వరి (Paddy)",
+      "hi": "धान (Rice)"
+    },
+    "category": "Grain",
+    "durationMonths": 4,
+    "waterRequirement": "High",
+    "irrigationFrequencyDays": 3,
+    "soilSuitability": ["Clayey", "Loamy", "Black"],
+    "nutrients": {
+      "nitrogen": "High",
+      "phosphorus": "Medium",
+      "potassium": "Medium"
+    },
+    "expectedYieldPerAcre": 22,
+    "averagePricePerQuintal": 2300,
+    "pestRisk": "High",
+    "diseases": ["rice_blast", "bacterial_blight"],
+    "rotationBenefit": {
+      "en": "Depletes soil nitrogen. Follow with nitrogen-fixing leguminous crops.",
+      "te": "నత్రజని క్షీణిస్తుంది. చిక్కుడు జాతి పంటలను వేయండి.",
+      "hi": "मिट्टी की नाइट्रोजन कम करता है। इसके बाद फलियां उगाएं।"
+    }
   },
   {
     "id": "wheat",
-    "name": "Wheat",
-    "scientificName": "Triticum aestivum",
-    "type": "Rabi",
-    "soilType": "Loamy / Clay loam",
+    "name": {
+      "en": "Wheat",
+      "te": "గోధుమ (Wheat)",
+      "hi": "गेहूं (Wheat)"
+    },
+    "category": "Grain",
+    "durationMonths": 5,
     "waterRequirement": "Medium",
-    "waterRequirementMm": 500,
-    "marketDemand": "Very High",
-    "expectedProfitPerAcre": 28000,
-    "diseaseRisks": ["Rust (Yellow/Brown)", "Powdery Mildew", "Loose Smut"],
-    "rotationAdvice": "Rotate with Soybeans, Cotton, or Sugarcane to maintain soil organic carbon.",
-    "durationDays": 120,
-    "idealTemp": "15°C - 25°C",
-    "fertilizerGuide": "N:P:K ratio 120:50:40 kg/ha. Apply first irrigation at CRI stage (21 days)."
+    "irrigationFrequencyDays": 10,
+    "soilSuitability": ["Loamy", "Clayey", "Black"],
+    "nutrients": {
+      "nitrogen": "Medium",
+      "phosphorus": "High",
+      "potassium": "Medium"
+    },
+    "expectedYieldPerAcre": 18,
+    "averagePricePerQuintal": 2275,
+    "pestRisk": "Medium",
+    "diseases": ["wheat_rust", "powdery_mildew"],
+    "rotationBenefit": {
+      "en": "Standard cereal. Excellent to rotate after leguminous soy or groundnut.",
+      "te": "చిక్కుడు పంటల తర్వాత సాగు చేయడానికి అనువైనది.",
+      "hi": "सामान्य अनाज। फलियों (सोयाबीन/मूंगफली) के बाद बोने के लिए सर्वोत्तम।"
+    }
   },
   {
     "id": "cotton",
-    "name": "Cotton",
-    "scientificName": "Gossypium hirsutum",
-    "type": "Kharif",
-    "soilType": "Black Soil / Clayey",
-    "waterRequirement": "Medium-High",
-    "waterRequirementMm": 800,
-    "marketDemand": "High",
-    "expectedProfitPerAcre": 45000,
-    "diseaseRisks": ["Bollworm Complex", "Leaf Spot", "Fusarium Wilt"],
-    "rotationAdvice": "Do not repeat cotton back-to-back. Follow with Groundnut or Wheat to disrupt pest cycles.",
-    "durationDays": 170,
-    "idealTemp": "21°C - 30°C",
-    "fertilizerGuide": "N:P:K ratio 100:50:50 kg/ha. Micronutrient spray of Zinc & Boron recommended."
+    "name": {
+      "en": "Cotton",
+      "te": "పత్తి (Cotton)",
+      "hi": "कपास (Cotton)"
+    },
+    "category": "Commercial",
+    "durationMonths": 6,
+    "waterRequirement": "Medium",
+    "irrigationFrequencyDays": 12,
+    "soilSuitability": ["Black", "Loamy"],
+    "nutrients": {
+      "nitrogen": "High",
+      "phosphorus": "Medium",
+      "potassium": "High"
+    },
+    "expectedYieldPerAcre": 8,
+    "averagePricePerQuintal": 7200,
+    "pestRisk": "High",
+    "diseases": ["cotton_leaf_curl", "root_rot"],
+    "rotationBenefit": {
+      "en": "Deep-rooted crop. Improves soil aeration but consumes high potassium.",
+      "te": "లోతైన వేర్లు గల పంట. పొటాషియంను ఎక్కువగా వినియోగిస్తుంది.",
+      "hi": "गहरी जड़ों वाली फसल। मिट्टी के वायुसंचार में सुधार करती है लेकिन उच्च पोटेशियम लेती है।"
+    }
   },
   {
-    "id": "maize",
-    "name": "Maize (Corn)",
-    "scientificName": "Zea mays",
-    "type": "Kharif/Rabi",
-    "soilType": "Alluvial / Sandy loam",
+    "id": "tomato",
+    "name": {
+      "en": "Tomato",
+      "te": "టమోటా (Tomato)",
+      "hi": "टमाटर (Tomato)"
+    },
+    "category": "Vegetable",
+    "durationMonths": 3,
     "waterRequirement": "Medium",
-    "waterRequirementMm": 600,
-    "marketDemand": "High",
-    "expectedProfitPerAcre": 22000,
-    "diseaseRisks": ["Turcicum Leaf Blight", "Fall Armyworm", "Maydis Blight"],
-    "rotationAdvice": "Excellent preceding crop for Mustard or Potato. Enhances soil structure.",
-    "durationDays": 110,
-    "idealTemp": "18°C - 27°C",
-    "fertilizerGuide": "N:P:K ratio 120:60:40 kg/ha. Nitrogen split-application at knee-high and tasseling stages."
-  },
-  {
-    "id": "chilli",
-    "name": "Chilli",
-    "scientificName": "Capsicum annuum",
-    "type": "Kharif/Rabi",
-    "soilType": "Sandy loam / Clay loam",
-    "waterRequirement": "Medium",
-    "waterRequirementMm": 650,
-    "marketDemand": "Very High",
-    "expectedProfitPerAcre": 65000,
-    "diseaseRisks": ["Dieback / Fruit Rot", "Powdery Mildew", "Thrips / Mites"],
-    "rotationAdvice": "Rotate with Maize or Sorghum. Avoid other solanaceous crops like Potato or Tomato.",
-    "durationDays": 150,
-    "idealTemp": "20°C - 30°C",
-    "fertilizerGuide": "N:P:K ratio 150:60:60 kg/ha. Supplement with organic neem cake to deter root nematodes."
+    "irrigationFrequencyDays": 5,
+    "soilSuitability": ["Sandy", "Loamy", "Red"],
+    "nutrients": {
+      "nitrogen": "Medium",
+      "phosphorus": "Medium",
+      "potassium": "High"
+    },
+    "expectedYieldPerAcre": 150,
+    "averagePricePerQuintal": 1500,
+    "pestRisk": "High",
+    "diseases": ["tomato_late_blight", "leaf_miner"],
+    "rotationBenefit": {
+      "en": "High return vegetable. Heavy potassium consumer. Rotate with cereals to balance soil.",
+      "te": "ఎక్కువ లాభం ఇచ్చే కూరగాయ. ధాన్యపు పంటలతో మార్పిడి చేయాలి.",
+      "hi": "उच्च लाभ वाली सब्जी। मिट्टी के संतुलन के लिए अनाजों के साथ चक्रीकरण करें।"
+    }
   },
   {
     "id": "groundnut",
-    "name": "Groundnut",
-    "scientificName": "Arachis hypogaea",
-    "type": "Kharif",
-    "soilType": "Sandy loam / Red sandy",
-    "waterRequirement": "Low-Medium",
-    "waterRequirementMm": 450,
-    "marketDemand": "Medium-High",
-    "expectedProfitPerAcre": 32000,
-    "diseaseRisks": ["Tikka Leaf Spot", "Rust", "White Grub"],
-    "rotationAdvice": "Fixes atmospheric Nitrogen! Follow with exhausting crops like Maize, Wheat, or Sorghum.",
-    "durationDays": 120,
-    "idealTemp": "22°C - 30°C",
-    "fertilizerGuide": "N:P:K ratio 25:50:50 kg/ha (low N needed due to nodulation). Gypsum at pegging stage is critical."
+    "name": {
+      "en": "Groundnut",
+      "te": "వేరుశనగ (Groundnut)",
+      "hi": "मूंगफली (Groundnut)"
+    },
+    "category": "Oilseed",
+    "durationMonths": 4,
+    "waterRequirement": "Low",
+    "irrigationFrequencyDays": 14,
+    "soilSuitability": ["Sandy", "Red", "Loamy"],
+    "nutrients": {
+      "nitrogen": "Low",
+      "phosphorus": "Medium",
+      "potassium": "Low"
+    },
+    "expectedYieldPerAcre": 12,
+    "averagePricePerQuintal": 6300,
+    "pestRisk": "Medium",
+    "diseases": ["tikka_leaf_spot", "collar_rot"],
+    "rotationBenefit": {
+      "en": "Leguminous nitrogen-fixer. Naturally enriches soil nitrogen reserves by 30-40 kg/ha.",
+      "te": "నత్రజని స్థిరీకరణ పంట. సహజంగా భూమి నత్రజని పెంచుతుంది.",
+      "hi": "नाइट्रोजन स्थिर करने वाली फली। मिट्टी में नाइट्रोजन भंडार को प्राकृतिक रूप से बढ़ाती है।"
+    }
+  },
+  {
+    "id": "soybean",
+    "name": {
+      "en": "Soybean",
+      "te": "సోయాబీన్ (Soybean)",
+      "hi": "सोयाबीन (Soybean)"
+    },
+    "category": "Oilseed",
+    "durationMonths": 4,
+    "waterRequirement": "Medium",
+    "irrigationFrequencyDays": 10,
+    "soilSuitability": ["Black", "Loamy"],
+    "nutrients": {
+      "nitrogen": "Low",
+      "phosphorus": "High",
+      "potassium": "Medium"
+    },
+    "expectedYieldPerAcre": 10,
+    "averagePricePerQuintal": 4600,
+    "pestRisk": "Medium",
+    "diseases": ["yellow_mosaic", "rust"],
+    "rotationBenefit": {
+      "en": "Excellent rotation crop. Restores nitrogen levels depleted by cotton or paddy.",
+      "te": "నత్రజని పునరుద్ధరిస్తుంది. వరి లేదా పత్తి తర్వాత అనువైన పంట.",
+      "hi": "उत्कृष्ट चक्र फसल। कपास या धान द्वारा शोषित नाइट्रोजन स्तर को बहाल करती है।"
+    }
+  },
+  {
+    "id": "maize",
+    "name": {
+      "en": "Maize (Corn)",
+      "te": "మొక్కజొన్న (Maize)",
+      "hi": "मक्का (Maize)"
+    },
+    "category": "Grain",
+    "durationMonths": 4,
+    "waterRequirement": "Medium",
+    "irrigationFrequencyDays": 8,
+    "soilSuitability": ["Loamy", "Red", "Black"],
+    "nutrients": {
+      "nitrogen": "High",
+      "phosphorus": "High",
+      "potassium": "Medium"
+    },
+    "expectedYieldPerAcre": 25,
+    "averagePricePerQuintal": 2100,
+    "pestRisk": "Medium",
+    "diseases": ["turcicum_blight", "stem_borer"],
+    "rotationBenefit": {
+      "en": "Heavy feeder. Highly depletes all nutrients. Must rotate with pulses next season.",
+      "te": "అన్ని పోషకాలను ఎక్కువగా గ్రహిస్తుంది. తరువాతి పంటగా పప్పుధాన్యాలు వేయాలి.",
+      "hi": "भारी शोषक। सभी पोषक तत्वों को कम करता है। अगले सीजन में दालें उगाना आवश्यक है।"
+    }
   }
 ]

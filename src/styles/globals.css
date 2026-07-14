@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-farm-50: #f0fdf4;
+  --color-farm-100: #dcfce7;
+  --color-farm-200: #bbf7d0;
+  --color-farm-300: #86efac;
+  --color-farm-400: #4ade80;
+  --color-farm-500: #22c55e;
+  --color-farm-600: #16a34a;
+  --color-farm-700: #15803d;
+  --color-farm-800: #166534;
+  --color-farm-900: #14532d;
+  --color-farm-950: #052e16;
+
+  --color-earth-50: #fcfcf9;
+  --color-earth-100: #f5f3e9;
+  --color-earth-200: #e9e3cf;
+  --color-earth-300: #d7cba7;
+  --color-earth-400: #c1af78;
+  --color-earth-500: #a7924c;
+  --color-earth-600: #8e7939;
+  --color-earth-700: #71602c;
+  --color-earth-800: #564923;
+  --color-earth-900: #41371b;
+  --color-earth-950: #231d0b;
+
+  --color-glass-card: rgba(255, 255, 255, 0.45);
+  --color-glass-border: rgba(255, 255, 255, 0.25);
+  --color-glass-darkCard: rgba(15, 23, 42, 0.45);
+  --color-glass-darkBorder: rgba(255, 255, 255, 0.08);
+
+  --font-sans: 'Outfit', 'Inter', 'system-ui', 'sans-serif';
+
+  --shadow-glass-sm: 0 2px 8px 0 rgba(31, 38, 135, 0.04);
+  --shadow-glass-md: 0 8px 32px 0 rgba(31, 38, 135, 0.06);
+  --shadow-glass-lg: 0 12px 40px 0 rgba(0, 0, 0, 0.1);
+  --shadow-glow-green: 0 0 20px 2px rgba(22, 163, 74, 0.25);
+  --shadow-glow-gold: 0 0 20px 2px rgba(218, 165, 32, 0.25);
+
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-float-slow: float 8s ease-in-out infinite;
+  --animate-float-fast: float 4s ease-in-out infinite;
+  --animate-wave-bar-1: wave 1.2s ease-in-out infinite 0.1s;
+  --animate-wave-bar-2: wave 1.2s ease-in-out infinite 0.3s;
+  --animate-wave-bar-3: wave 1.2s ease-in-out infinite 0.5s;
+  --animate-wave-bar-4: wave 1.2s ease-in-out infinite 0.2s;
+  --animate-wave-bar-5: wave 1.2s ease-in-out infinite 0.4s;
+  --animate-fade-in: fadeIn 0.5s ease-out forwards;
+  --animate-fade-in-delay: fadeIn 0.5s ease-out 0.2s forwards;
+  --animate-slide-up: slideUp 0.6s ease-out forwards;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1) }
+  50% { transform: translateY(-8px) scale(1.02) }
+}
+@keyframes wave {
+  0%, 100% { height: 8px }
+  50% { height: 24px }
+}
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px) }
+  100% { opacity: 1; transform: translateY(0) }
+}
+@keyframes slideUp {
+  0% { opacity: 0; transform: translateY(20px) }
+  100% { opacity: 1; transform: translateY(0) }
+}
+
+@layer base {
+  body {
+    @apply bg-[#040814] text-slate-100 font-sans antialiased min-h-screen overflow-x-hidden;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(20, 83, 45, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(86, 73, 35, 0.08) 0px, transparent 50%),
+      radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.98) 0px, #040814 100%);
+  }
+
+  body::selection {
+    @apply bg-farm-500 text-white;
+  }
+}
+
+/* Dynamic utilities for glassmorphism styling using Tailwind v4 @utility directive */
+@utility glass-panel {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+@utility glass-card {
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  
+  &:hover {
+    border-color: rgba(34, 197, 94, 0.35);
+    box-shadow: 0 12px 40px 0 rgba(34, 197, 94, 0.08), 0 0 20px 2px rgba(34, 197, 94, 0.15);
+    transform: translateY(-4px);
+  }
+}
+
+@utility glass-card-gold {
+  &:hover {
+    border-color: rgba(218, 165, 32, 0.35);
+    box-shadow: 0 12px 40px 0 rgba(218, 165, 32, 0.08), 0 0 20px 2px rgba(218, 165, 32, 0.15);
+    transform: translateY(-4px);
+  }
+}
+
+@utility glass-input {
+  background: rgba(5, 10, 20, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+  
+  &:focus {
+    border-color: rgba(34, 197, 94, 0.5);
+    background: rgba(5, 10, 20, 0.7);
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.15);
+    outline: none;
+  }
+}
+
+@utility text-gradient-green {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-farm-400 via-emerald-400 to-green-500;
+}
+
+@utility text-gradient-gold {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-500;
+}
+
+/* Custom Scrollbar for dashboard views */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(4, 8, 20, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 197, 94, 0.5);
+}
+
+/* Pulse keyframes for custom glowing items */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.5;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 25px rgba(34, 197, 94, 0.6);
+  }
+}
+
+.glowing-badge {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
