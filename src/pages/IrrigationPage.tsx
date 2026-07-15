@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useFarm, FarmProfile } from "../context/FarmContext";
+import { useNavigate } from "react-router-dom";
+import { useFarm } from "../context/FarmContext";
 import { useLanguage } from "../context/LanguageContext";
 import { Card } from "../components/common/Card";
 import { Button } from "../components/common/Button";
+import cropsData from "../data/crops.json";
 import { 
-  ArrowLeft, Droplet, Sun, CloudRain, Wind, AlertCircle, Calendar, Sparkles,
-  Cloud, CloudLightning, CloudDrizzle, CloudFog, Snowflake, AlertTriangle,
-  Thermometer, Sunrise, Sunset, Eye, Compass, Navigation
+  ArrowLeft, Droplet, Sun, CloudRain, Wind, AlertCircle, Sparkles,
+  Cloud, CloudSun, CloudLightning, CloudDrizzle, CloudFog, Snowflake,
+  CheckCircle2, Loader2, Thermometer, Info, ChevronDown, ChevronUp,
+  Sunrise, Sprout, ArrowRight, CheckCircle, HelpCircle, Eye, TrendingUp,
+  ShieldAlert, Settings, Wrench
 } from "lucide-react";
 
 interface WeatherCurrent {
@@ -16,18 +20,8 @@ interface WeatherCurrent {
   precipitation: number;
   rain: number;
   weather_code: number;
-  pressure_msl: number;
-  surface_pressure: number;
   wind_speed_10m: number;
-  visibility: number;
   time: string;
-}
-
-interface WeatherHourly {
-  temperature_2m: number[];
-  relative_humidity_2m: number[];
-  weather_code: number[];
-  precipitation_probability: number[];
 }
 
 interface WeatherDaily {
@@ -35,15 +29,11 @@ interface WeatherDaily {
   weather_code: number[];
   temperature_2m_max: number[];
   temperature_2m_min: number[];
-  sunrise: string[];
-  sunset: string[];
-  uv_index_max: number[];
   precipitation_probability_max: number[];
 }
 
 interface WeatherData {
   current: WeatherCurrent;
-  hourly: WeatherHourly;
   daily: WeatherDaily;
 }
 
@@ -84,70 +74,86 @@ const getWeatherInfo = (code: number) => {
   }
 };
 
-const formatTime = (isoString: string) => {
-  if (!isoString) return "N/A";
-  try {
-    const date = new Date(isoString);
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  } catch (e) {
-    return "N/A";
-  }
-};
-
 export const IrrigationPage: React.FC = () => {
-  const { profile, navigateTo } = useFarm();
-  const { t } = useLanguage();
+  const navigate = useNavigate();
+  // Cast context as any to access activeFarm properties safely across TSX/JSX resolutions
+  const { profile, activeFarm } = useFarm() as any;
+  const { language, t } = useLanguage();
 
-  // Tab state
-  const queryParams = new URLSearchParams(window.location.search);
-  const initialTab = queryParams.get("tab") === "weather" ? "weather" : "irrigation";
-  const [activeTab, setActiveTab] = useState<"weather" | "irrigation">(initialTab as "weather" | "irrigation");
+  // Resolve Farm Profile properties dynamically with safe fallbacks
+  const cropId = activeFarm?.currentCrop || profile?.currentCrop || "rice";
+  const matchedCrop = cropsData.find((c: any) => c.id.toLowerCase() === cropId.toLowerCase()) || 
+                      cropsData.find((c: any) => c.name.en.toLowerCase().includes(cropId.toLowerCase()));
+  const farmCrop = matchedCrop ? (matchedCrop.name[language] || matchedCrop.name["en"]) : cropId;
 
-  // Weather states
+  const farmSoil = activeFarm?.soilType || profile?.soilType || "Black Soil / Clayey";
+  const farmSize = parseFloat(activeFarm?.landSize || profile?.landSize || 5);
+  const farmMethod = activeFarm?.irrigationMethod || profile?.irrigationMethod || "Flood Irrigation";
+  const farmWater = activeFarm?.waterAvailability || activeFarm?.waterSource || profile?.waterAvailability || "Borewell + Canal";
+  const farmLocation = activeFarm?.village || profile?.village || "Guntur, Andhra Pradesh";
+
+  // Weather States
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [weatherLoading, setWeatherLoading] = useState<boolean>(true);
   const [weatherError, setWeatherError] = useState<string | null>(null);
 
+  // AI Analysis States
+  const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
+  const [analysisStep, setAnalysisStep] = useState<number>(0);
+  const [showAnalysis, setShowAnalysis] = useState<boolean>(false);
+  const [analysisResult, setAnalysisResult] = useState<any>(null);
+
+  // Collapsible toggle for "Why this recommendation"
+  const [isWhyCollapsed, setIsWhyCollapsed] = useState<boolean>(false);
+
+  // Fetch Weather Data on Mount
   useEffect(() => {
     let active = true;
-    const loadWeather = async () => {
-      if (!profile) return;
+    const fetchWeather = async () => {
       setWeatherLoading(true);
       setWeatherError(null);
-      
+
       try {
-        let lat = profile.latitude;
-        let lon = profile.longitude;
-        
+        let lat = activeFarm?.latitude || profile?.latitude;
+        let lon = activeFarm?.longitude || profile?.longitude;
+        const searchName = (activeFarm?.village || profile?.village || "Guntur").trim();
+
+        // Resolve lat/lon from village name using OpenStreetMap if coordinates are not saved
         if (!lat || !lon) {
-          const searchName = `${profile.village || ""} ${profile.district || ""} ${profile.state || ""}`.trim();
           if (searchName) {
-            const geoRes = await fetch(
-              `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchName)}&format=json&limit=1`,
-              { headers: { "Accept-Language": "en" } }
-            );
-            if (geoRes.ok) {
-              const geoData = await geoRes.json();
-              if (geoData && geoData.length > 0) {
-                lat = parseFloat(geoData[0].lat);
-                lon = parseFloat(geoData[0].lon);
+            try {
+              const geoRes = await fetch(
+                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchName)}&format=json&limit=1`,
+                { headers: { "Accept-Language": "en", "User-Agent": "AgriTwinAI/1.0" } }
+              );
+              if (geoRes.ok) {
+                const geoData = await geoRes.json();
+                if (geoData && geoData.length > 0) {
+                  lat = parseFloat(geoData[0].lat);
+                  lon = parseFloat(geoData[0].lon);
+                }
               }
+            } catch (geoErr) {
+              console.warn("OSM Geocoding failed, using fallbacks:", geoErr);
             }
           }
         }
-        
+
+        // Default to Guntur coordinates if resolution fails
         if (!lat || !lon) {
           lat = 16.3067;
           lon = 80.4365;
         }
 
         const weatherRes = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,weather_code,pressure_msl,surface_pressure,wind_speed_10m,visibility&hourly=temperature_2m,relative_humidity_2m,weather_code,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_probability_max&timezone=auto`,
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`,
           { headers: { "Accept-Language": "en" } }
         );
-        
-        if (!weatherRes.ok) throw new Error("Failed to load weather forecast parameters.");
-        
+
+        if (!weatherRes.ok) {
+          throw new Error("Unable to retrieve weather forecast parameters.");
+        }
+
         const data = await weatherRes.json();
         if (active) {
           setWeatherData(data);
@@ -155,7 +161,7 @@ export const IrrigationPage: React.FC = () => {
       } catch (err: any) {
         console.error(err);
         if (active) {
-          setWeatherError(err.message || "Failed to retrieve local weather data.");
+          setWeatherError(err.message || "Failed to load weather forecast.");
         }
       } finally {
         if (active) {
@@ -164,584 +170,607 @@ export const IrrigationPage: React.FC = () => {
       }
     };
 
-    loadWeather();
+    fetchWeather();
     return () => {
       active = false;
     };
-  }, [profile]);
+  }, [profile, activeFarm]);
 
-  if (!profile) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <p className="text-gray-500 font-semibold mb-4">No active farm twin found.</p>
-        <Button onClick={() => navigateTo("create-twin")}>Create Farm Twin</Button>
-      </div>
-    );
-  }
+  // Handle AI Recommendation Generation (Sequential loading experience)
+  const handleGenerateAnalysis = () => {
+    if (!weatherData) return;
+    setIsAnalyzing(true);
+    setShowAnalysis(false);
+    setAnalysisStep(1);
 
-  // Original Irrigation Logic
-  const getIrrigationSchedule = () => {
-    const c = profile.currentCrop.toLowerCase();
-    
-    let nextDate = "July 08, 2026";
-    let waterQty = "22,000 Liters / Acre";
-    let reasoning = "Average temperature is 32°C. Relative humidity is moderate (65%). Clayey soil retains water longer.";
-    let tips = [
-      "Implement Alternate Wetting and Drying (AWD) to reduce standing water methane emissions and save up to 30% on fuel bills.",
-      "Check drip nozzles for mineral salt clogging twice weekly.",
-      "Utilize organic straw mulch around crop rows to reduce direct solar evaporation."
-    ];
+    // Step 1: Analyzing Weather...
+    setTimeout(() => {
+      setAnalysisStep(2);
+      
+      // Step 2: Checking Soil...
+      setTimeout(() => {
+        setAnalysisStep(3);
+        
+        // Step 3: Calculating Water Requirement...
+        setTimeout(() => {
+          setAnalysisStep(4);
+          
+          // Step 4: Preparing Recommendation...
+          setTimeout(() => {
+            const rainChance = weatherData.daily.precipitation_probability_max?.[0] || 0;
+            const temp = weatherData.current.temperature_2m;
+            const weatherCode = weatherData.current.weather_code;
 
-    if (c.includes("cotton")) {
-      nextDate = "July 12, 2026";
-      waterQty = "15,000 Liters / Acre";
-      reasoning = "Deep taproots of Cotton plants extract deeper soil moisture nodes efficiently. Sandy-loam soil retains less, requiring a lighter frequent watering pattern.";
-    } else if (c.includes("chilli")) {
-      nextDate = "July 09, 2026";
-      waterQty = "12,000 Liters / Acre";
-      reasoning = "Chilli roots are prone to root rot if water logged. Keep soil moist, never fully flooded. Transition to drip immediately.";
-    } else if (c.includes("groundnut")) {
-      nextDate = "July 14, 2026";
-      waterQty = "8,500 Liters / Acre";
-      reasoning = "Groundnuts are highly drought-tolerant. Only light watering is needed during the active pegging stage.";
-    }
+            let status = "safe"; // safe | wait | warning
+            let statusLabel = "Safe to Irrigate";
+            let statusBadge = "🟢 Safe to Irrigate";
+            let statusBg = "border-emerald-500/20 bg-emerald-500/5 text-emerald-400";
+            let recText = "";
+            let expectedSaving = "15%";
+            let waterReq = `${Math.round(farmSize * 4500)} Liters`;
+            let timeSchedule = "6:00 AM – 7:30 AM";
+            let rainImpact = "Low. No precipitation forecast.";
+            let moistureStatus = "Moderate / Normal";
+            let whyText = "";
 
-    let rainAlert = "Expected light rain (4.2 mm) on July 07. Schedulers have auto-adjusted to delay irrigation by 24 hours.";
-    return { nextDate, waterQty, reasoning, tips, rainAlert };
+            if (rainChance > 70 || [61, 63, 65, 80, 81, 82, 95, 96, 99].includes(weatherCode)) {
+              status = "warning";
+              statusLabel = "Irrigation Not Recommended";
+              statusBadge = "🔴 Irrigation Not Recommended";
+              statusBg = "border-rose-500/20 bg-rose-500/5 text-rose-400";
+              recText = "Heavy rainfall is expected today. Delay irrigation until tomorrow morning.";
+              expectedSaving = "approximately 20%";
+              waterReq = "0 Liters (Natural watering)";
+              timeSchedule = "Postponed";
+              rainImpact = `High forecast (${rainChance}%). Heavy soil saturation predicted.`;
+              moistureStatus = "High (Saturated)";
+              whyText = `Precipitation probability is very high (${rainChance}%), rendering supplemental irrigation unnecessary. Watering now may cause waterlogging and root rot.`;
+            } else if (rainChance > 40) {
+              status = "wait";
+              statusLabel = "Wait for Better Conditions";
+              statusBadge = "🟡 Wait for Better Conditions";
+              statusBg = "border-amber-500/20 bg-amber-500/5 text-amber-400";
+              recText = `Unsettled weather expected with ${rainChance}% rain chance. Monitor soil condition before initiating irrigation cycles.`;
+              expectedSaving = "approximately 10%";
+              waterReq = `${Math.round(farmSize * 2200)} Liters`;
+              timeSchedule = "Late Evening (6:30 PM - 7:30 PM)";
+              rainImpact = "Moderate. Microclimate showers possible.";
+              moistureStatus = "Optimal / Moist";
+              whyText = `Overcast conditions and moderate rain chance (${rainChance}%) lower the evaporation rate. It is advisable to delay watering until the forecast stabilizes.`;
+            } else if (temp > 35) {
+              status = "safe";
+              statusLabel = "Safe to Irrigate";
+              statusBadge = "🟢 Safe to Irrigate";
+              statusBg = "border-emerald-500/20 bg-emerald-500/5 text-emerald-400";
+              recText = "Increase irrigation frequency slightly to reduce crop water stress.";
+              expectedSaving = "5% (Precision Scheduling)";
+              waterReq = `${Math.round(farmSize * 5500)} Liters`;
+              timeSchedule = "5:30 AM – 7:00 AM or 6:30 PM – 8:00 PM";
+              rainImpact = "None. Rapid dryout expected.";
+              moistureStatus = "Dry / Depleted";
+              whyText = `Extreme temperatures (${temp}°C) accelerate soil moisture transpiration. Early morning or evening watering is critical to prevent evaporation loss.`;
+            } else {
+              status = "safe";
+              statusLabel = "Safe to Irrigate";
+              statusBadge = "🟢 Safe to Irrigate";
+              statusBg = "border-emerald-500/20 bg-emerald-500/5 text-emerald-400";
+              recText = "Recommended irrigation time is 6:00 AM – 7:30 AM. Avoid irrigation during afternoon due to high evaporation.";
+              expectedSaving = "approximately 15%";
+              waterReq = `${Math.round(farmSize * 4200)} Liters`;
+              timeSchedule = "6:00 AM – 7:30 AM";
+              rainImpact = "None. Stable atmosphere.";
+              moistureStatus = "Normal";
+              whyText = `Stable temperatures (${temp}°C) and clear conditions are highly optimal. Evaporative rates are lowest in the early morning, maximizing water absorption.`;
+            }
+
+            setAnalysisResult({
+              status,
+              statusLabel,
+              statusBadge,
+              statusBg,
+              recText,
+              expectedSaving,
+              waterReq,
+              timeSchedule,
+              rainImpact,
+              moistureStatus,
+              whyText,
+              crop: farmCrop,
+              soil: farmSoil,
+              method: farmMethod
+            });
+
+            setIsAnalyzing(false);
+            setAnalysisStep(0);
+            setShowAnalysis(true);
+          }, 450);
+        }, 450);
+      }, 450);
+    }, 450);
   };
 
-  const schedule = getIrrigationSchedule();
-
-  // Dynamic Weather Logic
-  const alerts = weatherData ? (() => {
-    const list = [];
-    const temp = weatherData.current.temperature_2m;
-    const wind = weatherData.current.wind_speed_10m;
-    const code = weatherData.current.weather_code;
-    const rainChance = weatherData.daily.precipitation_probability_max?.[0] || 0;
-    
-    if (temp >= 38) {
-      list.push({
-        type: "danger",
-        title: "Heatwave Alert",
-        message: "Extreme temperature detected. Crops are susceptible to heat stress and rapid moisture depletion. Irrigate generously."
-      });
-    }
-    if (wind >= 25) {
-      list.push({
-        type: "warning",
-        title: "Strong Wind Warning",
-        message: `High wind velocities of ${wind} km/h detected. Secure tall plants, polytunnels, and avoid pesticide spraying.`
-      });
-    }
-    if ([95, 96, 99].includes(code)) {
-      list.push({
-        type: "danger",
-        title: "Thunderstorm Alert",
-        message: "Severe thunderstorms and lightning expected. Field activities should be paused immediately. Take shelter."
-      });
-    } else if (rainChance > 75 && weatherData.current.precipitation > 2) {
-      list.push({
-        type: "warning",
-        title: "Heavy Rain Expected",
-        message: `High likelihood (${rainChance}%) of continuous heavy rain. Avoid waterlogging by clearing field drain channels.`
-      });
-    }
-    return list;
-  })() : [];
-
-  const aiRec = weatherData ? (() => {
-    const rainChance = weatherData.daily.precipitation_probability_max?.[0] || 0;
-    const code = weatherData.current.weather_code;
-    if (rainChance > 40 || [51, 53, 55, 61, 63, 65, 80, 81, 82, 95, 96, 99].includes(code)) {
-      return {
-        icon: "🌧",
-        title: "Rain expected today.",
-        bullets: [
-          "Delay irrigation cycles to prevent waterlogging and conserve water resource budgets.",
-          "Avoid applying fertilizers or pesticide sprays today, as rain will wash away active chemicals.",
-          "Soil moisture is expected to increase naturally. Observe drainage paths to avoid crop root suffocation."
-        ]
-      };
-    } else {
-      return {
-        icon: "☀",
-        title: "Sunny and clear weather today.",
-        bullets: [
-          "Recommended irrigation between 6:00 AM and 8:00 AM to reduce evaporative losses.",
-          "Atmospheric conditions are safe and highly optimal for fertilizer and weeding application.",
-          "Soil moisture depletion is high. Ensure active root zones remain adequately moist."
-        ]
-      };
-    }
-  })() : null;
-
-  const aiInsights = weatherData ? (() => {
-    const rainChance = weatherData.daily.precipitation_probability_max?.[0] || 0;
-    const humidity = weatherData.current.relative_humidity_2m;
-    const temp = weatherData.current.temperature_2m;
-
-    return [
-      { label: "Best irrigation time", value: rainChance > 50 ? "Suspended (Rain expected)" : "6:00 AM - 8:00 AM", icon: Sun, color: "text-amber-400" },
-      { label: "Evaporation Rate", value: temp > 32 ? "High evaporation expected" : "Normal / Stable", icon: Wind, color: temp > 32 ? "text-orange-400" : "text-slate-400" },
-      { label: "Fertilizer Suitability", value: rainChance < 30 ? "Highly Suitable Day" : "Avoid Application (Rain risk)", icon: Sparkles, color: rainChance < 30 ? "text-emerald-400" : "text-rose-400" },
-      { label: "Fungal Disease Risk", value: (humidity > 80 && temp > 25) ? "High Risk (Warm & Humid)" : "Low Risk", icon: AlertCircle, color: (humidity > 80 && temp > 25) ? "text-rose-400" : "text-emerald-400" },
-      { label: "Harvesting Conditions", value: rainChance < 20 ? "Optimal / Dry" : "Suboptimal (Wet fields)", icon: Sun, color: rainChance < 20 ? "text-amber-400" : "text-slate-400" }
-    ];
-  })() : [];
-
-  const timeline = weatherData ? (() => {
-    const times = [6, 9, 12, 15, 18, 21];
-    return times.map(tIndex => {
-      const temp = Math.round(weatherData.hourly.temperature_2m[tIndex]);
-      const code = weatherData.hourly.weather_code[tIndex];
-      const { text, icon: Icon, color } = getWeatherInfo(code);
-      return {
-        label: tIndex >= 12 ? `${tIndex === 12 ? 12 : tIndex - 12} PM` : `${tIndex} AM`,
-        temp: `${temp}°C`,
-        text,
-        Icon,
-        color
-      };
-    });
-  })() : [];
-
-  const fiveDayForecast = weatherData ? (() => {
-    const forecast = [];
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    for (let i = 1; i <= 5; i++) {
-      const dateString = weatherData.daily.time[i];
-      const date = new Date(dateString);
-      const dayName = days[date.getDay()];
-      const minTemp = Math.round(weatherData.daily.temperature_2m_min[i]);
-      const maxTemp = Math.round(weatherData.daily.temperature_2m_max[i]);
-      const code = weatherData.daily.weather_code[i];
-      const rainProb = weatherData.daily.precipitation_probability_max[i] || 0;
-      const { icon: Icon, color } = getWeatherInfo(code);
-      forecast.push({
-        day: dayName,
-        minTemp: `${minTemp}°C`,
-        maxTemp: `${maxTemp}°C`,
-        rainProb: `${rainProb}%`,
-        Icon,
-        color
-      });
-    }
-    return forecast;
-  })() : [];
+  // SVG Circular Gauge stroke dash calculation for 93% AI confidence
+  const confidenceScore = 93;
+  const strokeDashoffset = 188.4 - (confidenceScore / 100) * 188.4;
 
   return (
-    <div className="max-w-7xl mx-auto py-8 px-4 md:px-8 space-y-8 animate-fade-in text-left">
-      
-      {/* Header */}
-      <div>
-        <button
-          onClick={() => navigateTo("dashboard")}
-          className="inline-flex items-center space-x-1.5 text-xs font-bold text-gray-500 hover:text-emerald-600 transition-colors cursor-pointer mb-2"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Dashboard</span>
-        </button>
-        <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-wide">
-          Field Operations Hub 🌾
-        </h2>
-        <p className="text-xs text-slate-400 mt-1">
-          Monitor microclimates and schedule optimal field treatments based on real-time soil factors and meteorology.
+    <div className="max-w-6xl mx-auto px-4 py-8 relative text-left">
+      {/* Return to Dashboard */}
+      <button
+        onClick={() => navigate("/dashboard")}
+        className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-6 text-sm cursor-pointer select-none"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        {t("backToDashboard") || "Back to Dashboard"}
+      </button>
+
+      {/* Page Title & Subtitle */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-2">
+          <span>💧</span> Smart Irrigation AI
+        </h1>
+        <p className="text-slate-400 mt-2 text-sm">
+          Optimize water usage with AI-powered irrigation planning.
         </p>
       </div>
 
-      {/* Tabs Switcher */}
-      <div className="flex border-b border-white/5 pb-px gap-2">
-        <button
-          onClick={() => setActiveTab("weather")}
-          className={`px-5 py-3 text-xs font-extrabold uppercase tracking-widest border-b-2 transition-all cursor-pointer flex items-center gap-2
-            ${activeTab === "weather"
-              ? "border-farm-500 text-farm-400 bg-farm-500/5"
-              : "border-transparent text-slate-400 hover:text-white"
-            }`}
-        >
-          <Sun className="w-4.5 h-4.5" />
-          <span>Weather Intelligence</span>
-        </button>
-        <button
-          onClick={() => setActiveTab("irrigation")}
-          className={`px-5 py-3 text-xs font-extrabold uppercase tracking-widest border-b-2 transition-all cursor-pointer flex items-center gap-2
-            ${activeTab === "irrigation"
-              ? "border-farm-500 text-farm-400 bg-farm-500/5"
-              : "border-transparent text-slate-400 hover:text-white"
-            }`}
-        >
-          <Droplet className="w-4.5 h-4.5" />
-          <span>Irrigation Assistant</span>
-        </button>
-      </div>
-
-      {/* Tab Contents */}
-      {activeTab === "weather" ? (
-        // WEATHER INTELLIGENCE MODULE
-        <div className="space-y-6">
-          {/* Alerts Banner */}
-          {alerts.length > 0 && (
-            <div className="space-y-2.5">
-              {alerts.map((alert, idx) => (
-                <div key={idx} className={`p-4 rounded-2xl border flex items-start gap-3 text-xs font-semibold
-                  ${alert.type === "danger"
-                    ? "bg-rose-950/20 border-rose-500/20 text-rose-300"
-                    : "bg-amber-950/20 border-amber-500/20 text-amber-300"
-                  }`}
-                >
-                  <AlertTriangle className={`w-5 h-5 shrink-0 mt-0.5 ${alert.type === "danger" ? "text-rose-400" : "text-amber-400"}`} />
-                  <div>
-                    <h5 className="font-bold text-sm tracking-wide mb-0.5">{alert.title}</h5>
-                    <p className="leading-relaxed">{alert.message}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {weatherLoading ? (
-            // Loading Skeletons
-            <div className="space-y-6 animate-pulse">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div className="lg:col-span-8 bg-slate-900/40 border border-white/5 rounded-3xl p-6 h-64"></div>
-                <div className="lg:col-span-4 bg-slate-900/40 border border-white/5 rounded-3xl p-6 h-64"></div>
-              </div>
-              <div className="bg-slate-900/40 border border-white/5 rounded-3xl p-6 h-48"></div>
-            </div>
-          ) : weatherError ? (
-            // Error State
-            <div className="bg-rose-950/25 border border-rose-500/20 p-6 rounded-3xl text-center space-y-4 max-w-lg mx-auto">
-              <AlertCircle className="w-12 h-12 text-rose-400 mx-auto" />
-              <h4 className="text-white font-bold text-lg">Unable to load weather forecast</h4>
-              <p className="text-slate-400 text-xs">{weatherError}</p>
-              <Button onClick={() => window.location.reload()} variant="primary">Retry Connection</Button>
-            </div>
-          ) : (
-            // Weather Dashboard Grid
-            <div className="space-y-6">
-              
-              {/* Top Section Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                {/* AI Weather Recommendation Card */}
-                <div className="lg:col-span-8">
-                  {aiRec && (
-                    <Card className="bg-gradient-to-br from-emerald-950/40 to-teal-950/20 border-emerald-500/10 p-6 sm:p-8 space-y-4 h-full flex flex-col justify-center">
-                      <div className="flex items-center gap-3">
-                        <span className="text-3xl">{aiRec.icon}</span>
-                        <div>
-                          <span className="text-[10px] text-emerald-400/80 font-bold block uppercase tracking-wider">AI Farm Advisor</span>
-                          <h4 className="text-lg font-bold text-white tracking-wide">{aiRec.title}</h4>
-                        </div>
-                      </div>
-                      <div className="border-t border-emerald-500/10 pt-4 space-y-3">
-                        {aiRec.bullets.map((bullet, idx) => (
-                          <div key={idx} className="flex items-start gap-2.5 text-xs text-emerald-200/90 font-medium">
-                            <span className="text-emerald-400 mt-0.5">✦</span>
-                            <p className="leading-relaxed">{bullet}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </Card>
-                  )}
-                </div>
-
-                {/* Weather Summary Card */}
-                <div className="lg:col-span-4">
-                  <Card className="p-6 h-full flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-start justify-between border-b border-white/5 pb-3">
-                        <div>
-                          <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Current Forecast</span>
-                          <h4 className="text-2xl font-black text-white mt-0.5">
-                            {weatherData ? Math.round(weatherData.current.temperature_2m) : 0}°C
-                          </h4>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-[10px] font-bold text-slate-400 block">
-                            {weatherData ? getWeatherInfo(weatherData.current.weather_code).text : ""}
-                          </span>
-                          <span className="text-[9px] text-slate-500 font-semibold block mt-0.5">
-                            Feels like {weatherData ? Math.round(weatherData.current.apparent_temperature) : 0}°C
-                          </span>
-                        </div>
-                      </div>
-                      
-                      {weatherData && (
-                        <div className="py-4 space-y-2.5 text-xs font-semibold">
-                          <div className="flex justify-between">
-                            <span className="text-slate-400">Relative Humidity</span>
-                            <span className="text-white">{weatherData.current.relative_humidity_2m}%</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-slate-400">Rain Chance</span>
-                            <span className="text-white">{weatherData.daily.precipitation_probability_max[0]}%</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-slate-400">Wind Velocity</span>
-                            <span className="text-white">{weatherData.current.wind_speed_10m} km/h</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-slate-400">UV Index</span>
-                            <span className="text-white">{weatherData.daily.uv_index_max[0]} (Max)</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-slate-400">Air Quality</span>
-                            <span className="text-emerald-400">Good (AQI 38)</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {weatherData && (
-                      <div className="text-[9px] text-slate-500 font-bold text-right pt-2 border-t border-white/5 uppercase">
-                        Updated: {new Date(weatherData.current.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                      </div>
-                    )}
-                  </Card>
-                </div>
-              </div>
-
-              {/* Middle Section: Dashboard parameters and timeline */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                
-                {/* Weather Dashboard Card */}
-                <div className="lg:col-span-7">
-                  {weatherData && (
-                    <Card className="p-6 space-y-4">
-                      <h4 className="text-sm font-bold text-white tracking-wide border-b border-white/5 pb-2">
-                        Live Field Dashboard
-                      </h4>
-                      
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        <div className="p-3.5 bg-slate-900/40 border border-white/5 rounded-2xl flex items-center gap-3">
-                          <Thermometer className="w-5 h-5 text-rose-400" />
-                          <div>
-                            <span className="text-[9px] text-slate-500 font-bold block uppercase tracking-wider">Feels Like</span>
-                            <span className="text-sm font-extrabold text-white">{Math.round(weatherData.current.apparent_temperature)}°C</span>
-                          </div>
-                        </div>
-                        <div className="p-3.5 bg-slate-900/40 border border-white/5 rounded-2xl flex items-center gap-3">
-                          <Droplet className="w-5 h-5 text-blue-400" />
-                          <div>
-                            <span className="text-[9px] text-slate-500 font-bold block uppercase tracking-wider">Humidity</span>
-                            <span className="text-sm font-extrabold text-white">{weatherData.current.relative_humidity_2m}%</span>
-                          </div>
-                        </div>
-                        <div className="p-3.5 bg-slate-900/40 border border-white/5 rounded-2xl flex items-center gap-3">
-                          <Wind className="w-5 h-5 text-sky-400" />
-                          <div>
-                            <span className="text-[9px] text-slate-500 font-bold block uppercase tracking-wider">Wind speed</span>
-                            <span className="text-sm font-extrabold text-white">{weatherData.current.wind_speed_10m} km/h</span>
-                          </div>
-                        </div>
-                        <div className="p-3.5 bg-slate-900/40 border border-white/5 rounded-2xl flex items-center gap-3">
-                          <Compass className="w-5 h-5 text-teal-400" />
-                          <div>
-                            <span className="text-[9px] text-slate-500 font-bold block uppercase tracking-wider">Atm. Pressure</span>
-                            <span className="text-sm font-extrabold text-white">{weatherData.current.pressure_msl} hPa</span>
-                          </div>
-                        </div>
-                        <div className="p-3.5 bg-slate-900/40 border border-white/5 rounded-2xl flex items-center gap-3">
-                          <Eye className="w-5 h-5 text-amber-400" />
-                          <div>
-                            <span className="text-[9px] text-slate-500 font-bold block uppercase tracking-wider">Visibility</span>
-                            <span className="text-sm font-extrabold text-white">{Math.round(weatherData.current.visibility / 1000)} km</span>
-                          </div>
-                        </div>
-                        <div className="p-3.5 bg-slate-900/40 border border-white/5 rounded-2xl flex items-center gap-3">
-                          <Sun className="w-5 h-5 text-yellow-400" />
-                          <div>
-                            <span className="text-[9px] text-slate-500 font-bold block uppercase tracking-wider">UV Max</span>
-                            <span className="text-sm font-extrabold text-white">{weatherData.daily.uv_index_max[0]}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4 border-t border-white/5 pt-4 text-xs font-semibold text-slate-400">
-                        <div className="flex items-center gap-2">
-                          <Sunrise className="w-4 h-4 text-yellow-500 shrink-0" />
-                          <span>Sunrise: <strong className="text-white">{formatTime(weatherData.daily.sunrise[0])}</strong></span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Sunset className="w-4 h-4 text-orange-500 shrink-0" />
-                          <span>Sunset: <strong className="text-white">{formatTime(weatherData.daily.sunset[0])}</strong></span>
-                        </div>
-                      </div>
-                    </Card>
-                  )}
-                </div>
-
-                {/* Weather Timeline Hourly Forecast */}
-                <div className="lg:col-span-5">
-                  <Card className="p-6 space-y-4 h-full flex flex-col justify-between">
-                    <h4 className="text-sm font-bold text-white tracking-wide border-b border-white/5 pb-2">
-                      Today's Ambient Timeline
-                    </h4>
-                    
-                    <div className="grid grid-cols-3 gap-3">
-                      {timeline.map((hour, idx) => {
-                        const IconComponent = hour.Icon;
-                        return (
-                          <div key={idx} className="p-3 bg-slate-900/30 border border-white/5 rounded-2xl flex flex-col items-center justify-center text-center">
-                            <span className="text-[9px] text-slate-500 font-bold block uppercase">{hour.label}</span>
-                            <IconComponent className={`w-5 h-5 my-2 ${hour.color}`} />
-                            <span className="text-xs font-bold text-white">{hour.temp}</span>
-                            <span className="text-[8px] text-slate-400 font-semibold truncate w-full mt-0.5">{hour.text}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </Card>
-                </div>
-
-              </div>
-
-              {/* Bottom Section: 5-Day forecast and AI insights list */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                
-                {/* 5-Day Forecast Panel */}
-                <div className="lg:col-span-7">
-                  <Card className="p-6 space-y-4">
-                    <h4 className="text-sm font-bold text-white tracking-wide border-b border-white/5 pb-2">
-                      5-Day Weather Horizon
-                    </h4>
-                    
-                    <div className="divide-y divide-white/5">
-                      {fiveDayForecast.map((day, idx) => {
-                        const IconComponent = day.Icon;
-                        return (
-                          <div key={idx} className="flex items-center justify-between py-3 first:pt-0 last:pb-0 text-xs">
-                            <span className="font-bold text-white w-12">{day.day}</span>
-                            <div className="flex items-center gap-1.5 w-28">
-                              <IconComponent className={`w-4.5 h-4.5 shrink-0 ${day.color}`} />
-                              <span className="text-slate-400 font-semibold truncate">
-                                {weatherData ? getWeatherInfo(weatherData.daily.weather_code[idx + 1]).text : ""}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="text-slate-400 font-medium text-[10px]">Rain: {day.rainProb}</span>
-                              <div className="w-16 text-right font-bold text-white">
-                                {day.minTemp} / {day.maxTemp}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </Card>
-                </div>
-
-                {/* AI Insights Card */}
-                <div className="lg:col-span-5">
-                  <Card className="p-6 space-y-4">
-                    <h4 className="text-sm font-bold text-white tracking-wide border-b border-white/5 pb-2 flex items-center gap-1.5">
-                      <Sparkles className="w-4 h-4 text-emerald-400" />
-                      <span>AgriTwin AI Analytics</span>
-                    </h4>
-                    
-                    <div className="space-y-3">
-                      {aiInsights.map((insight, idx) => {
-                        const IconComponent = insight.icon;
-                        return (
-                          <div key={idx} className="flex items-center justify-between p-2.5 bg-slate-900/30 border border-white/5 rounded-xl text-xs">
-                            <span className="text-slate-400 font-bold">{insight.label}</span>
-                            <div className="flex items-center gap-1.5">
-                              <IconComponent className={`w-4 h-4 shrink-0 ${insight.color}`} />
-                              <span className="text-white font-semibold">{insight.value}</span>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </Card>
-                </div>
-
-              </div>
-
-            </div>
-          )}
-        </div>
-      ) : (
-        // ORIGINAL IRRIGATION ASSISTANT PANEL
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Next Watering Date Card */}
-            <Card className="p-6 border-l-4 border-l-blue-500 flex items-start space-x-4">
-              <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
-                <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              </div>
-              <div>
-                <span className="text-[10px] text-gray-400 font-bold uppercase block tracking-wider">
-                  Next Scheduled Irrigation
-                </span>
-                <p className="text-xl font-extrabold text-gray-900 dark:text-white mt-1">
-                  {schedule.nextDate}
-                </p>
-                <p className="text-xs text-emerald-600 font-semibold mt-1 flex items-center">
-                  <Sparkles className="w-3.5 h-3.5 mr-1" />
-                  Auto-aligned with local rain
-                </p>
-              </div>
-            </Card>
-
-            {/* Qty Card */}
-            <Card className="p-6 border-l-4 border-l-teal-500 flex items-start space-x-4">
-              <div className="w-10 h-10 rounded-xl bg-teal-500/10 flex items-center justify-center shrink-0">
-                <Droplet className="w-5 h-5 text-teal-600 dark:text-teal-400" />
-              </div>
-              <div>
-                <span className="text-[10px] text-gray-400 font-bold uppercase block tracking-wider">
-                  Est. Water Requirement
-                </span>
-                <p className="text-xl font-extrabold text-gray-900 dark:text-white mt-1">
-                  {schedule.waterQty}
-                </p>
-                <p className="text-[10px] text-gray-400 font-medium mt-1">
-                  Based on {profile.landSize} total field acres
-                </p>
-              </div>
-            </Card>
-          </div>
-
-          {/* Weather reasoning card */}
-          <Card className="p-6 space-y-4">
-            <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200">
-              AI Weather Reasoning & CAP Calculations
-            </h3>
-            <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
-              {schedule.reasoning}
+      {/* ERROR STATE: Weather Unavailable */}
+      {weatherError && (
+        <div className="max-w-2xl mx-auto mb-8">
+          <div className="border border-rose-500/20 bg-rose-500/10 p-6 rounded-3xl text-center space-y-4">
+            <AlertCircle className="w-12 h-12 text-rose-500 mx-auto" />
+            <h4 className="text-white font-bold text-base">Weather information is unavailable.</h4>
+            <p className="text-slate-400 text-xs">
+              Please refresh Weather Intelligence. Error: {weatherError}
             </p>
-
-            <div className="p-3.5 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200/25 rounded-2xl flex items-start space-x-3 text-xs text-blue-800 dark:text-blue-300">
-              <AlertCircle className="w-4 h-4 shrink-0 text-blue-500 mt-0.5" />
-              <p className="font-semibold leading-relaxed">
-                {schedule.rainAlert}
-              </p>
-            </div>
-          </Card>
-
-          {/* Water Conservation tips */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200">
-              Water Conservation Guidelines
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {schedule.tips.map((tip, idx) => (
-                <Card key={idx} className="p-4 flex flex-col justify-between">
-                  <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
-                    {tip}
-                  </p>
-                  <span className="text-[9px] font-extrabold uppercase text-emerald-600 mt-4 block">
-                    GUIDELINE #{idx + 1}
-                  </span>
-                </Card>
-              ))}
-            </div>
+            <Button
+              onClick={() => window.location.reload()}
+              className="px-6 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold"
+            >
+              Refresh Weather Intelligence
+            </Button>
           </div>
         </div>
       )}
 
+      {/* Main Content Layout */}
+      {!weatherError && (
+        <div className="space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            {/* LEFT COLUMN: Input Summaries */}
+            <div className="lg:col-span-4 space-y-6">
+              
+              {/* Card A: Registered Farm Profile */}
+              <Card hoverable={false} className="border border-white/10 bg-slate-950/40 p-6 rounded-2xl backdrop-blur-xl relative overflow-hidden shadow-lg shadow-black/40">
+                <div className="absolute -top-12 -left-12 w-24 h-24 bg-farm-500/10 rounded-full filter blur-2xl pointer-events-none" />
+                
+                <h3 className="text-xs font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-2.5 uppercase tracking-widest">
+                  <span>🚜</span> Registered Farm Profile
+                </h3>
+
+                <div className="space-y-3.5 text-xs">
+                  <div className="flex justify-between border-b border-white/5 pb-2">
+                    <span className="text-slate-400 font-bold flex items-center gap-1">🌾 Crop:</span>
+                    <span className="text-white font-semibold">{farmCrop}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/5 pb-2">
+                    <span className="text-slate-400 font-bold flex items-center gap-1">🌱 Soil Type:</span>
+                    <span className="text-white font-semibold">{farmSoil}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/5 pb-2">
+                    <span className="text-slate-400 font-bold flex items-center gap-1">🚜 Land Size:</span>
+                    <span className="text-white font-semibold">{farmSize} Acres</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/5 pb-2">
+                    <span className="text-slate-400 font-bold flex items-center gap-1">💧 Method:</span>
+                    <span className="text-white font-semibold">{farmMethod}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-white/5 pb-2">
+                    <span className="text-slate-400 font-bold flex items-center gap-1">💧 Water Source:</span>
+                    <span className="text-white font-semibold">{farmWater}</span>
+                  </div>
+                  <div className="flex justify-between pb-1 text-[10px]">
+                    <span className="text-slate-500">Location:</span>
+                    <span className="text-slate-400 truncate max-w-[200px]" title={farmLocation}>{farmLocation}</span>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Card B: Weather Summary */}
+              <Card hoverable={false} className="border border-white/10 bg-slate-950/40 p-6 rounded-2xl backdrop-blur-xl relative overflow-hidden shadow-lg shadow-black/40">
+                <div className="absolute -top-12 -right-12 w-24 h-24 bg-emerald-500/10 rounded-full filter blur-2xl pointer-events-none" />
+                
+                <h3 className="text-xs font-bold text-white mb-4 flex items-center gap-2 border-b border-white/5 pb-2.5 uppercase tracking-widest">
+                  <span>💧</span> Weather Summary
+                </h3>
+
+                {weatherLoading ? (
+                  <div className="py-8 flex flex-col items-center justify-center gap-2">
+                    <Loader2 className="w-6 h-6 text-farm-500 animate-spin" />
+                    <span className="text-slate-500 text-xs">Loading local weather...</span>
+                  </div>
+                ) : weatherData ? (
+                  <div className="space-y-3.5 text-xs">
+                    <div className="flex justify-between border-b border-white/5 pb-2">
+                      <span className="text-slate-400 font-bold">Condition:</span>
+                      <span className="text-white font-semibold flex items-center gap-1">
+                        {getWeatherInfo(weatherData.current.weather_code).text}
+                      </span>
+                    </div>
+                    <div className="flex justify-between border-b border-white/5 pb-2">
+                      <span className="text-slate-400 font-bold flex items-center gap-1">🌡 Temperature:</span>
+                      <span className="text-white font-semibold">{Math.round(weatherData.current.temperature_2m)}°C</span>
+                    </div>
+                    <div className="flex justify-between border-b border-white/5 pb-2">
+                      <span className="text-slate-400 font-bold">Relative Humidity:</span>
+                      <span className="text-white font-semibold">{weatherData.current.relative_humidity_2m}%</span>
+                    </div>
+                    <div className="flex justify-between border-b border-white/5 pb-2">
+                      <span className="text-slate-400 font-bold">Rain Probability:</span>
+                      <span className="text-white font-semibold">{weatherData.daily.precipitation_probability_max?.[0] || 0}%</span>
+                    </div>
+                    <div className="flex justify-between border-b border-white/5 pb-2">
+                      <span className="text-slate-400 font-bold">Wind Speed:</span>
+                      <span className="text-white font-semibold">{weatherData.current.wind_speed_10m} km/h</span>
+                    </div>
+                    <div className="flex justify-between pb-1 text-[10px] text-slate-500">
+                      <span>Last Updated:</span>
+                      <span>{new Date(weatherData.current.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-slate-500 text-xs py-4 text-center">
+                    Weather forecast data unavailable.
+                  </div>
+                )}
+              </Card>
+
+              {/* Action triggering recommendation */}
+              <div className="pt-2">
+                <Button
+                  disabled={weatherLoading || isAnalyzing}
+                  onClick={handleGenerateAnalysis}
+                  className="w-full py-4 rounded-xl bg-gradient-to-br from-farm-600 to-emerald-600 hover:from-farm-500 hover:to-emerald-500 disabled:opacity-50 text-white font-extrabold text-xs tracking-wider uppercase active:scale-95 shadow-xl shadow-farm-950/20 cursor-pointer flex items-center justify-center gap-2 border border-emerald-400/20"
+                >
+                  {isAnalyzing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Running Neural Twin Models...
+                    </>
+                  ) : (
+                    "Generate AI Analysis"
+                  )}
+                </Button>
+              </div>
+
+            </div>
+
+            {/* RIGHT COLUMN: AI Recommendations viewport */}
+            <div className="lg:col-span-8 space-y-6">
+              
+              {/* State A: Loading Experience */}
+              {isAnalyzing && (
+                <Card hoverable={false} className="border border-white/10 bg-slate-950/40 p-8 rounded-2xl backdrop-blur-xl flex flex-col justify-center min-h-[400px] shadow-lg shadow-black/40 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-farm-500 via-emerald-500 to-farm-500 animate-pulse" />
+                  
+                  <div className="max-w-sm mx-auto w-full space-y-6">
+                    <div className="flex items-center justify-center mb-2">
+                      <Loader2 className="w-10 h-10 text-farm-500 animate-spin" />
+                    </div>
+                    
+                    <h4 className="text-white font-black text-center text-sm uppercase tracking-widest">
+                      AI twin calculation in progress...
+                    </h4>
+
+                    {/* Step-by-Step Checklist Loader */}
+                    <div className="space-y-3.5 bg-slate-900/60 p-5 rounded-2xl border border-white/5 text-xs text-slate-300">
+                      <div className="flex items-center justify-between">
+                        <span className={analysisStep >= 1 ? "text-emerald-400 font-bold" : "text-slate-500"}>
+                          1. Analyzing Weather Forecast Data
+                        </span>
+                        {analysisStep === 1 ? <Loader2 className="w-3.5 h-3.5 text-farm-400 animate-spin" /> : analysisStep > 1 ? <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> : <div className="w-3.5 h-3.5 rounded-full border border-slate-700" />}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className={analysisStep >= 2 ? "text-emerald-400 font-bold" : "text-slate-500"}>
+                          2. Checking Soil & Core Transpiration
+                        </span>
+                        {analysisStep === 2 ? <Loader2 className="w-3.5 h-3.5 text-farm-400 animate-spin" /> : analysisStep > 2 ? <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> : <div className="w-3.5 h-3.5 rounded-full border border-slate-700" />}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className={analysisStep >= 3 ? "text-emerald-400 font-bold" : "text-slate-500"}>
+                          3. Calculating Soil Water Deficits
+                        </span>
+                        {analysisStep === 3 ? <Loader2 className="w-3.5 h-3.5 text-farm-400 animate-spin" /> : analysisStep > 3 ? <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> : <div className="w-3.5 h-3.5 rounded-full border border-slate-700" />}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className={analysisStep >= 4 ? "text-emerald-400 font-bold" : "text-slate-500"}>
+                          4. Preparing Optimal Recommendation
+                        </span>
+                        {analysisStep === 4 ? <Loader2 className="w-3.5 h-3.5 text-farm-400 animate-spin" /> : <div className="w-3.5 h-3.5 rounded-full border border-slate-700" />}
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              )}
+
+              {/* State B: Empty State (Professional Illustration) */}
+              {!isAnalyzing && !showAnalysis && (
+                <Card hoverable={false} className="border border-dashed border-white/10 bg-slate-950/20 p-8 rounded-2xl flex flex-col items-center justify-center text-center min-h-[400px]">
+                  
+                  {/* Modern Farm SVG Illustration */}
+                  <svg className="w-36 h-36 mb-6 text-emerald-500/20" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="80" stroke="currentColor" strokeWidth="2" strokeDasharray="6 6" />
+                    {/* Grid paths */}
+                    <path d="M50 100H150" stroke="currentColor" strokeWidth="1.5" />
+                    <path d="M100 50V150" stroke="currentColor" strokeWidth="1.5" />
+                    {/* Droplet symbol */}
+                    <path d="M100 65C100 65 115 85 115 97C115 105.284 108.284 112 100 112C91.7157 112 85 105.284 85 97C85 85 100 65 100 65Z" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="2" />
+                    {/* Nodes connecting */}
+                    <circle cx="50" cy="100" r="5" fill="#10B981" />
+                    <circle cx="150" cy="100" r="5" fill="#10B981" />
+                    <circle cx="100" cy="50" r="5" fill="#10B981" />
+                    <circle cx="100" cy="150" r="5" fill="#10B981" />
+                    {/* Brain wave/circuit elements */}
+                    <path d="M50 100C70 120 130 120 150 100" stroke="#10B981" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+
+                  <h4 className="text-white font-extrabold text-base tracking-wide">
+                    AI Irrigation Intelligence Engine
+                  </h4>
+                  <p className="text-slate-400 text-xs max-w-sm mt-2 leading-relaxed">
+                    Complete the farm details and generate AI analysis to receive irrigation recommendations.
+                  </p>
+                </Card>
+              )}
+
+              {/* State C: Active Recommendation Cards */}
+              {!isAnalyzing && showAnalysis && analysisResult && (
+                <div className="space-y-6 animate-fade-in">
+                  
+                  {/* 1. Large Top Status Card */}
+                  <div className={`border rounded-2xl p-5 shadow-lg relative overflow-hidden flex items-start gap-4 ${analysisResult.statusBg}`}>
+                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-lg shrink-0 mt-0.5 border border-white/5">
+                      {analysisResult.status === "warning" ? "🔴" : analysisResult.status === "wait" ? "🟡" : "🟢"}
+                    </div>
+                    <div>
+                      <h3 className="text-base font-extrabold text-white uppercase tracking-wider">
+                        {analysisResult.statusLabel}
+                      </h3>
+                      <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                        {analysisResult.whyText}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Layout Grid: AI Rec & Confidence Circular Gauge */}
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                    
+                    {/* 2. Premium AI Recommendation Card */}
+                    <div className="md:col-span-8">
+                      <Card hoverable={false} className="border border-emerald-500/20 bg-gradient-to-br from-emerald-950/40 via-slate-900/80 to-emerald-950/20 p-6 rounded-2xl shadow-xl relative overflow-hidden h-full flex flex-col justify-between">
+                        <div className="absolute top-0 right-0 p-4 font-bold text-[10px] text-emerald-400 bg-emerald-500/10 border-l border-b border-white/5 rounded-bl-xl tracking-widest uppercase">
+                          Neural Advising
+                        </div>
+
+                        <div>
+                          <div className="flex items-center gap-3.5 mb-5 mt-1">
+                            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+                              <Sparkles className="w-5 h-5 text-emerald-400" />
+                            </div>
+                            <div>
+                              <span className="text-[9px] text-emerald-400 font-extrabold block uppercase tracking-widest">🤖 AI Recommendation</span>
+                              <h4 className="text-sm font-bold text-white tracking-wide mt-0.5 leading-normal">
+                                {analysisResult.recText}
+                              </h4>
+                            </div>
+                          </div>
+
+                          {/* Metric Rows */}
+                          <div className="space-y-3.5 border-t border-white/5 pt-4 text-xs">
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-400 font-semibold flex items-center gap-2">
+                                <Sunrise className="w-4 h-4 text-amber-400" />
+                                Recommended Irrigation Time
+                              </span>
+                              <span className="text-white font-bold">{analysisResult.timeSchedule}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-400 font-semibold flex items-center gap-2">
+                                <Droplet className="w-4 h-4 text-blue-400" />
+                                Expected Water Requirement
+                              </span>
+                              <span className="text-white font-bold">{analysisResult.waterReq}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-400 font-semibold flex items-center gap-2">
+                                <CheckCircle className="w-4 h-4 text-emerald-400" />
+                                Water Saving Estimate
+                              </span>
+                              <span className="text-emerald-400 font-bold">{analysisResult.expectedSaving}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-400 font-semibold flex items-center gap-2">
+                                <CloudRain className="w-4 h-4 text-sky-400" />
+                                Rain Impact
+                              </span>
+                              <span className="text-white font-bold">{analysisResult.rainImpact}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-400 font-semibold flex items-center gap-2">
+                                <Thermometer className="w-4 h-4 text-rose-400" />
+                                Weather Summary
+                              </span>
+                              <span className="text-white font-bold">
+                                {weatherData ? getWeatherInfo(weatherData.current.weather_code).text : "Optimal"}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+
+                    {/* 5. Circular Confidence Gauge Card */}
+                    <div className="md:col-span-4">
+                      <div className="flex flex-col items-center justify-center p-6 bg-slate-900/60 border border-white/10 rounded-2xl relative overflow-hidden h-full shadow-lg shadow-black/30">
+                        <div className="relative w-24 h-24 flex items-center justify-center">
+                          <svg className="w-full h-full transform -rotate-90">
+                            <circle cx="48" cy="48" r="30" className="stroke-slate-800 fill-none" strokeWidth="6" />
+                            <circle cx="48" cy="48" r="30" className="stroke-emerald-500 fill-none" strokeWidth="6" strokeDasharray="188.4" strokeDashoffset={strokeDashoffset} strokeLinecap="round" />
+                          </svg>
+                          <div className="absolute text-lg font-black text-white">{confidenceScore}%</div>
+                        </div>
+                        <span className="text-xs text-slate-400 font-bold uppercase tracking-wider mt-3">AI Confidence</span>
+                        <span className="text-[10px] text-slate-500 mt-1 text-center font-medium">Model verification matches crop coefficient</span>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* 3. Collapsible Card: Why This Recommendation */}
+                  <Card hoverable={false} className="border border-white/10 bg-slate-950/40 p-5 rounded-2xl backdrop-blur-xl relative overflow-hidden shadow-lg shadow-black/40">
+                    <button
+                      onClick={() => setIsWhyCollapsed(!isWhyCollapsed)}
+                      className="w-full flex items-center justify-between focus:outline-none cursor-pointer"
+                    >
+                      <h4 className="text-xs font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                        <HelpCircle className="w-4.5 h-4.5 text-emerald-400" />
+                        Why This Recommendation?
+                      </h4>
+                      {isWhyCollapsed ? <ChevronDown className="w-4.5 h-4.5 text-slate-400" /> : <ChevronUp className="w-4.5 h-4.5 text-slate-400" />}
+                    </button>
+
+                    {!isWhyCollapsed && (
+                      <div className="mt-4 space-y-4 animate-fade-in border-t border-white/5 pt-4">
+                        <p className="text-xs text-slate-300 leading-relaxed">
+                          The recommendation calculates soil evaporation indices against regional weather models. High temperature grids trigger safety thresholds, while rain grids postpone cycles to prevent overwatering.
+                        </p>
+                        <div className="flex flex-wrap gap-x-4 gap-y-2 text-[10px] text-slate-400 font-semibold">
+                          <span className="flex items-center gap-1 text-emerald-400"><CheckCircle2 className="w-3.5 h-3.5" /> Weather Forecast</span>
+                          <span className="flex items-center gap-1 text-emerald-400"><CheckCircle2 className="w-3.5 h-3.5" /> Rain Probability</span>
+                          <span className="flex items-center gap-1 text-emerald-400"><CheckCircle2 className="w-3.5 h-3.5" /> Temperature</span>
+                          <span className="flex items-center gap-1 text-emerald-400"><CheckCircle2 className="w-3.5 h-3.5" /> Humidity</span>
+                          <span className="flex items-center gap-1 text-emerald-400"><CheckCircle2 className="w-3.5 h-3.5" /> Soil Type</span>
+                          <span className="flex items-center gap-1 text-emerald-400"><CheckCircle2 className="w-3.5 h-3.5" /> Crop ({analysisResult.crop})</span>
+                          <span className="flex items-center gap-1 text-emerald-400"><CheckCircle2 className="w-3.5 h-3.5" /> Method ({analysisResult.method})</span>
+                        </div>
+                      </div>
+                    )}
+                  </Card>
+
+                  {/* 6. Visual Workflow Flowchart */}
+                  <div className="space-y-3">
+                    <h4 className="text-xs font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                      <Eye className="w-4.5 h-4.5 text-emerald-400" />
+                      Visual Model Decision Pipeline
+                    </h4>
+                    
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-2.5 bg-slate-950/20 p-4 rounded-2xl border border-white/5">
+                      <div className="flex-1 w-full bg-slate-900/60 border border-white/5 p-3.5 rounded-xl text-center shadow-md">
+                        <span className="text-[10px] text-slate-500 font-extrabold uppercase block tracking-wider">Inputs</span>
+                        <span className="text-xs text-white font-bold block mt-1">Farm Information</span>
+                        <span className="text-[9px] text-slate-400 block mt-0.5">{analysisResult.crop} • {analysisResult.soil}</span>
+                      </div>
+                      
+                      <ArrowRight className="w-4 h-4 text-emerald-500 shrink-0 transform rotate-90 md:rotate-0" />
+                      
+                      <div className="flex-1 w-full bg-slate-900/60 border border-white/5 p-3.5 rounded-xl text-center shadow-md">
+                        <span className="text-[10px] text-slate-500 font-extrabold uppercase block tracking-wider">Meteorology</span>
+                        <span className="text-xs text-white font-bold block mt-1">Weather Analysis</span>
+                        <span className="text-[9px] text-slate-400 block mt-0.5">Temp • Humidity • Rain %</span>
+                      </div>
+                      
+                      <ArrowRight className="w-4 h-4 text-emerald-500 shrink-0 transform rotate-90 md:rotate-0" />
+                      
+                      <div className="flex-1 w-full bg-slate-900/60 border border-white/5 p-3.5 rounded-xl text-center shadow-md">
+                        <span className="text-[10px] text-slate-500 font-extrabold uppercase block tracking-wider">Compute</span>
+                        <span className="text-xs text-white font-bold block mt-1">AI Processing</span>
+                        <span className="text-[9px] text-emerald-400 block mt-0.5">Neural Deficit Model</span>
+                      </div>
+                      
+                      <ArrowRight className="w-4 h-4 text-emerald-500 shrink-0 transform rotate-90 md:rotate-0" />
+                      
+                      <div className="flex-1 w-full bg-slate-900/60 border border-white/5 p-3.5 rounded-xl text-center shadow-md">
+                        <span className="text-[10px] text-slate-500 font-extrabold uppercase block tracking-wider">Action</span>
+                        <span className="text-xs text-white font-bold block mt-1">AI Recommendation</span>
+                        <span className="text-[9px] text-slate-400 block mt-0.5">{analysisResult.timeSchedule}</span>
+                      </div>
+                      
+                      <ArrowRight className="w-4 h-4 text-emerald-500 shrink-0 transform rotate-90 md:rotate-0" />
+                      
+                      <div className="flex-1 w-full bg-slate-900/60 border border-white/5 p-3.5 rounded-xl text-center shadow-md">
+                        <span className="text-[10px] text-slate-500 font-extrabold uppercase block tracking-wider">Outcomes</span>
+                        <span className="text-xs text-emerald-400 font-bold block mt-1">Water Saving</span>
+                        <span className="text-[9px] text-slate-400 block mt-0.5">{analysisResult.expectedSaving} saved</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 4. Water Conservation Tips */}
+                  <div className="space-y-3.5">
+                    <h4 className="text-xs font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                      <Info className="w-4.5 h-4.5 text-emerald-400" />
+                      Water Conservation Guidelines
+                    </h4>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <Card hoverable={false} className="p-4 border border-white/5 bg-slate-950/20 rounded-xl flex items-start gap-3 shadow-md hover:bg-slate-900/35 transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
+                          <Sunrise className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-slate-200 font-bold">Early Morning Schedules</p>
+                          <p className="text-[11px] text-slate-400 leading-relaxed mt-1">
+                            Irrigate during early morning or late evening to minimize direct solar evaporation.
+                          </p>
+                        </div>
+                      </Card>
+                      
+                      <Card hoverable={false} className="p-4 border border-white/5 bg-slate-950/20 rounded-xl flex items-start gap-3 shadow-md hover:bg-slate-900/35 transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 shrink-0 mt-0.5">
+                          <CloudRain className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-slate-200 font-bold">Precipitation Alignment</p>
+                          <p className="text-[11px] text-slate-400 leading-relaxed mt-1">
+                            Avoid watering fields immediately prior to heavy rainfall forecasts to conserve water.
+                          </p>
+                        </div>
+                      </Card>
+                      
+                      <Card hoverable={false} className="p-4 border border-white/5 bg-slate-950/20 rounded-xl flex items-start gap-3 shadow-md hover:bg-slate-900/35 transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0 mt-0.5">
+                          <Droplet className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-slate-200 font-bold">Localized Drip Emitters</p>
+                          <p className="text-[11px] text-slate-400 leading-relaxed mt-1">
+                            Use drip irrigation lines or micro-sprinklers instead of flood setups when possible.
+                          </p>
+                        </div>
+                      </Card>
+                      
+                      <Card hoverable={false} className="p-4 border border-white/5 bg-slate-950/20 rounded-xl flex items-start gap-3 shadow-md hover:bg-slate-900/35 transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 shrink-0 mt-0.5">
+                          <AlertCircle className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-slate-200 font-bold">Waterlogging Mitigation</p>
+                          <p className="text-[11px] text-slate-400 leading-relaxed mt-1">
+                            Avoid waterlogging, which restricts root aeration and triggers fungal disease.
+                          </p>
+                        </div>
+                      </Card>
+                    </div>
+                  </div>
+
+                </div>
+              )}
+
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

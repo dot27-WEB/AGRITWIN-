@@ -4,7 +4,6 @@ import { LanguageProvider } from './context/LanguageContext';
 import { FarmProvider } from './context/FarmContext';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
-import VoiceAssistant from './components/voiceAssistant/VoiceAssistant';
 import AppRoutes from './routes/AppRoutes';
 import './styles/globals.css';
 
@@ -26,9 +25,6 @@ function App() {
             {/* Brand Footer */}
             <Footer />
             
-            {/* Floating Audio AI Assistant */}
-            <VoiceAssistant />
-
           </div>
         </FarmProvider>
       </LanguageProvider>
