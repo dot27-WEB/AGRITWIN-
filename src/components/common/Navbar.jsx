@@ -23,7 +23,8 @@ export const Navbar = () => {
     { name: t('navIrrigation'), path: '/irrigation', icon: Droplets },
     { name: t('navMarket'), path: '/market', icon: TrendingUp },
     { name: t('navSchemes'), path: '/schemes', icon: Landmark },
-    { name: t('navCalendar'), path: '/calendar', icon: CalendarDays }
+    { name: t('navCalendar'), path: '/calendar', icon: CalendarDays },
+    { name: t('navAnalysis') || 'Analysis', path: '/analysis', icon: TrendingUp }
   ];
 
   const languages = [

@@ -7,6 +7,7 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import diseaseRouter from "./routes/disease.js";
 import copilotRouter from "./routes/copilot.js";
 import irrigationRouter from "./routes/irrigation.js";
+import analysisRouter from "./routes/analysis.js";
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use((req, res, next) => {
 app.use("/api/disease", diseaseRouter);
 app.use("/api/copilot", copilotRouter);
 app.use("/api/irrigation", irrigationRouter);
+app.use("/api/analysis", analysisRouter);
 
 // Basic health check route
 app.get("/api/health", (req, res) => {

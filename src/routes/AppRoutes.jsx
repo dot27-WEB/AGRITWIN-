@@ -11,6 +11,7 @@ import MarketPage from '../pages/MarketPage';
 import GovernmentSchemesPage from '../pages/GovernmentSchemesPage';
 import FarmingCalendarPage from '../pages/FarmingCalendarPage';
 import ProfilePage from '../pages/ProfilePage';
+import AnalysisDashboardPage from '../pages/AnalysisDashboardPage';
 
 export const AppRoutes = () => {
   return (
@@ -26,6 +27,7 @@ export const AppRoutes = () => {
       <Route path="/schemes" element={<GovernmentSchemesPage />} />
       <Route path="/calendar" element={<FarmingCalendarPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/analysis" element={<AnalysisDashboardPage />} />
       
       {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />

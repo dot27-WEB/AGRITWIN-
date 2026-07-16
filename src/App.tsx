@@ -16,6 +16,7 @@ import { MarketPage } from "./pages/MarketPage";
 import { GovernmentSchemesPage } from "./pages/GovernmentSchemesPage";
 import { FarmingCalendarPage } from "./pages/FarmingCalendarPage";
 import { ProfilePage } from "./pages/ProfilePage";
+import { AnalysisDashboardPage } from "./pages/AnalysisDashboardPage";
 
 import { motion, AnimatePresence } from "motion/react";
 
@@ -46,6 +47,8 @@ const AppContent: React.FC = () => {
         return <FarmingCalendarPage />;
       case "profile":
         return <ProfilePage />;
+      case "analysis":
+        return <AnalysisDashboardPage />;
       default:
         return <LandingPage />;
     }

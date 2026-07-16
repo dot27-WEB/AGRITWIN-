@@ -430,7 +430,7 @@ export const DashboardPage = () => {
           Quick Actions
         </h3>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           
           {/* Card 1: Weather */}
           <div onClick={() => scrollToSection('weather-preview')} className="cursor-pointer group">
@@ -516,6 +516,28 @@ export const DashboardPage = () => {
               </div>
               <span className="text-[10px] text-emerald-400 font-bold flex items-center gap-0.5 mt-4 self-end group-hover:translate-x-1 transition-transform">
                 Preview Details <ChevronRight className="w-3.5 h-3.5" />
+              </span>
+            </Card>
+          </div>
+
+          {/* Card 5: AI Analysis Dashboard */}
+          <div onClick={() => navigate('/analysis')} className="cursor-pointer group">
+            <Card hoverGlow={true} className="h-full flex flex-col justify-between border border-white/5 bg-slate-900/10 group-hover:border-farm-500/30">
+              <div className="space-y-4">
+                <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 w-fit group-hover:scale-105 transition-transform">
+                  <TrendingUp className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-white group-hover:text-farm-400 transition-colors">
+                    Analysis Dashboard
+                  </h4>
+                  <p className="text-[11px] text-slate-400 leading-relaxed font-medium mt-1">
+                    View complete farm audits, water logs, yield forecasts, and crop rotations advice.
+                  </p>
+                </div>
+              </div>
+              <span className="text-[10px] text-farm-400 font-bold flex items-center gap-0.5 mt-4 self-end group-hover:translate-x-1 transition-transform">
+                Open Dashboard <ChevronRight className="w-3.5 h-3.5" />
               </span>
             </Card>
           </div>

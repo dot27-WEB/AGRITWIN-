@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useFarm } from "../../context/FarmContext";
 import { useLanguage, Language } from "../../context/LanguageContext";
 import { Button } from "./Button";
-import { Sprout, Mic, Languages, Menu, X, LogIn, LogOut, User, LayoutDashboard, Calendar, HelpCircle, MapPin } from "lucide-react";
+import { Sprout, Mic, Languages, Menu, X, LogIn, LogOut, User, LayoutDashboard, Calendar, HelpCircle, MapPin, TrendingUp } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 export const Navbar: React.FC = () => {
@@ -23,7 +23,8 @@ export const Navbar: React.FC = () => {
   const menuItems = [
     { page: "dashboard", label: t("dashboard"), icon: LayoutDashboard },
     { page: "calendar", label: t("calendar"), icon: Calendar },
-    { page: "profile", label: t("profile"), icon: User }
+    { page: "profile", label: t("profile"), icon: User },
+    { page: "analysis", label: t("analysis") || "Analysis", icon: TrendingUp }
   ];
 
   const handleVoiceTrigger = () => {
