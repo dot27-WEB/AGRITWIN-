@@ -17,8 +17,20 @@ export const errorHandler = (err, req, res, next) => {
     return res.status(429).json({ error: "AI service busy" });
   }
 
-  if (errMsg.includes("invalid image") || errMsg.includes("unsupported image") || errMsg.includes("multipart") || errMsg.includes("multer")) {
+  if (errMsg.includes("invalid image") || errMsg.includes("unsupported image") || errMsg.includes("multipart") || errMsg.includes("multer") || errMsg.includes("no image uploaded")) {
     return res.status(400).json({ error: "Invalid Image" });
+  }
+
+  if (err instanceof SyntaxError && (errMsg.includes("json") || errMsg.includes("position"))) {
+    return res.status(502).json({ error: "Invalid JSON response from AI model" });
+  }
+
+  if (errMsg.includes("timeout") || errMsg.includes("deadline")) {
+    return res.status(504).json({ error: "AI service timed out" });
+  }
+
+  if (errMsg.includes("fetch") || errMsg.includes("network") || errMsg.includes("econn") || errMsg.includes("request failed")) {
+    return res.status(502).json({ error: "AI service connection failed" });
   }
 
   res.status(500).json({ error: "Internal Server Error" });

@@ -46,5 +46,6 @@ app.get("/api/health", (req, res) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => {
+  logger.info("Backend Started");
   logger.info(`AgriTwin secure backend successfully listening on port ${PORT}`);
 });

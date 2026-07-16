@@ -9,10 +9,13 @@ export const analyzeDisease = async (req, res, next) => {
       return res.status(400).json({ error: "Invalid Image" });
     }
 
+    logger.info("Image Uploaded");
+
     const report = await geminiService.analyzeCropImage(req.file.buffer, req.file.mimetype);
-    logger.info("POST /api/disease/analyze - Diagnostics resolved successfully");
+    
     res.json(report);
   } catch (err) {
+    logger.error("POST /api/disease/analyze - Unexpected controller pipeline error: ", err.message || err);
     next(err);
   }
 };
