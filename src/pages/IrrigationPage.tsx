@@ -196,93 +196,135 @@ export const IrrigationPage: React.FC = () => {
           setAnalysisStep(4);
           
           // Step 4: Preparing Recommendation...
-          setTimeout(() => {
+          setTimeout(async () => {
             const rainChance = weatherData.daily.precipitation_probability_max?.[0] || 0;
             const temp = weatherData.current.temperature_2m;
+            const humidity = weatherData.current.relative_humidity_2m;
+            const rain = weatherData.current.rain;
             const weatherCode = weatherData.current.weather_code;
+            const weatherForecastText = getWeatherInfo(weatherCode).text;
 
-            let status = "safe"; // safe | wait | warning
-            let statusLabel = "Safe to Irrigate";
-            let statusBadge = "🟢 Safe to Irrigate";
-            let statusBg = "border-emerald-500/20 bg-emerald-500/5 text-emerald-400";
-            let recText = "";
-            let expectedSaving = "15%";
-            let waterReq = `${Math.round(farmSize * 4500)} Liters`;
-            let timeSchedule = "6:00 AM – 7:30 AM";
-            let rainImpact = "Low. No precipitation forecast.";
-            let moistureStatus = "Moderate / Normal";
-            let whyText = "";
-
-            if (rainChance > 70 || [61, 63, 65, 80, 81, 82, 95, 96, 99].includes(weatherCode)) {
-              status = "warning";
-              statusLabel = "Irrigation Not Recommended";
-              statusBadge = "🔴 Irrigation Not Recommended";
-              statusBg = "border-rose-500/20 bg-rose-500/5 text-rose-400";
-              recText = "Heavy rainfall is expected today. Delay irrigation until tomorrow morning.";
-              expectedSaving = "approximately 20%";
-              waterReq = "0 Liters (Natural watering)";
-              timeSchedule = "Postponed";
-              rainImpact = `High forecast (${rainChance}%). Heavy soil saturation predicted.`;
-              moistureStatus = "High (Saturated)";
-              whyText = `Precipitation probability is very high (${rainChance}%), rendering supplemental irrigation unnecessary. Watering now may cause waterlogging and root rot.`;
-            } else if (rainChance > 40) {
-              status = "wait";
-              statusLabel = "Wait for Better Conditions";
-              statusBadge = "🟡 Wait for Better Conditions";
-              statusBg = "border-amber-500/20 bg-amber-500/5 text-amber-400";
-              recText = `Unsettled weather expected with ${rainChance}% rain chance. Monitor soil condition before initiating irrigation cycles.`;
-              expectedSaving = "approximately 10%";
-              waterReq = `${Math.round(farmSize * 2200)} Liters`;
-              timeSchedule = "Late Evening (6:30 PM - 7:30 PM)";
-              rainImpact = "Moderate. Microclimate showers possible.";
-              moistureStatus = "Optimal / Moist";
-              whyText = `Overcast conditions and moderate rain chance (${rainChance}%) lower the evaporation rate. It is advisable to delay watering until the forecast stabilizes.`;
+            // Derived/Estimated moisture status
+            let estimatedMoisture = "Normal";
+            if (rainChance > 70 || [61, 63, 65, 80, 81, 82].includes(weatherCode)) {
+              estimatedMoisture = "High (Saturated)";
             } else if (temp > 35) {
-              status = "safe";
-              statusLabel = "Safe to Irrigate";
-              statusBadge = "🟢 Safe to Irrigate";
-              statusBg = "border-emerald-500/20 bg-emerald-500/5 text-emerald-400";
-              recText = "Increase irrigation frequency slightly to reduce crop water stress.";
-              expectedSaving = "5% (Precision Scheduling)";
-              waterReq = `${Math.round(farmSize * 5500)} Liters`;
-              timeSchedule = "5:30 AM – 7:00 AM or 6:30 PM – 8:00 PM";
-              rainImpact = "None. Rapid dryout expected.";
-              moistureStatus = "Dry / Depleted";
-              whyText = `Extreme temperatures (${temp}°C) accelerate soil moisture transpiration. Early morning or evening watering is critical to prevent evaporation loss.`;
-            } else {
-              status = "safe";
-              statusLabel = "Safe to Irrigate";
-              statusBadge = "🟢 Safe to Irrigate";
-              statusBg = "border-emerald-500/20 bg-emerald-500/5 text-emerald-400";
-              recText = "Recommended irrigation time is 6:00 AM – 7:30 AM. Avoid irrigation during afternoon due to high evaporation.";
-              expectedSaving = "approximately 15%";
-              waterReq = `${Math.round(farmSize * 4200)} Liters`;
-              timeSchedule = "6:00 AM – 7:30 AM";
-              rainImpact = "None. Stable atmosphere.";
-              moistureStatus = "Normal";
-              whyText = `Stable temperatures (${temp}°C) and clear conditions are highly optimal. Evaporative rates are lowest in the early morning, maximizing water absorption.`;
+              estimatedMoisture = "Dry / Depleted";
             }
 
-            setAnalysisResult({
-              status,
-              statusLabel,
-              statusBadge,
-              statusBg,
-              recText,
-              expectedSaving,
-              waterReq,
-              timeSchedule,
-              rainImpact,
-              moistureStatus,
-              whyText,
-              crop: farmCrop,
-              soil: farmSoil,
-              method: farmMethod
-            });
+            try {
+              const res = await fetch("/api/irrigation/recommend", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  crop: farmCrop,
+                  soilMoisture: estimatedMoisture,
+                  temperature: temp,
+                  humidity: humidity,
+                  rainfall: rain,
+                  weatherForecast: weatherForecastText
+                })
+              });
 
-            setIsAnalyzing(false);
-            setAnalysisStep(0);
-            setShowAnalysis(true);
+              if (!res.ok) {
+                throw new Error("Backend irrigation service unavailable");
+              }
+
+              const recommendation = await res.json();
+              setAnalysisResult({
+                ...recommendation,
+                crop: farmCrop,
+                soil: farmSoil,
+                method: farmMethod
+              });
+            } catch (err) {
+              console.warn("Backend irrigation advice failed, using offline heuristics:", err);
+              // Fallback calculations
+              let status = "safe"; // safe | wait | warning
+              let statusLabel = "Safe to Irrigate";
+              let statusBadge = "🟢 Safe to Irrigate";
+              let statusBg = "border-emerald-500/20 bg-emerald-500/5 text-emerald-400";
+              let recText = "";
+              let expectedSaving = "15%";
+              let waterReq = `${Math.round(farmSize * 4500)} Liters`;
+              let timeSchedule = "6:00 AM – 7:30 AM";
+              let rainImpact = "Low. No precipitation forecast.";
+              let moistureStatus = "Moderate / Normal";
+              let whyText = "";
+
+              if (rainChance > 70 || [61, 63, 65, 80, 81, 82, 95, 96, 99].includes(weatherCode)) {
+                status = "warning";
+                statusLabel = "Irrigation Not Recommended";
+                statusBadge = "🔴 Irrigation Not Recommended";
+                statusBg = "border-rose-500/20 bg-rose-500/5 text-rose-400";
+                recText = "Heavy rainfall is expected today. Delay irrigation until tomorrow morning.";
+                expectedSaving = "approximately 20%";
+                waterReq = "0 Liters (Natural watering)";
+                timeSchedule = "Postponed";
+                rainImpact = `High forecast (${rainChance}%). Heavy soil saturation predicted.`;
+                moistureStatus = "High (Saturated)";
+                whyText = `Precipitation probability is very high (${rainChance}%), rendering supplemental irrigation unnecessary. Watering now may cause waterlogging and root rot.`;
+              } else if (rainChance > 40) {
+                status = "wait";
+                statusLabel = "Wait for Better Conditions";
+                statusBadge = "🟡 Wait for Better Conditions";
+                statusBg = "border-amber-500/20 bg-amber-500/5 text-amber-400";
+                recText = `Unsettled weather expected with ${rainChance}% rain chance. Monitor soil condition before initiating irrigation cycles.`;
+                expectedSaving = "approximately 10%";
+                waterReq = `${Math.round(farmSize * 2200)} Liters`;
+                timeSchedule = "Late Evening (6:30 PM - 7:30 PM)";
+                rainImpact = "Moderate. Microclimate showers possible.";
+                moistureStatus = "Optimal / Moist";
+                whyText = `Overcast conditions and moderate rain chance (${rainChance}%) lower the evaporation rate. It is advisable to delay watering until the forecast stabilizes.`;
+              } else if (temp > 35) {
+                status = "safe";
+                statusLabel = "Safe to Irrigate";
+                statusBadge = "🟢 Safe to Irrigate";
+                statusBg = "border-emerald-500/20 bg-emerald-500/5 text-emerald-400";
+                recText = "Increase irrigation frequency slightly to reduce crop water stress.";
+                expectedSaving = "5% (Precision Scheduling)";
+                waterReq = `${Math.round(farmSize * 5500)} Liters`;
+                timeSchedule = "5:30 AM – 7:00 AM or 6:30 PM – 8:00 PM";
+                rainImpact = "None. Rapid dryout expected.";
+                moistureStatus = "Dry / Depleted";
+                whyText = `Extreme temperatures (${temp}°C) accelerate soil moisture transpiration. Early morning or evening watering is critical to prevent evaporation loss.`;
+              } else {
+                status = "safe";
+                statusLabel = "Safe to Irrigate";
+                statusBadge = "🟢 Safe to Irrigate";
+                statusBg = "border-emerald-500/20 bg-emerald-500/5 text-emerald-400";
+                recText = "Recommended irrigation time is 6:00 AM – 7:30 AM. Avoid irrigation during afternoon due to high evaporation.";
+                expectedSaving = "approximately 15%";
+                waterReq = `${Math.round(farmSize * 4200)} Liters`;
+                timeSchedule = "6:00 AM – 7:30 AM";
+                rainImpact = "None. Stable atmosphere.";
+                moistureStatus = "Normal";
+                whyText = `Stable temperatures (${temp}°C) and clear conditions are highly optimal. Evaporative rates are lowest in the early morning, maximizing water absorption.`;
+              }
+
+              setAnalysisResult({
+                status,
+                statusLabel,
+                statusBadge,
+                statusBg,
+                recText,
+                expectedSaving,
+                waterReq,
+                timeSchedule,
+                rainImpact,
+                moistureStatus,
+                whyText,
+                crop: farmCrop,
+                soil: farmSoil,
+                method: farmMethod
+              });
+            } finally {
+              setIsAnalyzing(false);
+              setAnalysisStep(0);
+              setShowAnalysis(true);
+            }
           }, 450);
         }, 450);
       }, 450);

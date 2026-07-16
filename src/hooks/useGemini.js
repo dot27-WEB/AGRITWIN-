@@ -221,21 +221,62 @@ export const useGemini = () => {
     setMessages(prev => [...prev, userMessage]);
     setIsLoading(true);
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const translationsObj = getAIAnswerTranslations(textInput, farm, metrics);
-        const aiMessage = {
-          id: 'msg_ai_' + Date.now(),
-          sender: 'ai',
-          text: translationsObj,
-          resolvedLang: resolved,
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, aiMessage]);
-        setIsLoading(false);
-        resolve(translationsObj);
-      }, 1200);
-    });
+    try {
+      const response = await fetch("/api/copilot/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: textInput,
+          language: resolved,
+          farmData: { farm, metrics }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Backend chat service returned an error status");
+      }
+
+      const data = await response.json();
+      const aiMessageText = data.text || "I'm sorry, I could not generate a response.";
+      
+      const translationsObj = {
+        en: aiMessageText, te: aiMessageText, hi: aiMessageText, ta: aiMessageText,
+        kn: aiMessageText, ml: aiMessageText, mr: aiMessageText, bn: aiMessageText,
+        gu: aiMessageText, pa: aiMessageText
+      };
+
+      const aiMessage = {
+        id: 'msg_ai_' + Date.now(),
+        sender: 'ai',
+        text: translationsObj,
+        resolvedLang: resolved,
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, aiMessage]);
+      setIsLoading(false);
+      return translationsObj;
+    } catch (err) {
+      console.warn("Backend copilot chat failed. Falling back to local rules:", err);
+      // Local fallback simulation
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const translationsObj = getAIAnswerTranslations(textInput, farm, metrics);
+          const aiMessage = {
+            id: 'msg_ai_' + Date.now(),
+            sender: 'ai',
+            text: translationsObj,
+            resolvedLang: resolved,
+            timestamp: new Date()
+          };
+          setMessages(prev => [...prev, aiMessage]);
+          setIsLoading(false);
+          resolve(translationsObj);
+        }, 1200);
+      });
+    }
   };
 
   const clearChat = () => {
