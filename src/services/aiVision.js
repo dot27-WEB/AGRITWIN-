@@ -66,7 +66,8 @@ export const analyzeCropImageApi = async (file) => {
   const formData = new FormData();
   formData.append("image", compressedFile);
 
-  const response = await fetch("/api/disease/analyze", {
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+  const response = await fetch(`${API_BASE}/api/disease/analyze`, {
     method: "POST",
     body: formData
   });

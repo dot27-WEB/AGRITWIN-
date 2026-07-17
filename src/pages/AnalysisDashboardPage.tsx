@@ -104,7 +104,8 @@ export const AnalysisDashboardPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("/api/analysis/report", {
+      const API_BASE = (import.meta as any).env.VITE_API_BASE_URL || "";
+      const response = await fetch(`${API_BASE}/api/analysis/report`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

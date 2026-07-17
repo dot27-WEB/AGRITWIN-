@@ -213,7 +213,8 @@ export const IrrigationPage: React.FC = () => {
             }
 
             try {
-              const res = await fetch("/api/irrigation/recommend", {
+              const API_BASE = (import.meta as any).env.VITE_API_BASE_URL || "";
+              const res = await fetch(`${API_BASE}/api/irrigation/recommend`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json"

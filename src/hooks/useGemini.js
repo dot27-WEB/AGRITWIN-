@@ -207,7 +207,8 @@ export const useGemini = () => {
     };
 
     try {
-      const response = await fetch('/api/copilot/chat', {
+      const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+      const response = await fetch(`${API_BASE}/api/copilot/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
