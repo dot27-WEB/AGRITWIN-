@@ -19,6 +19,7 @@ import { ProfilePage } from "./pages/ProfilePage";
 import { AnalysisDashboardPage } from "./pages/AnalysisDashboardPage";
 
 import { motion, AnimatePresence } from "motion/react";
+import { Copilot } from "./components/copilot/Copilot";
 
 const AppContent: React.FC = () => {
   const { activePage } = useFarm();
@@ -74,6 +75,7 @@ const AppContent: React.FC = () => {
       </main>
 
       <Footer />
+      <Copilot />
     </div>
   );
 };

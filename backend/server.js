@@ -45,7 +45,12 @@ app.get("/api/health", (req, res) => {
 // Standard Error Handler middleware
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  logger.info("Backend Started");
-  logger.info(`AgriTwin secure backend successfully listening on port ${PORT}`);
-});
+// Only listen on port if not in Vercel Serverless environment
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    logger.info("Backend Started");
+    logger.info(`AgriTwin secure backend successfully listening on port ${PORT}`);
+  });
+}
+
+export default app;

@@ -5,6 +5,7 @@ import { FarmProvider } from './context/FarmContext';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import AppRoutes from './routes/AppRoutes';
+import Copilot from './components/copilot/Copilot';
 import './styles/globals.css';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
             
             {/* Brand Footer */}
             <Footer />
+            <Copilot />
             
           </div>
         </FarmProvider>

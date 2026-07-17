@@ -1,12 +1,11 @@
 import React from 'react';
 import { Bot, User } from 'lucide-react';
 
-/**
- * ChatMessage component. Renders an individual message within the chat feed.
- * Features separate visual styles for AI and Farmer messages.
- */
 export const ChatMessage = ({ message }) => {
   const isAi = message.sender === 'ai';
+  const formattedTime = message.timestamp 
+    ? new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+    : '';
 
   return (
     <div className={`flex items-start gap-3.5 ${!isAi ? 'flex-row-reverse' : ''} animate-fade-in`}>
@@ -22,14 +21,23 @@ export const ChatMessage = ({ message }) => {
       </div>
 
       {/* Message Bubble */}
-      <div className={`max-w-[75%] rounded-2xl px-4 py-3 text-xs leading-relaxed shadow-lg transition-all duration-300 relative text-left
-        ${isAi 
-          ? 'bg-slate-900/70 border border-white/5 text-slate-300 rounded-tl-sm backdrop-blur-md' 
-          : 'bg-gradient-to-r from-farm-600 to-emerald-600 text-white rounded-tr-sm'
-        }`}
-      >
-        {/* Render text with line breaks preserved */}
-        <div className="whitespace-pre-line font-medium">{message.text}</div>
+      <div className="flex flex-col max-w-[75%] gap-1">
+        <div className={`rounded-2xl px-4 py-3 text-xs leading-relaxed shadow-lg transition-all duration-300 relative text-left
+          ${isAi 
+            ? 'bg-slate-900/70 border border-white/5 text-slate-300 rounded-tl-sm backdrop-blur-md' 
+            : 'bg-gradient-to-r from-farm-600 to-emerald-600 text-white rounded-tr-sm'
+          }`}
+        >
+          {/* Render text with line breaks preserved */}
+          <div className="whitespace-pre-line font-medium">{message.text}</div>
+        </div>
+        
+        {/* Timestamp */}
+        {formattedTime && (
+          <span className={`text-[9px] text-slate-500 font-bold px-1 ${!isAi ? 'text-right' : 'text-left'}`}>
+            {formattedTime}
+          </span>
+        )}
       </div>
 
     </div>

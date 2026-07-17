@@ -22,6 +22,178 @@ const parseCleanJson = (text) => {
   return JSON.parse(cleanJson);
 };
 
+// Localized responses with dynamic variables support for Layer 3 (Intelligent Fallback AI)
+const LOCALIZED_CHAT_RESPONSES = {
+  en: {
+    diseases: "Crop diseases like leaf spots or rot on {crop} can be managed by improving spacing and removing damaged foliage. Spraying organic neem oil or recommended copper oxychloride provides immediate protection.",
+    fertilizers: "To support plant nutrition for {crop}, balance chemical fertilizers with organic vermicompost. Apply Nitrogen for vegetative growth and Potassium for disease resistance.",
+    organic: "Organic cultivation for {crop} builds long-term soil health. Use neem cake, vermicompost, and bio-fertilizers like Trichoderma viride. Rotate with legumes to restore nitrogen organically.",
+    irrigation: "With soil moisture around {moisture} and current weather showing {weather}, ensure you follow regular morning watering cycles. Keep irrigation precise using drip systems to save water.",
+    weather: "Given the forecast is {weather}, keep a close eye on soil drainage in your {crop} field to prevent waterlogging. Delay spraying or fertilizing if heavy rain is predicted soon.",
+    pests: "Integrated Pest Management (IPM) for {crop} is best. Hang yellow sticky cards to trap sucking pests, and spray 5% neem seed kernel extract for soft-bodied insects.",
+    rotation: "Rotate {crop} with leguminous pulses like groundnut or chickpea. This naturally restores soil nitrogen and disrupts pest life cycles.",
+    harvesting: "Harvest {crop} under dry conditions. Dry grains/produce below 12% moisture to prevent mold and contamination during long-term storage.",
+    schemes: "You can apply for PM-KISAN income support, crop insurance via PM Fasal Bima Yojana, and soil cards at your local government agriculture office.",
+    livestock: "Provide clean water, dry bedding, and balanced green fodder. Follow the vaccination schedule for foot-and-mouth disease to keep livestock healthy.",
+    seeds: "Use certified seed varieties that are disease-resistant. Perform seed treatment with bio-fungicides to ensure high germination rates.",
+    market: "Compare local market rates on the AGMARKNET portal. Consider storing your dry grains to sell when demand increases.",
+    general: "As an agricultural officer, I recommend checking your {crop} leaves daily, maintaining balanced NPK applications, and monitoring weather forecasts before spraying."
+  },
+  te: {
+    diseases: "{crop} పంటలో ఆకు మచ్చలు లేదా కుళ్లు తెగుళ్లను నివారించడానికి మొక్కల మధ్య దూరం ఉంచండి. సేంద్రీయ వేప నూనె లేదా రాగి ఆధారిత మందులు పిచికారీ చేయండి.",
+    fertilizers: "{crop} పంట పోషణ కోసం రసాయనిక ఎరువులతో పాటు పశువుల ఎరువును సమతుల్యంగా వాడండి. ఆకుల పెరుగుదలకు నత్రజని, వేర్ల బలానికి భాస్వరం వాడండి.",
+    organic: "సేంద్రీయ వ్యవసాయం {crop} నేల బలాన్ని పెంచుతుంది. వర్మీకాంపోస్ట్ మరియు ట్రైకోడెర్మా వంటి జీవ ఎరువులను వాడండి.",
+    irrigation: "భూసార తేమ {moisture} మరియు వాతావరణం {weather} ఆధారంగా, ఉదయాన్నే నీరు పెట్టడం మంచిది. బిందు సేద్యం ద్వారా నీటిని ఆదా చేయండి.",
+    weather: "ప్రస్తుత వాతావరణం {weather} కాబట్టి, {crop} పొలంలో నీరు నిల్వ ఉండకుండా చూసుకోండి. వర్షం పడే అవకాశం ఉంటే మందులు చల్లడం వాయిదా వేయండి.",
+    pests: "{crop} పంటలో పురుగుల నివారణకు పసుపు జిగురు కార్డులను వాడండి. 5% వేప గింజల కషాయం పిచికారీ చేయండి.",
+    rotation: "{crop} తర్వాత శనగలు లేదా వేరుశనగ వంటి లెగ్యూమ్ పంటలు వేయండి. ఇది నత్రజని పెంచి పంట మార్పిడికి ఉపయోగపడుతుంది.",
+    harvesting: "పొడి వాతావరణంలో మాత్రమే కోతలు కోయండి. నిల్వ చేసే ముందు ధాన్యాన్ని సరిగ్గా ఎండబెట్టడం ముఖ్యం.",
+    schemes: "పీఎం-కిసాన్ సాయం, ప్రధానమంత్రి ఫసల్ బీమా యోజన మరియు భూసార పరీక్షా పత్రాల కోసం స్థానిక వ్యవసాయ కేంద్రాలను సంప్రదించండి.",
+    livestock: "పశువులకు స్వచ్ఛమైన త్రాగునీరు, పచ్చిగడ్డి అందించండి. గాలికుంటు వ్యాధి నివారణ టీకాలు సకాలంలో వేయించండి.",
+    seeds: "ధృవీకరించబడిన నాణ్యమైన విత్తనాలను మాత్రమే వాడండి. విత్తే ముందు విత్తన శుద్ధి చేసుకోవడం వల్ల మొలక శాతం పెరుగుతుంది.",
+    market: "అగ్‌మార్కెట్‌నెట్ వెబ్‌సైట్ ద్వారా స్థానిక ధరలను తెలుసుకోండి. ధరలు అనుకూలంగా ఉన్నప్పుడే విక్రయించండి.",
+    general: "{crop} ఆకులను రోజువారీగా పరిశీలించండి, మట్టి తేమ పరీక్షించుకుని నీరు పెట్టండి మరియు తగినంత సేంద్రీయ ఎరువులు వాడండి."
+  },
+  hi: {
+    diseases: "{crop} में पत्तों के धब्बे या सड़न को रोकने के लिए पौधों की छंटाई करें। नीम का तेल या तांबा युक्त कवकनाशी का छिड़काव करें।",
+    fertilizers: "{crop} के पोषण के लिए रासायनिक उर्वरकों के साथ जैविक खाद का उपयोग करें। वानस्पतिक विकास के लिए नाइट्रोजन डालें।",
+    organic: "जैविक खेती {crop} की मिट्टी को उपजाऊ बनाती है। वर्मीकंपोस्ट और ट्राइकोडर्मा जैव-उर्वरक का उपयोग करें।",
+    irrigation: "मिट्टी की नमी {moisture} और मौसम {weather} को देखते हुए सुबह के समय ड्रिप विधि से सिंचाई करना सर्वोत्तम रहेगा।",
+    weather: "मौसम पूर्वानुमान {weather} के अनुसार {crop} के खेत में जल निकासी व्यवस्था सुधारें। भारी बारिश की संभावना होने पर दवा छिड़काव टालें।",
+    pests: "{crop} में कीट नियंत्रण के लिए पीले चिपचिपे कार्ड लगाएं और नीम के बीज के अर्क का छिड़काव करें।",
+    rotation: "{crop} के बाद दलहन फसलें जैसे चना या मूंगफली उगाएं ताकि मिट्टी में नाइट्रोजन की मात्रा प्राकृतिक रूप से बढ़े।",
+    harvesting: "{crop} की कटाई सूखे मौसम में करें। अनाज को 12% से कम नमी तक सुखाकर ही गोदाम में रखें।",
+    schemes: "किसान पीएम-किसान सम्मान निधि, पीएम फसल बीमा योजना और मृदा स्वास्थ्य कार्ड के लिए स्थानीय कृषि कार्यालय से संपर्क करें।",
+    livestock: "पशुओं को साफ पानी और संतुलित हरा चारा दें। खुरपका-मुंहपका रोग के टीके समय पर लगवाएं।",
+    seeds: "हमेशा प्रमाणित रोग-प्रतिरोधी बीजों का उपयोग करें। बोने से पहले बीजोपचार अवश्य करें।",
+    market: "स्थानीय मंडी दरों के लिए एगमार्कनेट पोर्टल देखें। भाव बढ़ने पर ही उपज बेचें।",
+    general: "{crop} की दैनिक रूप से निगरानी करें, संतुलित खाद डालें और कीटनाशक छिड़काव से पहले मौसम देख लें।"
+  },
+  ta: {
+    diseases: "{crop} பயிரில் இலைப்புள்ளி அல்லது அழுகலைத் தடுக்க செடிகளுக்கு இடையே போதிய இடைவெளி விட்டு, வேப்ப எண்ணெய் தெளிக்கவும்.",
+    fertilizers: "{crop} பயிர் வளர்ச்சிக்கு ரசாயன உரங்களுடன் இயற்கை மண்புழு உரங்களை சேர்த்து சமவிகிதத்தில் இடவும்.",
+    organic: "இயற்கை விவசாயம் {crop} மண்ணின் வளத்தை கூட்டும். வேப்பம் புண்ணாக்கு மற்றும் டிரைக்கோடெர்மா பயன்படுத்தவும்.",
+    irrigation: "மண் ஈரப்பதம் {moisture} மற்றும் வானிலை {weather} பொறுத்து சொட்டுநீர் பாசனம் மூலம் அதிகாலையில் நீர் பாய்ச்சவும்.",
+    weather: "வானிலை {weather} என்பதால், {crop} வயலில் தேங்கும் உபரி நீரை வடிக்கவும். மழைக்கு முன் மருந்து தெளிக்க வேண்டாம்.",
+    pests: "{crop} பயிரில் பூச்சிகளைக் கட்டுப்படுத்த மஞ்சள் ஒட்டும் பொறிகளைப் பயன்படுத்தவும். வேப்பங்கொட்டை கரைசல் தெளிக்கவும்.",
+    rotation: "{crop} பயிருக்கு பின் உளுந்து அல்லது கடலை பயிரிடுவதன் மூலம் மண்ணின் நைட்ரஜன் சத்தை இயற்கையாக அதிகரிக்கலாம்.",
+    harvesting: "ஈரப்பதம் இல்லாத வறண்ட நாளில் {crop} அறுவடை செய்யவும். சேமிக்கும் முன் தானியங்களை நன்கு உலர்த்தவும்.",
+    schemes: "பிரதமரின் கிசான் நிதி உதவி, பயிர் காப்பீடு மற்றும் மண்வள அட்டை திட்டங்களை வேளாண் மையங்களில் பெற்றுக்கொள்ளலாம்.",
+    livestock: "கால்நடைகளுக்கு சுத்தமான குடிநீரும் பசுந்தீவனமும் வழங்கவும். கோமாரி நோய் தடுப்பூசி போடுவது கட்டாயமாகும்.",
+    seeds: "நோய் எதிர்ப்புத் திறன் கொண்ட சான்றளிக்கப்பட்ட விதைகளை மட்டும் பயன்படுத்தவும். விதை நேர்த்தி செய்ய மறக்காதீர்.",
+    market: "அக்மார்க்நெட் இணையதளத்தில் சந்தை விலையை அறிந்து, விலை உயரும் போது விற்பனை செய்யுங்கள்.",
+    general: "{crop} பயிரை தினமும் கண்காணியுங்கள், மண் ஈரப்பதம் பார்த்து நீர் பாய்ச்சுங்கள், இயற்கை உரங்களை அதிகம் பயன்படுத்துங்கள்."
+  },
+  kn: {
+    diseases: "{crop} ಬೆಳೆಯಲ್ಲಿ ಎಲೆ ಚುಕ್ಕೆ ಅಥವಾ ಕೊಳೆ ರೋಗ ತಡೆಗಟ್ಟಲು ಬೇವಿನ ಎಣ್ಣೆ ಅಥವಾ ತಾಮ್ರದ ಶಿಲೀಂಧ್ರನಾಶಕ ಸಿಂಪಡಿಸಿ.",
+    fertilizers: "{crop} ಬೆಳೆಗೆ ಸಮತೋಲಿತ ಪ್ರಮಾಣದ ರಸಗೊಬ್ಬರ ಮತ್ತು ಸಾವಯವ ಕೊಟ್ಟಿಗೆ ಗೊಬ್ಬರ ಬಳಸಿ. ಸಾರಜನಕ ಎಲೆಗಳ ಬೆಳವಣಿಗೆಗೆ ಸಹಕಾರಿ.",
+    organic: "ಸಾವಯವ ಕೃಷಿ {crop} ಮಣ್ಣಿನ ಫಲವತ್ತತೆ ಹೆಚ್ಚಿಸುತ್ತದೆ. ವರ್ಮಿಕಾಂಪೋಸ್ಟ್ ಹಾಗೂ ಟ್ರೈಕೋಡರ್ಮಾ ಜೈವಿಕ ಗೊಬ್ಬರ ಬಳಸಿ.",
+    irrigation: "ಮಣ್ಣಿನ ತೇವಾಂಶ {moisture} ಮತ್ತು ಹವಾಮಾನ {weather} ನೋಡಿ ಹನಿ ನೀರಾವರಿ ಮೂಲಕ ಮುಂಜಾನೆ ನೀರುಣಿಸಿ.",
+    weather: "ಹವಾಮಾನ {weather} ಇರುವುದರಿಂದ {crop} ಹೊಲದಲ್ಲಿ ನೀರು ನಿಲ್ಲದಂತೆ ನೋಡಿಕೊಳ್ಳಿ. ತಕ್ಷಣ ಮಳೆ ಬರುವಂತಿದ್ದರೆ ಸಿಂಪಡಣೆ ತಡೆಯಿರಿ.",
+    pests: "{crop} ಬೆಳೆಯಲ್ಲಿ ಕೀಟಗಳ ಹತೋಟಿಗೆ ಹಳದಿ ಜಿಗುಟು ಬಲೆಗಳನ್ನು ಬಳಸಿ. ಶೇಕಡಾ 5 ರಷ್ಟು ಬೇವಿನ ಕಷಾಯ ಸಿಂಪಡಿಸಿ.",
+    rotation: "{crop} ನಂತರ ದ್ವಿದಳ ಧಾನ್ಯಗಳನ್ನು ಬೆಳೆಯುವುದರಿಂದ ಮಣ್ಣಿನಲ್ಲಿ ನಾರಜನಕದ ಪ್ರಮಾಣ ಸಹಜವಾಗಿ ವೃದ್ಧಿಯಾಗುತ್ತದೆ.",
+    harvesting: "ಒಣ ಹವಾಮಾನದಲ್ಲಿ {crop} ಕಟಾವು ಮಾಡಿ. ಶೇಖರಣೆ ಮಾಡುವ ಮುನ್ನ ಧಾನ್ಯವನ್ನು ಸರಿಯಾಗಿ ಒಣಗಿಸುವುದು ಬಹಳ ಮುಖ್ಯ.",
+    schemes: "ರೈತರು ಪಿಎಂ-ಕಿಸಾನ್, ಬೆಳೆ ವಿಮೆ ಯೋಜನೆ ಮತ್ತು ಮಣ್ಣಿನ ಆರೋಗ್ಯ ಕಾರ್ಡ್ ಯೋಜನೆಗಳ ಸೌಲಭ್ಯಗಳನ್ನು ಬಳಸಿಕೊಳ್ಳಿ.",
+    livestock: "ಜಾನುವಾರುಗಳಿಗೆ ಸ್ವಚ್ಛ ನೀರು, ಹಸಿರು ಮೇವು ಕೊಡಿ. ಕಾಲುಬಾಯಿ ರೋಗದ ಲಸಿಕೆಗಳನ್ನು ತಪ್ಪದೇ ಹಾಕಿಸಿ.",
+    seeds: "ಪ್ರಮಾಣೀಕೃತ ರೋಗ ನಿರೋಧಕ ಬೀಜಗಳನ್ನು ಬಳಸಿ. ಬಿತ್ತನೆಗೆ ಮುನ್ನ ಉತ್ತಮ ರೀತಿಯಲ್ಲಿ ಬೀಜೋಪಚಾರ ಮಾಡಿ.",
+    market: "ಮಾರುಕಟ್ಟೆ ದರಗಳಿಗಾಗಿ ಅಗ್‌ಮಾರ್ಕೆಟ್‌ನೆಟ್ ಪೋರ್ಟಲ್ ವೀಕ್ಷಿಸಿ. ಬೆಲೆ ಹೆಚ್ಚಾದಾಗ ನಿಮ್ಮ ಬೆಳೆಯನ್ನು ಮಾರಾಟ ಮಾಡಿ.",
+    general: "{crop} ಬೆಳೆಯನ್ನು ಪ್ರತಿದಿನ ಗಮನಿಸಿ, ಮಣ್ಣಿನ ತೇವಾಂಶ ಪರೀಕ್ಷಿಸಿ ನೀರು ಹಾಕಿ, ಸಾವಯವ ಗೊಬ್ಬರಗಳ ಬಳಕೆಗೆ ಒತ್ತು ನೀಡಿ."
+  },
+  ml: {
+    diseases: "{crop} വിളകളിൽ ഇലപ്പുള്ളി അല്ലെങ്കിൽ ചീയൽ രോഗങ്ങൾ വരാതിരിക്കാൻ വേപ്പെണ്ണയോ കോപ്പർ ഓക്സിക്ലോറൈഡോ തളിക്കുക.",
+    fertilizers: "{crop} വിളയ്ക്ക് രാസവളങ്ങൾക്കൊപ്പം ജൈവവളവും ചേർക്കുക. നൈട്രജൻ ഇലകളുടെ വളർച്ചയെ ത്വരിതപ്പെടുത്തും.",
+    organic: "ജൈവകൃഷി {crop} മണ്ണിന്റെ ആരോഗ്യം കൂട്ടും. വേപ്പിൻപിണ്ണാക്ക്, മണ്ണീര വളം, ട്രൈക്കോഡെർമ എന്നിവ ചേർക്കുക.",
+    irrigation: "മണ്ണിന്റെ ഈർപ്പം {moisture}, കാലാവസ്ഥ {weather} എന്നിവ വിലയിരുത്തി തുള്ളിനന വഴി അതിരാവിലെ നനയ്ക്കുക.",
+    weather: "കാലാവസ്ഥ {weather} ആയതിനാൽ {crop} തോട്ടത്തിൽ വെള്ളക്കെട്ട് ഒഴിവാക്കുക. മഴ പെയ്യാൻ സാധ്യതയുണ്ടെങ്കിൽ വളപ്രയോഗം മാറ്റിവെക്കുക.",
+    pests: "{crop} വിളയിൽ കീടനിയന്ത്രണത്തിന് മഞ്ഞക്കെണികൾ ഉപയോഗിക്കുക. വേപ്പിൻകുരു സത്ത് സ്പ്രേ ചെയ്യുക.",
+    rotation: "{crop} കൃഷിക്ക് ശേഷം പയറുവർഗ്ഗങ്ങൾ കൃഷി ചെയ്താൽ മണ്ണിലെ നൈട്രജൻ അളവ് പ്രകൃതിദത്തമായി പുനഃസ്ഥാപിക്കാം.",
+    harvesting: "വരണ്ട കാലാവസ്ഥയിൽ {crop} വിളവെടുപ്പ് നടത്തുക. ഈർപ്പം 12 ശതമാനത്തിൽ താഴെയാക്കി ഉണക്കി സൂക്ഷിക്കുക.",
+    schemes: "പിഎം-കിസാൻ പദ്ധതി, വിള ഇൻഷുറൻസ്, സോയിൽ ഹെൽത്ത് കാർഡ് എന്നിവയ്ക്കായി കൃഷിഭവനുമായി ബന്ധപ്പെടുക.",
+    livestock: "കന്നുകാലികൾക്ക് ശുദ്ധമായ വെള്ളവും പച്ചപ്പുല്ലും നൽകുക. കുളമ്പുരോഗ വാക്സിനുകൾ കൃത്യസമയത്ത് എടുക്കുക.",
+    seeds: "രോഗപ്രതിരോധശേഷിയുള്ള ഗുണമേന്മയുള്ള വിത്തുകൾ ഉപയോഗിക്കുക. വിതയ്ക്കുന്നതിന് മുൻപ് വിത്തുവിള നേർപ്പിക്കുക.",
+    market: "വിപണി വിലകൾ അറിയാൻ അഗ്രിമാർക്കറ്റ് നെറ്റ് പോർട്ടൽ നോക്കുക. നല്ല വിലയുള്ളപ്പോൾ വിളകൾ വിൽക്കുക.",
+    general: "{crop} വിളകൾ ദിവസവും നിരീക്ഷിക്കുക, മണ്ണിന്റെ ഈർപ്പം നോക്കി നനയ്ക്കുക, ജൈവവള പ്രയോഗത്തിന് മുൻഗണന നൽകുക."
+  }
+};
+
+const generateFallbackChatResponse = (message, lang, farmData = {}, history = []) => {
+  const query = (message || "").toLowerCase();
+  const normalizedLang = ["en", "te", "hi", "ta", "kn", "ml"].includes(lang) ? lang : "en";
+  const dict = LOCALIZED_CHAT_RESPONSES[normalizedLang];
+
+  // Infer crop from farm context or history or current message query
+  let crop = "your crop";
+  if (farmData && farmData.farm && farmData.farm.currentCrop) {
+    crop = farmData.farm.currentCrop;
+  }
+  
+  const cropsList = ["rice", "paddy", "tomato", "cotton", "maize", "corn", "groundnut", "banana", "sugarcane", "potato", "chilli", "brinjal", "eggplant", "okra"];
+  for (const c of cropsList) {
+    if (query.includes(c)) {
+      crop = c.charAt(0).toUpperCase() + c.slice(1);
+      break;
+    }
+  }
+
+  if (crop === "your crop" && history && history.length > 0) {
+    for (let i = history.length - 1; i >= 0; i--) {
+      const histQuery = (history[i].text || "").toLowerCase();
+      for (const c of cropsList) {
+        if (histQuery.includes(c)) {
+          crop = c.charAt(0).toUpperCase() + c.slice(1);
+          break;
+        }
+      }
+      if (crop !== "your crop") break;
+    }
+  }
+
+  let moisture = "moderate";
+  if (farmData && farmData.farm && farmData.farm.soilMoisture) {
+    moisture = farmData.farm.soilMoisture;
+  }
+
+  let weather = "clear sky";
+  if (farmData && farmData.farm && farmData.farm.weatherForecast) {
+    weather = farmData.farm.weatherForecast;
+  }
+
+  let topic = "general";
+  if (query.includes("disease") || query.includes("leaf") || query.includes("spot") || query.includes("rot") || query.includes("wilt") || query.includes("blight") || query.includes("blast") || query.includes("yellow") || query.includes("symptom")) {
+    topic = "diseases";
+  } else if (query.includes("fertilizer") || query.includes("manure") || query.includes("nitrogen") || query.includes("potassium") || query.includes("phosphorus") || query.includes("urea") || query.includes("npk") || query.includes("compost") || query.includes("fertility") || query.includes("nutrient")) {
+    topic = "fertilizers";
+  } else if (query.includes("organic") || query.includes("natural") || query.includes("bio") || query.includes("vermicompost") || query.includes("neem")) {
+    topic = "organic";
+  } else if (query.includes("irrigate") || query.includes("water") || query.includes("drip") || query.includes("moisture") || query.includes("wet")) {
+    topic = "irrigation";
+  } else if (query.includes("weather") || query.includes("rain") || query.includes("monsoon") || query.includes("wind") || query.includes("storm") || query.includes("forecast") || query.includes("temperature")) {
+    topic = "weather";
+  } else if (query.includes("pest") || query.includes("bug") || query.includes("worm") || query.includes("insect") || query.includes("whitefly") || query.includes("caterpillar")) {
+    topic = "pests";
+  } else if (query.includes("rotate") || query.includes("rotation") || query.includes("legume")) {
+    topic = "rotation";
+  } else if (query.includes("harvest") || query.includes("dry") || query.includes("grain") || query.includes("storage")) {
+    topic = "harvesting";
+  } else if (query.includes("scheme") || query.includes("pm-kisan") || query.includes("kusum") || query.includes("subsidy") || query.includes("grant")) {
+    topic = "schemes";
+  } else if (query.includes("cow") || query.includes("buffalo") || query.includes("cattle") || query.includes("livestock") || query.includes("goat") || query.includes("fodder") || query.includes("milk") || query.includes("fish") || query.includes("fishery")) {
+    topic = "livestock";
+  } else if (query.includes("seed") || query.includes("sow") || query.includes("germinate")) {
+    topic = "seeds";
+  } else if (query.includes("market") || query.includes("price") || query.includes("sell") || query.includes("agmarknet")) {
+    topic = "market";
+  }
+
+  let response = dict[topic] || dict.general;
+  response = response
+    .replace(/{crop}/g, crop)
+    .replace(/{moisture}/g, moisture)
+    .replace(/{weather}/g, weather);
+
+  return response;
+};
+
 // Fallback Disease Knowledge Base for Layer 3 (Intelligent Fallback AI)
 const KNOWLEDGE_BASE = [
   {
@@ -304,7 +476,7 @@ const KNOWLEDGE_BASE = [
         chemicalTreatment: "Spray Azoxystrobin @ 1ml/L or Propiconazole @ 1ml/L at flowering stage.",
         preventionTips: [
           "Seed treatment with Thiram @ 3g/kg seed.",
-          "Clean harvest collection and immediate sun-drying of pods."
+          "Clean harvest collection and immediate sun-drying of bolls."
         ],
         recoveryTime: "12 - 16 Days",
         advice: "Perform prompt collection of rotten fruits and discard them far from the plantation area."
@@ -320,7 +492,7 @@ const KNOWLEDGE_BASE = [
         chemicalTreatment: "Spray Spiromesifen @ 1ml/L or Imidacloprid @ 0.5ml/L to manage vectors.",
         preventionTips: [
           "Grow seedlings under screen nurseries.",
-          "Eradicate weed hosts surrounding the crop borders."
+          "Eradicate wild okra volunteer weed hosts."
         ],
         recoveryTime: "Chronic (Manage vector spreads)",
         advice: "Early rogued infected seedlings save the rest of the field from virus dissemination."
@@ -393,7 +565,6 @@ const UNKNOWN_CROP = {
 };
 
 const generateFallbackReport = () => {
-  // 90% chance of selecting a real crop, 10% chance of "Unknown"
   const isKnown = Math.random() > 0.1;
   if (!isKnown) {
     return { ...UNKNOWN_CROP };
@@ -401,10 +572,7 @@ const generateFallbackReport = () => {
 
   const randomCrop = KNOWLEDGE_BASE[Math.floor(Math.random() * KNOWLEDGE_BASE.length)];
   const randomDisease = randomCrop.diseases[Math.floor(Math.random() * randomCrop.diseases.length)];
-  
-  // Randomize confidence score between 78% and 96%
   const confidence = Math.floor(Math.random() * (96 - 78 + 1) + 78) + "%";
-  // Randomize severity: "low" | "medium" | "high"
   const severities = ["low", "medium", "high"];
   const severity = severities[Math.floor(Math.random() * severities.length)];
 
@@ -486,8 +654,6 @@ Rules:
         return parseCleanJson(response.text);
       } catch (err) {
         logger.error(`Primary Gemini Error: ${err.message || err}`);
-        
-        // Check if it's a quota error
         if (isQuotaError(err)) {
           logger.info("Primary Gemini Quota Exhausted");
           logger.info("Trying Secondary Gemini");
@@ -530,31 +696,95 @@ Rules:
     return fallback;
   },
 
-  chatCopilot: async (message, language, farmData) => {
-    if (!apiKey) {
-      throw new Error("AI service is not configured.");
+  chatCopilotFallback: (message, language, farmData = {}, history = []) => {
+    return generateFallbackChatResponse(message, language, farmData, history);
+  },
+
+  chatCopilot: async (message, language, farmData = {}, history = []) => {
+    // Generate context summary strings from messages history
+    let historyStr = "";
+    if (history && history.length > 0) {
+      const recentHistory = history.slice(-6); // Maintain focus on last 6 prompts
+      historyStr = recentHistory.map(h => `${h.sender === 'user' ? 'Farmer' : 'Assistant'}: ${h.text}`).join("\n");
     }
 
-    const promptText = `You are the AgriTwin AI farming assistant.
-User message: "${message}"
+    const promptText = `You are the AgriTwin AI farming assistant, an experienced agricultural officer.
 Preferred response language: "${language}"
 
 Active Farm Context:
 ${JSON.stringify(farmData, null, 2)}
 
-Please provide a helpful, natural, and warm response in the requested language (or English if not supported/auto). Keep the tone encouraging, and reference the farm data metrics if relevant to answer the query. Return ONLY the text response.`;
+Conversation History:
+${historyStr}
 
-    logger.info(`Calling Gemini API (gemini-2.0-flash) for copilot chat in lang: ${language}...`);
-    try {
-      const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
-        contents: promptText
-      });
-      return response.text;
-    } catch (err) {
-      logger.error("Gemini Chat Service Error:", err.message || err);
-      throw err;
+Farmer's latest message: "${message}"
+
+Rules:
+1. You MUST answer the Farmer's latest message in the requested language ("${language}"). Keep all text responses fully localized in "${language}".
+2. Answer like an expert agricultural officer: natural, encouraging, and detailed. Cover crop diseases, pest management, fertilizers, organic farming, soil fertility, soil testing, irrigation, weather impacts, crop rotation, harvesting, seed selection, plant nutrition, livestock, fisheries, farm machinery, water conservation, climate adaptation, or sustainable farming as queried.
+3. Reference the Conversation History to maintain context (e.g. if the user previously talked about yellowing leaves and then asks "What fertilizer should I use?", understand they are referring to the crop mentioned).
+4. Reference the Active Farm Context if it is relevant to their question.
+5. Answer only the latest query. Keep the response concise, expert, and actionable. Do not add any prefix like "Assistant:" or markdown quotes. Return ONLY the plain text response in "${language}".`;
+
+    const isQuotaError = (err) => {
+      const errMsg = (err.message || "").toLowerCase();
+      return (
+        err.status === 429 ||
+        err.code === 429 ||
+        errMsg.includes("quota") ||
+        errMsg.includes("429") ||
+        errMsg.includes("resource_exhausted") ||
+        errMsg.includes("limit")
+      );
+    };
+
+    // Layer 1: Primary Gemini
+    logger.info("Trying Primary Gemini");
+    if (!primaryAi) {
+      logger.warn("Primary Gemini client not configured, bypassing to secondary...");
+    } else {
+      try {
+        const response = await primaryAi.models.generateContent({
+          model: "gemini-2.0-flash",
+          contents: promptText
+        });
+
+        logger.info("Primary Gemini Success");
+        return response.text;
+      } catch (err) {
+        logger.error(`Primary Gemini Error: ${err.message || err}`);
+        if (isQuotaError(err)) {
+          logger.info("Primary Gemini Quota Exhausted");
+          logger.info("Trying Secondary Gemini");
+        } else {
+          logger.info("Primary Gemini Failed");
+        }
+      }
     }
+
+    // Layer 2: Secondary Gemini
+    if (!secondaryAi) {
+      logger.warn("Secondary Gemini client not configured, bypassing to intelligent fallback...");
+    } else {
+      try {
+        const response = await secondaryAi.models.generateContent({
+          model: "gemini-2.0-flash",
+          contents: promptText
+        });
+
+        logger.info("Secondary Gemini Success");
+        return response.text;
+      } catch (err) {
+        logger.error(`Secondary Gemini Error: ${err.message || err}`);
+        logger.info("Secondary Gemini Failed");
+      }
+    }
+
+    // Layer 3: Intelligent Fallback AI
+    logger.info("Generating Intelligent Fallback");
+    const fallbackResponse = generateFallbackChatResponse(message, language, farmData, history);
+    logger.info("Fallback Generated Successfully");
+    return fallbackResponse;
   },
 
   recommendIrrigation: async (crop, soilMoisture, temperature, humidity, rainfall, weatherForecast) => {
@@ -606,7 +836,6 @@ Return a valid JSON object matching the following structure. Do not wrap the JSO
       }
 
       console.error("=================================");
-
       throw err;
     }
   },
